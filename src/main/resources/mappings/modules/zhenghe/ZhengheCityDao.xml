@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheCityDao">
+    
+    <select id="findByProvinceId" resultType="ZhengheCity">
+		SELECT 
+			<include refid="zhengheCityColumns"/>
+		FROM zhenghe_city a
+		<include refid="zhengheCityJoins"/>
+		WHERE a.provincial_id = #{provinceId}
+	</select>
+    
+	<sql id="zhengheCityColumns">
+		a.id AS "id",
+		a.provincial_id AS "provincialId",
+		a.city_name AS "cityName",
+		a.city_no AS "cityNo"
+	</sql>
+	
+	<sql id="zhengheCityJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheCity">
+		SELECT 
+			<include refid="zhengheCityColumns"/>
+		FROM zhenghe_city a
+		<include refid="zhengheCityJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheCity">
+		SELECT 
+			<include refid="zhengheCityColumns"/>
+		FROM zhenghe_city a
+		<include refid="zhengheCityJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheCity">
+		SELECT 
+			<include refid="zhengheCityColumns"/>
+		FROM zhenghe_city a
+		<include refid="zhengheCityJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_city(
+			id,
+			provincial_id,
+			city_name,
+			city_no
+		) VALUES (
+			#{id},
+			#{provincialId},
+			#{cityName},
+			#{cityNo}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_city SET 	
+			provincial_id = #{provincialId},
+			city_name = #{cityName},
+			city_no = #{cityNo}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_city
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheBloodPressureDao">
+    
+	<sql id="zhengheBloodPressureColumns">
+		a.id AS "id",
+		a.patient_id AS "patientId",
+		a.sbp AS "sbp",
+		a.dbp AS "dbp",
+		a.create_date AS "createDate",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheBloodPressureJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheBloodPressure">
+		SELECT 
+			<include refid="zhengheBloodPressureColumns"/>
+		FROM zhenghe_blood_pressure a
+		<include refid="zhengheBloodPressureJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheBloodPressure">
+		SELECT 
+			<include refid="zhengheBloodPressureColumns"/>
+		FROM zhenghe_blood_pressure a
+		<include refid="zhengheBloodPressureJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheBloodPressure">
+		SELECT 
+			<include refid="zhengheBloodPressureColumns"/>
+		FROM zhenghe_blood_pressure a
+		<include refid="zhengheBloodPressureJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_blood_pressure(
+			id,
+			patient_id,
+			sbp,
+			dbp,
+			create_date,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{patientId},
+			#{sbp},
+			#{dbp},
+			#{createDate},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_blood_pressure SET 	
+			patient_id = #{patientId},
+			sbp = #{sbp},
+			dbp = #{dbp},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_blood_pressure
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

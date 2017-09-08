@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheHospitalDao">
+
+	<select id="findHospitalByKY" resultType="ZhengheHospital">
+		select 
+			<include refid="zhengheHospitalColumns"></include>
+		from zhenghe_hospital a
+			<where>
+				<if test="cityId!=null">city_id = #{cityId}</if>
+				<if test="provincialId!=null">provincial_id = #{provincialId}</if>
+				<if test="hospitalName!=null">hospital_name like #{hospitalName}</if>
+			</where>
+	</select>
+    
+	<sql id="zhengheHospitalColumns">
+		a.id AS "id",
+		a.hospital_name AS "hospitalName",
+		a.provincial_id AS "provincialId",
+		a.city_id AS "cityId",
+		a.district_id AS "districtId",
+		a.address AS "address",
+		a.create_date AS "createDate",
+		a.standby1 AS "standby1",
+		a.standby2 AS "standby2",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheHospitalJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheHospital">
+		SELECT 
+			<include refid="zhengheHospitalColumns"/>
+		FROM zhenghe_hospital a
+		<include refid="zhengheHospitalJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheHospital">
+		SELECT 
+			<include refid="zhengheHospitalColumns"/>
+		FROM zhenghe_hospital a
+		<include refid="zhengheHospitalJoins"/>
+		<where>
+			
+			<if test="hospitalName != null and hospitalName != ''">
+				AND a.hospital_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hospitalName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hospitalName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hospitalName},'%')</if>
+			</if>
+			<if test="provincialId != null and provincialId != ''">
+				AND a.provincial_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{provincialId}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{provincialId}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{provincialId},'%')</if>
+			</if>
+			<if test="cityId != null and cityId != ''">
+				AND a.city_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{cityId}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{cityId}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{cityId},'%')</if>
+			</if>
+			<if test="districtId != null and districtId != ''">
+				AND a.district_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{districtId}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{districtId}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{districtId},'%')</if>
+			</if>
+			<if test="address != null and address != ''">
+				AND a.address LIKE 
+					<if test="dbName == 'oracle'">'%'||#{address}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{address}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{address},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheHospital">
+		SELECT 
+			<include refid="zhengheHospitalColumns"/>
+		FROM zhenghe_hospital a
+		<include refid="zhengheHospitalJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_hospital(
+			id,
+			hospital_name,
+			provincial_id,
+			city_id,
+			district_id,
+			address,
+			create_date,
+			standby1,
+			standby2,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{hospitalName},
+			#{provincialId},
+			#{cityId},
+			#{districtId},
+			#{address},
+			#{createDate},
+			#{standby1},
+			#{standby2},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_hospital SET 	
+			hospital_name = #{hospitalName},
+			provincial_id = #{provincialId},
+			city_id = #{cityId},
+			district_id = #{districtId},
+			address = #{address},
+			remark = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_hospital
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

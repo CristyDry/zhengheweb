@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheIdeaDao">
+    
+	<sql id="zhengheIdeaColumns">
+		a.id AS "id",
+		a.patient_id AS "patientId",
+		a.content AS "content",
+		a.doctor_id AS "doctorId",
+		a.phone AS "phone",
+		a.create_date AS "createDate",
+		a.type AS "type",
+		a.zhenghe_version AS "zhengheVersion",
+		a.zhenghe_system AS "zhengheSystem",
+		a.zhenghe_type AS "zhengheType",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheIdeaJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheIdea">
+		SELECT 
+			<include refid="zhengheIdeaColumns"/>
+		FROM zhenghe_idea a
+		<include refid="zhengheIdeaJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheIdea">
+		SELECT 
+			<include refid="zhengheIdeaColumns"/>
+		FROM zhenghe_idea a
+		<include refid="zhengheIdeaJoins"/>
+		<where>
+			
+			<if test="content != null and content != ''">
+				AND a.content LIKE 
+					<if test="dbName == 'oracle'">'%'||#{content}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{content}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{content},'%')</if>
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone LIKE 
+					<if test="dbName == 'oracle'">'%'||#{phone}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{phone}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{phone},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="zhengheVersion != null and zhengheVersion != ''">
+				AND a.zhenghe_version LIKE 
+					<if test="dbName == 'oracle'">'%'||#{zhengheVersion}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{zhengheVersion}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{zhengheVersion},'%')</if>
+			</if>
+			<if test="zhengheSystem != null and zhengheSystem != ''">
+				AND a.zhenghe_system LIKE 
+					<if test="dbName == 'oracle'">'%'||#{zhengheSystem}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{zhengheSystem}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{zhengheSystem},'%')</if>
+			</if>
+			<if test="zhengheType != null and zhengheType != ''">
+				AND a.zhenghe_type LIKE 
+					<if test="dbName == 'oracle'">'%'||#{zhengheType}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{zhengheType}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{zhengheType},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheIdea">
+		SELECT 
+			<include refid="zhengheIdeaColumns"/>
+		FROM zhenghe_idea a
+		<include refid="zhengheIdeaJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_idea(
+			id,
+			patient_id,
+			content,
+			doctor_id,
+			phone,
+			create_date,
+			type,
+			zhenghe_version,
+			zhenghe_system,
+			zhenghe_type,
+			standby1,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{patientId},
+			#{content},
+			#{doctorId},
+			#{phone},
+			#{createDate},
+			#{type},
+			#{zhengheVersion},
+			#{zhengheSystem},
+			#{zhengheType},
+			#{standby1},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_idea SET 	
+			content = #{content}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_idea
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

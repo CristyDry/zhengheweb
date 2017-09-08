@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhenghePatientDao">
+
+	<select id="findPatientByAccountNumber" resultType="ZhenghePatient">
+	 	select 
+	 		<include refid="zhenghePatientColumns"/>
+ 		from zhenghe_patient as a where a.account_number = #{accountNumber}
+    </select>
+
+	<sql id="patientZhengheJoins">
+		join zhenghe_friend as f on a.id=f.patient_id 
+		join zhenghe_group as g on f.grouping_id = g.id 
+		join zhenghe_provincial as p on a.provincial_id = p.id
+		join zhenghe_city as c on a.city_id = c.id
+		join zhenghe_district as d on a.district_id = d.id
+	</sql>
+
+	<sql id="patientZhengheColumns">
+		a.id,
+		a.patient_name as "patient",
+		case a.gender when '1' then '男' else '女' end as "gender",
+		a.age,
+		a.avatar,
+		f.grouping_id as "groupId",
+		g.group_name as "groupName",
+		CONCAT(p.name,c.city_name,d.district_name) as "address"
+	</sql>
+
+	<select id="findPatientByDoctorIdAndKey2" resultType="com.fullteem.modules.zhenghe.entity.PatientZhenghe">
+	 	select 
+	 		<include refid="patientZhengheColumns"/>
+ 		from zhenghe_patient as a 
+ 			<include refid="patientZhengheJoins"/>
+			<where>
+				<if test="doctorId!=null"> and f.doctor_id = #{doctorId}</if>
+				<if test="key!=null"> and a.patient_name like concat('%',#{key},'%') </if>
+				and f.status=1
+			</where>
+    </select>
+
+	<select id="findPatientByDoctorIdAndKey" resultType="ZhenghePatient">
+	 	select 
+	 		<include refid="zhenghePatientColumns"/>
+ 		from zhenghe_patient as a join zhenghe_friend as f on a.id=f.patient_id 
+ 			<where>
+ 				<if test="doctorId!=null"> and f.doctor_id = #{doctorId}</if>
+ 				<if test="key!=null"> and a.patient_name like concat('%',#{key},'%') </if>
+ 				and f.status=1
+ 			</where>
+    </select>
+    
+    <select id="findByPhone" resultType="ZhenghePatient">
+    	select
+    	a.id AS "id",
+		a.patient_name AS "patientName",
+		a.account_number AS "accountNumber",
+		a.gender AS "gender",
+		a.age AS "age",
+		a.avatar AS "avatar",
+		a.birthday AS "birthday",
+		a.create_date AS "createDate",
+		a.status AS "status",
+		a.phone AS "phone",
+		a.password AS "password",
+		a.provincial_id AS "provincialId",
+		a.city_id AS "cityId",
+		a.district_id AS "districtId",
+		a.channel AS "channel",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.standby1 AS "standby1"
+    	FROM zhenghe_patient a where a.phone = #{phone}
+    </select>
+    
+    
+    
+	<sql id="zhenghePatientColumns">
+		a.id AS "id",
+		a.patient_name AS "patientName",
+		a.account_number AS "accountNumber",
+		a.password AS "password",
+		a.gender AS "gender",
+		a.age AS "age",
+		a.avatar AS "avatar",
+		a.birthday AS "birthday",
+		a.create_date AS "createDate",
+		a.status AS "status",
+		a.phone AS "phone",
+		a.provincial_id AS "provincialId",
+		a.city_id AS "cityId",
+		a.district_id AS "districtId",
+		a.channel AS "channel",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.standby1 AS "standby1"
+	</sql>
+	
+	<sql id="zhenghePatientJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhenghePatient">
+		SELECT 
+			<include refid="zhenghePatientColumns"/>
+		FROM zhenghe_patient a
+		<include refid="zhenghePatientJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhenghePatient">
+		SELECT 
+			<include refid="zhenghePatientColumns"/>
+		FROM zhenghe_patient a
+		<include refid="zhenghePatientJoins"/>
+		<where>
+			<if test="patientName != null and patientName != ''">
+				AND a.patient_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{patientName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{patientName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{patientName},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhenghePatient">
+		SELECT 
+			<include refid="zhenghePatientColumns"/>
+		FROM zhenghe_patient a
+		<include refid="zhenghePatientJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_patient(
+			id,
+			patient_name,
+			account_number,
+			password,
+			gender,
+			age,
+			avatar,
+			birthday,
+			create_date,
+			status,
+			phone,
+			provincial_id,
+			city_id,
+			district_id,
+			channel,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			standby1
+		) VALUES (
+			#{id},
+			#{patientName},
+			#{accountNumber},
+			#{password},
+			#{gender},
+			#{age},
+			#{avatar},
+			#{birthday},
+			#{createDate},
+			#{status},
+			#{phone},
+			#{provincialId},
+			#{cityId},
+			#{districtId},
+			#{channel},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{standby1}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_patient SET 	
+			patient_name = #{patientName},
+			account_number = #{accountNumber},
+			password = #{password},
+			gender = #{gender},
+			age = #{age},
+			avatar = #{avatar},
+			birthday = #{birthday},
+			status = #{status},
+			phone = #{phone},
+			provincial_id = #{provincialId},
+			city_id = #{cityId},
+			district_id = #{districtId},
+			channel = #{channel},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator},
+			standby1 = #{standby1}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_patient
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

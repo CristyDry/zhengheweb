@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheOrderItemDao">
+
+
+	<select id="getSum" resultType="com.fullteem.modules.zhenghe.entity.BigDataZhenghe">
+		select DATE_FORMAT(create_date,'%Y-%c-%d') as X,sum(pay_sum) as Y from zhenghe_pay 
+				where create_date between concat(#{date},' :00:00:00') and concat(#{date},' :23:59:59')
+	</select>
+
+	<select id="getHot" resultType="com.fullteem.modules.zhenghe.entity.BigDataZhenghe">
+		select product_name as X,count(product_id) as Y
+				from zhenghe_order_item where doctor_id is not null and doctor_id!="" group by product_id
+	</select>
+
+	<select id="getSales" resultType="com.fullteem.modules.zhenghe.entity.BigDataZhenghe">
+		select product_name as X,count(product_id) as Y
+				from zhenghe_order_item group by product_id
+	</select>
+    
+	<sql id="zhengheOrderItemColumns">
+		a.id AS "id",
+		a.product_id AS "productId",
+		a.order_id AS "orderId",
+		a.order_item_no AS "orderItemNo",
+		a.product_name AS "productName",
+		a.original_price AS "originalPrice",
+		a.reality_price AS "realityPrice",
+		a.sum_price AS "sumPrice",
+		a.count AS "count",
+		a.description AS "description",
+		a.doctor_id AS "doctorId",
+		a.standby1 AS "standby1",
+		a.standby2 AS "standby2",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.create_date AS "createDate"
+	</sql>
+	
+	<sql id="zhengheOrderItemJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheOrderItem">
+		SELECT 
+			<include refid="zhengheOrderItemColumns"/>
+		FROM zhenghe_order_item a
+		<include refid="zhengheOrderItemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheOrderItem">
+		SELECT 
+			<include refid="zhengheOrderItemColumns"/>
+		FROM zhenghe_order_item a
+		<include refid="zhengheOrderItemJoins"/>
+		<where>
+			
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+			<if test="orderId != null and orderId != ''">
+				AND a.order_id = #{orderId}
+			</if>
+			<if test="orderItemNo != null and orderItemNo != ''">
+				AND a.order_item_no LIKE 
+					<if test="dbName == 'oracle'">'%'||#{orderItemNo}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{orderItemNo}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{orderItemNo},'%')</if>
+			</if>
+			<if test="productName != null and productName != ''">
+				AND a.product_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{productName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{productName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{productName},'%')</if>
+			</if>
+			<if test="originalPrice != null and originalPrice != ''">
+				AND a.original_price = #{originalPrice}
+			</if>
+			<if test="realityPrice != null and realityPrice != ''">
+				AND a.reality_price = #{realityPrice}
+			</if>
+			<if test="sumPrice != null and sumPrice != ''">
+				AND a.sum_price = #{sumPrice}
+			</if>
+			<if test="count != null and count != ''">
+				AND a.count = #{count}
+			</if>
+			<if test="doctorId != null and doctorId != ''">
+				AND a.doctor_id = #{doctorId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheOrderItem">
+		SELECT 
+			<include refid="zhengheOrderItemColumns"/>
+		FROM zhenghe_order_item a
+		<include refid="zhengheOrderItemJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_order_item(
+			id,
+			product_id,
+			order_id,
+			order_item_no,
+			product_name,
+			original_price,
+			reality_price,
+			sum_price,
+			count,
+			description,
+			doctor_id,
+			standby1,
+			standby2,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			create_date
+		) VALUES (
+			#{id},
+			#{productId},
+			#{orderId},
+			#{orderItemNo},
+			#{productName},
+			#{originalPrice},
+			#{realityPrice},
+			#{sumPrice},
+			#{count},
+			#{description},
+			#{doctorId},
+			#{standby1},
+			#{standby2},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_order_item SET 	
+			product_id = #{productId},
+			order_id = #{orderId},
+			order_item_no = #{orderItemNo},
+			product_name = #{productName},
+			original_price = #{originalPrice},
+			reality_price = #{realityPrice},
+			sum_price = #{sumPrice},
+			count = #{count},
+			description = #{description},
+			doctor_id = #{doctorId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_order_item
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

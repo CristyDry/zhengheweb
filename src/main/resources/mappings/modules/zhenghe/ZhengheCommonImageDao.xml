@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheCommonImageDao">
+
+	<select id="findByRelevanceId" resultType="ZhengheCommonImage">
+		SELECT 
+			<include refid="zhengheCommonImageColumns"/>
+		FROM zhenghe_common_image a
+		<include refid="zhengheCommonImageJoins"/>
+		WHERE a.relevance_id = #{relevanceId}
+	</select>
+    	
+	<update id="delByRelevanceId">
+		DELETE FROM zhenghe_common_image
+		WHERE relevance_id = #{relevanceId}
+	</update>
+	
+	<sql id="zhengheCommonImageColumns">
+		a.id AS "id",
+		a.image1 AS "image1",
+		a.image2 AS "image2",
+		a.image3 AS "image3",
+		a.image4 AS "image4",
+		a.image5 AS "image5",
+		a.image6 AS "image6",
+		a.image7 AS "image7",
+		a.image8 AS "image8",
+		a.image9 AS "image9",
+		a.relevance_id AS "relevanceId",
+		a.type AS "type",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.create_date AS "createDate"
+	</sql>
+	
+	<sql id="zhengheCommonImageJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheCommonImage">
+		SELECT 
+			<include refid="zhengheCommonImageColumns"/>
+		FROM zhenghe_common_image a
+		<include refid="zhengheCommonImageJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheCommonImage">
+		SELECT 
+			<include refid="zhengheCommonImageColumns"/>
+		FROM zhenghe_common_image a
+		<include refid="zhengheCommonImageJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheCommonImage">
+		SELECT 
+			<include refid="zhengheCommonImageColumns"/>
+		FROM zhenghe_common_image a
+		<include refid="zhengheCommonImageJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_common_image(
+			id,
+			image1,
+			image2,
+			image3,
+			image4,
+			image5,
+			image6,
+			image7,
+			image8,
+			image9,
+			relevance_id,
+			type,
+			standby1,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			create_date
+		) VALUES (
+			#{id},
+			#{image1},
+			#{image2},
+			#{image3},
+			#{image4},
+			#{image5},
+			#{image6},
+			#{image7},
+			#{image8},
+			#{image9},
+			#{relevanceId},
+			#{type},
+			#{standby1},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_common_image SET 	
+			image1 = #{image1},
+			image2 = #{image2},
+			image3 = #{image3},
+			image4 = #{image4},
+			image5 = #{image5},
+			image6 = #{image6},
+			image7 = #{image7},
+			image8 = #{image8},
+			image9 = #{image9},
+			relevance_id = #{relevanceId},
+			type = #{type},
+			standby1 = #{standby1},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_common_image
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

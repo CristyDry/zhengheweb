@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+<name>entity</name>
+	<filePath>src/main/java/${packageName}/${moduleName}/api/entity/response/${subModuleName}</filePath>
+	<fileName>Response${ClassName}.java</fileName>
+	<content><![CDATA[
+/**
+ * Copyright &copy; 2012-2015 <a href="http://www.fullteem.com">fullteem_master</a> All rights reserved.
+ */	
+ 
+ 
+package ${packageName}.${moduleName}.api.entity.response<#if subModuleName != "">.${subModuleName}</#if>;
+
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
+<#list table.resImportList as i>
+import ${i};
+</#list>
+
+/**
+ * ${functionName}Entity
+ * @author ${functionAuthor}
+ * @version ${functionVersion}
+ */
+@ApiModel(value = "${functionName}")
+public class Response${ClassName} {
+	
+	<#-- 生成字段属性 -->
+	<#list table.columnList as c>
+		<#-- 如果是出参 -->
+		<#if c.isRes == "1">
+			<#-- 父类对象 -->
+			<#if table.parentExists && table.parentTableFk == c.name>
+	private ${table.parent.className?cap_first} ${c.simpleJavaField};		<#if c.comments??>// ${c.comments} 父类</#if>
+			<#-- 其它字段 -->
+			<#else>
+	@ApiModelProperty(value = "${c.comments}",position=${c.sort}<#if c.isNull == "1">,required=true</#if>)		
+	private ${c.simpleJavaType} ${c.simpleJavaField};		<#if c.comments??>// ${c.comments}</#if>
+			</#if>
+		</#if>
+	</#list>
+	
+	
+	
+	<#-- 生成get和set方法 -->
+	<#list table.columnList as c>
+		<#-- 如果是出参-->
+		<#if c.isRes == "1">
+			<#-- 父类对象 -->
+			<#if table.parentExists && table.parentTableFk == c.name>
+	public ${table.parent.className?cap_first} get${c.simpleJavaField?cap_first}() {
+		return ${c.simpleJavaField};
+	}
+
+	public void set${c.simpleJavaField?cap_first}(${table.parent.className?cap_first} ${c.simpleJavaField}) {
+		this.${c.simpleJavaField} = ${c.simpleJavaField};
+	}
+	
+			<#-- 其它字段 -->
+			<#else>
+	public ${c.simpleJavaType} get${c.simpleJavaField?cap_first}() {
+		return ${c.simpleJavaField};
+	}
+
+	public void set${c.simpleJavaField?cap_first}(${c.simpleJavaType} ${c.simpleJavaField}) {
+		this.${c.simpleJavaField} = ${c.simpleJavaField};
+	}
+	
+			</#if>
+		</#if>
+	</#list>
+}
+]]>
+	</content>
+</template>

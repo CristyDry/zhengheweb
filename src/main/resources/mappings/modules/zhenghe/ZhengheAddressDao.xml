@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheAddressDao">
+    
+	<sql id="zhengheAddressColumns">
+		a.id AS "id",
+		a.provincial_id AS "provincialId",
+		a.city_id AS "cityId",
+		a.district_id AS "districtId",
+		a.patient_id AS "patientId",
+		a.address AS "address",
+		a.name AS "name",
+		a.phone AS "phone",
+		a.type AS "type",
+		a.create_date AS "createDate",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheAddressJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheAddress">
+		SELECT 
+			<include refid="zhengheAddressColumns"/>
+		FROM zhenghe_address a
+		<include refid="zhengheAddressJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheAddress">
+		SELECT 
+			<include refid="zhengheAddressColumns"/>
+		FROM zhenghe_address a
+		<include refid="zhengheAddressJoins"/>
+		<where>
+			<if test="patientId !=null and patientId !=''">
+				and a.patient_id = #{patientId}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheAddress">
+		SELECT 
+			<include refid="zhengheAddressColumns"/>
+		FROM zhenghe_address a
+		<include refid="zhengheAddressJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_address(
+			id,
+			provincial_id,
+			city_id,
+			district_id,
+			patient_id,
+			address,
+			name,
+			phone,
+			type,
+			create_date,
+			standby1,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{provincialId},
+			#{cityId},
+			#{districtId},
+			#{patientId},
+			#{address},
+			#{name},
+			#{phone},
+			#{type},
+			#{createDate},
+			#{standby1},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_address SET 	
+			provincial_id = #{provincialId},
+			city_id = #{cityId},
+			district_id = #{districtId},
+			patient_id = #{patientId},
+			address = #{address},
+			name = #{name},
+			phone = #{phone},
+			type = #{type},
+			standby1 = #{standby1},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_address
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

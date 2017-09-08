@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheHeartRateDao">
+    
+	<sql id="zhengheHeartRateColumns">
+		a.id AS "id",
+		a.heart_rate AS "heartRate",
+		a.scene AS "scene",
+		a.create_date AS "createDate",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.patient_id AS "patientId"
+	</sql>
+	
+	<sql id="zhengheHeartRateJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheHeartRate">
+		SELECT 
+			<include refid="zhengheHeartRateColumns"/>
+		FROM zhenghe_heart_rate a
+		<include refid="zhengheHeartRateJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheHeartRate">
+		SELECT 
+			<include refid="zhengheHeartRateColumns"/>
+		FROM zhenghe_heart_rate a
+		<include refid="zhengheHeartRateJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheHeartRate">
+		SELECT 
+			<include refid="zhengheHeartRateColumns"/>
+		FROM zhenghe_heart_rate a
+		<include refid="zhengheHeartRateJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_heart_rate(
+			id,
+			heart_rate,
+			scene,
+			create_date,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			patient_id
+		) VALUES (
+			#{id},
+			#{heartRate},
+			#{scene},
+			#{createDate},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{patientId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_heart_rate SET 	
+			heart_rate = #{heartRate},
+			scene = #{scene},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator},
+			patient_id = #{patientId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_heart_rate
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

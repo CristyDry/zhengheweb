@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheFriendDao">
+
+	<select id="findFriendsByKY" resultType="ZhengheFriend">
+		select 
+			<include refid="zhengheFriendColumns"></include>
+		from zhenghe_friend a
+			<where>
+				<if test="doctorId!=null and doctorStatus!=null">doctor_id=#{doctorId} and doctor_status=#{doctorStatus}</if>
+				<if test="patientId!=null and patientStatus!=null">patient_id=#{patientId} and patient_status=#{patientStatus}</if>
+				<if test="groupingId!=null and status!=null">grouping_id=#{groupingId} and status=#{status}</if>
+				<if test="patientId!=null and status!=null">patient_id=#{patientId} and status=#{status}</if>
+				<if test="doctorId!=null and status!=null">doctor_id=#{doctorId} and status=#{status}</if>
+				<if test="doctorId!=null and patientId!=null">doctor_id=#{doctorId} and patient_id=#{patientId}</if>
+				<if test="patientId!=null and groupingId!=null">patient_id=#{patientId} and grouping_id=#{groupingId}</if>
+			</where>
+	</select>
+    
+	<sql id="zhengheFriendColumns">
+		a.id AS "id",
+		a.doctor_id AS "doctorId",
+		a.patient_id AS "patientId",
+		a.status AS "status",
+		a.grouping_id AS "groupingId",
+		a.create_date AS "createDate",
+		a.verify_content AS "verifyContent",
+		a.patient_status AS "patientStatus",
+		a.doctor_status AS "doctorStatus",
+		a.standby1 AS "standby1",
+		a.standby2 AS "standby2",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheFriendJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheFriend">
+		SELECT 
+			<include refid="zhengheFriendColumns"/>
+		FROM zhenghe_friend a
+		<include refid="zhengheFriendJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheFriend">
+		SELECT 
+			<include refid="zhengheFriendColumns"/>
+		FROM zhenghe_friend a
+		<include refid="zhengheFriendJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheFriend">
+		SELECT 
+			<include refid="zhengheFriendColumns"/>
+		FROM zhenghe_friend a
+		<include refid="zhengheFriendJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_friend(
+			id,
+			doctor_id,
+			patient_id,
+			status,
+			grouping_id,
+			create_date,
+			verify_content,
+			patient_status,
+			doctor_status,
+			standby1,
+			standby2,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{doctorId},
+			#{patientId},
+			#{status},
+			#{groupingId},
+			#{createDate},
+			#{verifyContent},
+			#{patientStatus},
+			#{doctorStatus},
+			#{standby1},
+			#{standby2},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_friend SET 	
+			doctor_id = #{doctorId},
+			patient_id = #{patientId},
+			status = #{status},
+			grouping_id = #{groupingId},
+			verify_content = #{verifyContent},
+			patient_status = #{patientStatus},
+			doctor_status = #{doctorStatus},
+			standby1 = #{standby1},
+			standby2 = #{standby2},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_friend
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheProductDao">
+	<!-- 根据分类id找商品 -->
+	<select id="getProductListByCid" resultType="ZhengheProduct">
+		SELECT 
+			<include refid="zhengheProductColumns"/>
+		FROM zhenghe_product a left join zhenghe_product_classify b on a.pclassify_id = b.id
+			<where>
+				a.pclassify_id = #{classifyId} and a.status=1
+				<if test="type != null and type != ''">
+					and a.type = #{type}
+				</if>
+				<if test="priceBetween != null and priceBetween != ''">
+					and a.price ${priceBetween}
+				</if>
+			</where>
+		ORDER BY ${orderBy} limit #{pageNo},#{pageSize}
+	</select>
+
+	<!-- 搜索商品 -->
+	<select id="searchProduct" resultType="ZhengheProduct">
+		SELECT 
+			<include refid="zhengheProductColumns"/>
+		FROM zhenghe_product a left join zhenghe_product_classify b on a.pclassify_id = b.id
+			<where>
+				a.product_name like concat('%',#{keys},'%') and a.status=1
+				<if test="classifyId != null and classifyId != ''">
+					and a.pclassify_id = #{classifyId}
+				</if>
+				<if test="type != null and type != ''">
+					and a.type = #{type}
+				</if>
+				<if test="priceBetween != null and priceBetween != ''">
+					and a.price ${priceBetween}
+				</if>
+			</where>
+		ORDER BY ${orderBy} limit #{pageNo},#{pageSize}
+	</select>
+    
+	<sql id="zhengheProductColumns">
+		a.id AS "id",
+		a.pclassify_id AS "pclassifyId",
+		a.product_name AS "productName",
+		a.price AS "price",
+		a.type AS "type",
+		a.standard AS "standard",
+		a.product_unit AS "productUnit",
+		a.pfunction AS "pfunction",
+		a.explains AS "explains",
+		a.sales_num AS "salesNum",
+		a.repertory_num AS "repertoryNum",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.standby1 AS "standby1",
+		a.standby2 AS "standby2",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		b.classify_name AS "classifyName"
+	</sql>
+	
+	<sql id="zhengheProductJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheProduct">
+		SELECT 
+			<include refid="zhengheProductColumns"/>
+		FROM zhenghe_product a left join zhenghe_product_classify b on a.pclassify_id = b.id
+		<include refid="zhengheProductJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	
+	<select id="findList" resultType="ZhengheProduct">
+		SELECT 
+			<include refid="zhengheProductColumns"/>
+		FROM zhenghe_product a left join zhenghe_product_classify b on a.pclassify_id = b.id
+		<include refid="zhengheProductJoins"/>
+		<where>
+			<if test="pclassifyId != null and pclassifyId != ''">
+				AND a.pclassify_id = #{pclassifyId}
+			</if>
+			<if test="productName != null and productName != ''">
+				AND a.product_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{productName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{productName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{productName},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="pfunction != null and pfunction != ''">
+				AND a.pfunction LIKE 
+					<if test="dbName == 'oracle'">'%'||#{pfunction}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{pfunction}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{pfunction},'%')</if>
+			</if>
+			<if test="repertoryNum != null and repertoryNum != ''">
+				AND a.repertory_num &lt; #{repertoryNum}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheProduct">
+		SELECT 
+			<include refid="zhengheProductColumns"/>
+		FROM zhenghe_product a left join zhenghe_product_classify b on a.pclassify_id = b.id
+		<include refid="zhengheProductJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_product(
+			id,
+			pclassify_id,
+			product_name,
+			price,
+			type,
+			standard,
+			product_unit,
+			pfunction,
+			explains,
+			sales_num,
+			repertory_num,
+			status,
+			remark
+		) VALUES (
+			#{id},
+			#{pclassifyId},
+			#{productName},
+			#{price},
+			#{type},
+			#{standard},
+			#{productUnit},
+			#{pfunction},
+			#{explains},
+			#{salesNum},
+			#{repertoryNum},
+			#{status},
+			#{remark}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_product SET 	
+			pclassify_id = #{pclassifyId},
+			product_name = #{productName},
+			price = #{price},
+			type = #{type},
+			standard = #{standard},
+			product_unit = #{productUnit},
+			pfunction = #{pfunction},
+			explains = #{explains},
+			sales_num = #{salesNum},
+			repertory_num = #{repertoryNum},
+			status = #{status},
+			remark = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_product
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

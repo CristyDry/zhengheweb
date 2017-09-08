@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheDoctorDao">
+
+	<sql id="doctorZhengheJoins">
+		join zhenghe_departments as dept on a.departments_id=dept.id
+		join zhenghe_hospital as h on a.hospital_id=h.id 
+		join zhenghe_provincial as p on h.provincial_id=p.id
+		join zhenghe_city as c on h.city_id=c.id
+		join zhenghe_district as d on h.district_id=d.id
+		join zhenghe_profession as j on a.job_title=j.id
+	</sql>
+	
+	<sql id="doctorZhengheColumns">
+		a.id,
+		a.avatar,
+		a.doctor_name as doctor,
+		(select dd.departments_name from zhenghe_departments as dd where id=dept.s_departments_id) as department,
+		a.intro,
+		j.profession as professional,
+		h.hospital_name as hospital,
+		a.professional_field as professionalField
+	</sql>
+
+	<select id="findDoctorByCriteria" parameterType="java.util.Map" resultType="com.fullteem.modules.zhenghe.entity.DoctorZhenghe">
+		select
+	 		<include refid="doctorZhengheColumns"/>
+	 	from zhenghe_doctor as a
+ 			<include refid="doctorZhengheJoins"/>
+	 		<where>
+		 		<if test="keyword != null and keyword != ''">
+					(
+						/*医生姓名*/
+						a.doctor_name like concat('%',#{keyword},'%')
+						/*医院名称*/
+						or h.hospital_name like concat('%',#{keyword},'%')
+						/*一级科室*/
+						or (select dd.departments_name from zhenghe_departments as dd where id=dept.s_departments_id) like concat('%',#{keyword},'%')
+						/*二级科室*/
+						or a.departments_id in (select id from zhenghe_departments as dept where dept.departments_name like concat('%',#{keyword},'%'))
+						/*医生职称*/
+						or j.profession like concat('%',#{keyword},'%')
+					)
+				</if>
+				<!--/*二级科室*/-->
+				<if test="secondDepartmentsId != null and secondDepartmentsId != ''">
+					and a.departments_id=#{secondDepartmentsId}
+				</if>
+				<!--/*一级科室*/-->
+				<if test="firstDepartmentsId != null and firstDepartmentsId != ''">
+					and a.departments_id in (select id from zhenghe_departments where s_departments_id=#{firstDepartmentsId})
+				</if>
+				<!--/*城市*/-->
+				<if test="cityId != null and cityId != ''">
+					and h.city_id=#{cityId}
+				</if>
+				<!--/*省份*/-->
+				<if test="provincialId != null and provincialId != ''">
+					and h.provincial_id=#{provincialId}
+				</if>
+				and a.type = '1'
+	 		</where>
+
+	</select>
+
+	<select id="findDoctorByTypeAndTop3" resultType="ZhengheDoctor">
+		select
+			<include refid="zhengheDoctorColumns"></include>
+		from zhenghe_doctor a
+			<where>
+				<if test="type!=null">type=#{type}</if>
+			</where>
+		order by rank asc limit 3;
+	</select>
+	
+	<select id="findDoctorByKY" resultType="ZhengheDoctor">
+		select 
+			<include refid="zhengheDoctorColumns"/>
+		from zhenghe_doctor a
+			<where>
+				<if test="phone!=null">phone=#{phone}</if>
+			</where>
+		
+	</select>
+
+	<sql id="zhengheDoctorColumns">
+		a.id AS "id",
+		a.hospital_id AS "hospitalId",
+		a.doctor_name AS "doctorName",
+		a.gender AS "gender",
+		a.departments_id AS "departmentsId",
+		a.avatar AS "avatar",
+		a.intro AS "intro",
+		a.professional_field AS "professionalField",
+		a.job_title AS "jobTitle",
+		a.phone AS "phone",
+		a.password AS "password",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.type AS "type",
+		a.wm_url AS "wmUrl",
+		a.standby1 AS "standby1",
+		a.standby2 AS "standby2",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.rank AS "rank"
+	</sql>
+	
+	<sql id="zhengheDoctorJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheDoctor">
+		SELECT 
+			<include refid="zhengheDoctorColumns"/>
+		FROM zhenghe_doctor a
+		<include refid="zhengheDoctorJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheDoctor">
+		SELECT 
+			<include refid="zhengheDoctorColumns"/>
+		FROM zhenghe_doctor a
+		<include refid="zhengheDoctorJoins"/>
+		<where>
+			
+			<if test="hospitalId != null and hospitalId != ''">
+				AND a.hospital_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{hospitalId}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{hospitalId}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{hospitalId},'%')</if>
+			</if>
+			<if test="doctorName != null and doctorName != ''">
+				AND a.doctor_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{doctorName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{doctorName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{doctorName},'%')</if>
+			</if>
+			<if test="gender != null and gender != ''">
+				AND a.gender = #{gender}
+			</if>
+			<if test="departmentsId != null and departmentsId != ''">
+				AND a.departments_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{departmentsId}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{departmentsId}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{departmentsId},'%')</if>
+			</if>
+			<if test="professionalField != null and professionalField != ''">
+				AND a.professional_field LIKE 
+					<if test="dbName == 'oracle'">'%'||#{professionalField}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{professionalField}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{professionalField},'%')</if>
+			</if>
+			<if test="jobTitle != null and jobTitle != ''">
+				AND a.job_title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{jobTitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{jobTitle}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{jobTitle},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rank ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheDoctor">
+		SELECT 
+			<include refid="zhengheDoctorColumns"/>
+		FROM zhenghe_doctor a
+		<include refid="zhengheDoctorJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rank ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_doctor(
+			id,
+			hospital_id,
+			doctor_name,
+			gender,
+			departments_id,
+			avatar,
+			intro,
+			professional_field,
+			job_title,
+			phone,
+			password,
+			status,
+			create_date,
+			type,
+			wm_url,
+			standby1,
+			standby2,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			rank
+		) VALUES (
+			#{id},
+			#{hospitalId},
+			#{doctorName},
+			#{gender},
+			#{departmentsId},
+			#{avatar},
+			#{intro},
+			#{professionalField},
+			#{jobTitle},
+			#{phone},
+			#{password},
+			#{status},
+			#{createDate},
+			#{type},
+			#{wmUrl},
+			#{standby1},
+			#{standby2},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{rank}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_doctor SET 	
+			hospital_id = #{hospitalId},
+			doctor_name = #{doctorName},
+			gender = #{gender},
+			departments_id = #{departmentsId},
+			avatar = #{avatar},
+			intro = #{intro},
+			professional_field = #{professionalField},
+			job_title = #{jobTitle},
+			phone = #{phone},
+			status = #{status},
+			type = #{type},
+			remark = #{remark},
+			password = #{password},
+			rank = #{rank}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_doctor
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

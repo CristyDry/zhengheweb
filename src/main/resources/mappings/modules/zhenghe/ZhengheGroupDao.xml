@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheGroupDao">
+
+	<select id="findGroupByKY" resultType="ZhengheGroup">
+		select 
+			<include refid="zhengheGroupColumns"></include>
+		from zhenghe_group a
+			<where>
+				a.doctor_id=#{doctorId}
+			</where>
+	</select>
+    
+	<sql id="zhengheGroupColumns">
+		a.id AS "id",
+		a.friend_id AS "friendId",
+		a.group_name AS "groupName",
+		a.doctor_id AS "doctorId",
+		a.count AS "count",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.create_date AS "createDate"
+	</sql>
+	
+	<sql id="zhengheGroupJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheGroup">
+		SELECT 
+			<include refid="zhengheGroupColumns"/>
+		FROM zhenghe_group a
+		<include refid="zhengheGroupJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheGroup">
+		SELECT 
+			<include refid="zhengheGroupColumns"/>
+		FROM zhenghe_group a
+		<include refid="zhengheGroupJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheGroup">
+		SELECT 
+			<include refid="zhengheGroupColumns"/>
+		FROM zhenghe_group a
+		<include refid="zhengheGroupJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_group(
+			id,
+			friend_id,
+			group_name,
+			doctor_id,
+			count,
+			standby1,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			create_date
+		) VALUES (
+			#{id},
+			#{friendId},
+			#{groupName},
+			#{doctorId},
+			#{count},
+			#{standby1},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_group SET 	
+			friend_id = #{friendId},
+			group_name = #{groupName},
+			doctor_id = #{doctorId},
+			count = #{count},
+			standby1 = #{standby1},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_group
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

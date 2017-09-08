@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheBuyCarDao">
+    
+	<sql id="zhengheBuyCarColumns">
+		a.id AS "id",
+		a.product_id AS "productId",
+		a.count AS "count",
+		a.reality_price AS "realityPrice",
+		a.sum_price AS "sumPrice",
+		a.patient_id AS "patientId",
+		a.standby1 AS "standby1",
+		a.create_date AS "createDate",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheBuyCarJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheBuyCar">
+		SELECT 
+			<include refid="zhengheBuyCarColumns"/>
+		FROM zhenghe_buy_car a
+		<include refid="zhengheBuyCarJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheBuyCar">
+		SELECT 
+			<include refid="zhengheBuyCarColumns"/>
+		FROM zhenghe_buy_car a
+		<include refid="zhengheBuyCarJoins"/>
+		<where>
+			
+			<if test="productId != null and productId != ''">
+				AND a.product_id = #{productId}
+			</if>
+			<if test="count != null and count != ''">
+				AND a.count = #{count}
+			</if>
+			<if test="realityPrice != null and realityPrice != ''">
+				AND a.reality_price = #{realityPrice}
+			</if>
+			<if test="sumPrice != null and sumPrice != ''">
+				AND a.sum_price = #{sumPrice}
+			</if>
+			<if test="patientId != null and patientId != ''">
+				AND a.patient_id = #{patientId}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheBuyCar">
+		SELECT 
+			<include refid="zhengheBuyCarColumns"/>
+		FROM zhenghe_buy_car a
+		<include refid="zhengheBuyCarJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_buy_car(
+			id,
+			product_id,
+			count,
+			reality_price,
+			sum_price,
+			patient_id,
+			standby1,
+			create_date,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{productId},
+			#{count},
+			#{realityPrice},
+			#{sumPrice},
+			#{patientId},
+			#{standby1},
+			#{createDate},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_buy_car SET 	
+			product_id = #{productId},
+			count = #{count},
+			reality_price = #{realityPrice},
+			sum_price = #{sumPrice},
+			patient_id = #{patientId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_buy_car
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

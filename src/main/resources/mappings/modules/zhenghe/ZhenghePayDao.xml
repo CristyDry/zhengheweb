@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhenghePayDao">
+    
+	<sql id="zhenghePayColumns">
+		a.id AS "id",
+		a.patient_id AS "patientId",
+		a.type AS "type",
+		a.pay_sum AS "paySum",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhenghePayJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhenghePay">
+		SELECT 
+			<include refid="zhenghePayColumns"/>
+		FROM zhenghe_pay a
+		<include refid="zhenghePayJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhenghePay">
+		SELECT 
+			<include refid="zhenghePayColumns"/>
+		FROM zhenghe_pay a
+		<include refid="zhenghePayJoins"/>
+		<where>
+			
+			<if test="patientId != null and patientId != ''">
+				AND a.patient_id = #{patientId}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="paySum != null and paySum != ''">
+				AND a.pay_sum = #{paySum}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhenghePay">
+		SELECT 
+			<include refid="zhenghePayColumns"/>
+		FROM zhenghe_pay a
+		<include refid="zhenghePayJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_pay(
+			id,
+			patient_id,
+			type,
+			pay_sum,
+			status,
+			create_date,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{patientId},
+			#{type},
+			#{paySum},
+			#{status},
+			#{createDate},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_pay SET 	
+			patient_id = #{patientId},
+			type = #{type},
+			pay_sum = #{paySum},
+			status = #{status},
+			create_date = #{createDate},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_pay
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

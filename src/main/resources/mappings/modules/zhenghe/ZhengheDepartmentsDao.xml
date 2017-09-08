@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheDepartmentsDao">
+
+	<select id="findDepartmentsByName" resultType="ZhengheDepartments">
+		select
+			<include refid="zhengheDepartmentsColumns"></include>
+		from zhenghe_departments a
+			<where>
+				<if test="departmentsName!=null">and departments_name like concat('%',#{departmentsName},'%')</if>
+			</where>
+	</select>
+    
+	<sql id="zhengheDepartmentsColumns">
+		a.id AS "id",
+		a.avatar AS "avatar",
+		a.departments_name AS "departmentsName",
+		a.s_departments_id AS "sDepartmentsId",
+		a.description AS "description",
+		a.create_date AS "createDate",
+		a.type AS "type",
+		a.standby1 AS "standby1",
+		a.standby2 AS "standby2",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheDepartmentsJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheDepartments">
+		SELECT 
+			<include refid="zhengheDepartmentsColumns"/>
+		FROM zhenghe_departments a
+		<include refid="zhengheDepartmentsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheDepartments">
+		SELECT 
+			<include refid="zhengheDepartmentsColumns"/>
+		FROM zhenghe_departments a
+		<include refid="zhengheDepartmentsJoins"/>
+		<where>
+			
+			<if test="departmentsName != null and departmentsName != ''">
+				AND a.departments_name = #{departmentsName}
+			</if>
+			<if test="sDepartmentsId != null and sDepartmentsId != ''">
+				AND a.s_departments_id = #{sDepartmentsId}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheDepartments">
+		SELECT 
+			<include refid="zhengheDepartmentsColumns"/>
+		FROM zhenghe_departments a
+		<include refid="zhengheDepartmentsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_departments(
+			id,
+			avatar,
+			departments_name,
+			s_departments_id,
+			description,
+			create_date,
+			type,
+			standby1,
+			standby2,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{avatar},
+			#{departmentsName},
+			#{sDepartmentsId},
+			#{description},
+			#{createDate},
+			#{type},
+			#{standby1},
+			#{standby2},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_departments SET 	
+			avatar = #{avatar},
+			departments_name = #{departmentsName},
+			s_departments_id = #{sDepartmentsId},
+			description = #{description},
+			type = #{type},
+			remark = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_departments
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheTokenDao">
+
+	<select id="findByPatientId" resultType="ZhengheToken">
+		select
+			<include refid="zhengheTokenColumns"/>
+		from zhenghe_token a where a.patient_id = #{patientId}
+	</select>
+	
+	<select id="findByTokenName" resultType="ZhengheToken">
+		select
+			<include refid="zhengheTokenColumns"/>
+		from zhenghe_token a where a.token_name = #{tokenName} limit 0,1
+	</select>
+	
+	<select id="findTokenByKY" resultType="ZhengheToken">
+		select 
+			<include refid="zhengheTokenColumns"></include>
+	 	from zhenghe_token a
+			<where>
+				<if test="doctorId!=null">doctor_id=#{doctorId}</if>
+				<if test="tokenName!=null">token_name=#{tokenName}</if>
+			</where>
+	</select>
+    
+	<sql id="zhengheTokenColumns">
+		a.id AS "id",
+		a.token_name AS "tokenName",
+		a.create_date AS "createDate",
+		a.doctor_id AS "doctorId",
+		a.patient_id AS "patientId",
+		a.type AS "type",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheTokenJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheToken">
+		SELECT 
+			<include refid="zhengheTokenColumns"/>
+		FROM zhenghe_token a
+		<include refid="zhengheTokenJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheToken">
+		SELECT 
+			<include refid="zhengheTokenColumns"/>
+		FROM zhenghe_token a
+		<include refid="zhengheTokenJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheToken">
+		SELECT 
+			<include refid="zhengheTokenColumns"/>
+		FROM zhenghe_token a
+		<include refid="zhengheTokenJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_token(
+			id,
+			token_name,
+			create_date,
+			doctor_id,
+			patient_id,
+			type,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{tokenName},
+			#{createDate},
+			#{doctorId},
+			#{patientId},
+			#{type},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_token SET 	
+			token_name = #{tokenName},
+			doctor_id = #{doctorId},
+			patient_id = #{patientId},
+			type = #{type},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_token
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

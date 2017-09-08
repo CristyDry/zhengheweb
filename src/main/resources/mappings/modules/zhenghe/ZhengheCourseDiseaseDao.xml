@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheCourseDiseaseDao">
+    
+	<sql id="zhengheCourseDiseaseColumns">
+		a.id AS "id",
+		a.mh_id AS "mhId",
+		a.cd_date AS "cdDate",
+		a.incident AS "incident",
+		a.remark AS "remark",
+		a.create_date AS "createDate",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheCourseDiseaseJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheCourseDisease">
+		SELECT 
+			<include refid="zhengheCourseDiseaseColumns"/>
+		FROM zhenghe_course_disease a
+		<include refid="zhengheCourseDiseaseJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheCourseDisease">
+		SELECT 
+			<include refid="zhengheCourseDiseaseColumns"/>
+		FROM zhenghe_course_disease a
+		<include refid="zhengheCourseDiseaseJoins"/>
+		<where>
+			<if test="mhId!=null">a.mh_id=#{mhId}</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheCourseDisease">
+		SELECT 
+			<include refid="zhengheCourseDiseaseColumns"/>
+		FROM zhenghe_course_disease a
+		<include refid="zhengheCourseDiseaseJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_course_disease(
+			id,
+			mh_id,
+			cd_date,
+			incident,
+			remark,
+			create_date,
+			standby1,
+			delete_mark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{mhId},
+			#{cdDate},
+			#{incident},
+			#{remark},
+			#{createDate},
+			#{standby1},
+			#{deleteMark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_course_disease SET 	
+			mh_id = #{mhId},
+			cd_date = #{cdDate},
+			incident = #{incident},
+			remark = #{remark},
+			standby1 = #{standby1},
+			delete_mark = #{deleteMark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_course_disease
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

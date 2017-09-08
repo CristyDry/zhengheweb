@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheArticleClassifyDao">
+    
+	<sql id="zhengheArticleClassifyColumns">
+		a.id AS "id",
+		a.classify_name AS "classifyName",
+		a.description AS "description",
+		a.rank AS "rank",
+		a.status AS "status",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.create_date AS "createDate"
+	</sql>
+	
+	<sql id="zhengheArticleClassifyJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheArticleClassify">
+		SELECT 
+			<include refid="zhengheArticleClassifyColumns"/>
+		FROM zhenghe_article_classify a
+		<include refid="zhengheArticleClassifyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheArticleClassify">
+		SELECT 
+			<include refid="zhengheArticleClassifyColumns"/>
+		FROM zhenghe_article_classify a
+		<include refid="zhengheArticleClassifyJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rank ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheArticleClassify">
+		SELECT 
+			<include refid="zhengheArticleClassifyColumns"/>
+		FROM zhenghe_article_classify a
+		<include refid="zhengheArticleClassifyJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rank ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_article_classify(
+			id,
+			classify_name,
+			description,
+			rank,
+			status,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			create_date
+		) VALUES (
+			#{id},
+			#{classifyName},
+			#{description},
+			#{rank},
+			#{status},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_article_classify SET 	
+			classify_name = #{classifyName},
+			description = #{description},
+			rank = #{rank},
+			status = #{status},
+			remark = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_article_classify
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

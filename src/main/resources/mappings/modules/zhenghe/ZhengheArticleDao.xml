@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheArticleDao">
+
+	<sql id="zhengheArticleColumns">
+		a.id AS "id",
+		a.classify_id AS "classifyId",
+		a.title AS "title",
+		a.content AS "content",
+		a.collect_num AS "collectNum",
+		a.avatar AS "avatar",
+		a.rank AS "rank",
+		a.create_date AS "createDate",
+		a.status AS "status",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.publish AS "publish"
+	</sql>
+	
+	<sql id="zhengheArticleJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheArticle">
+		SELECT 
+			<include refid="zhengheArticleColumns"/>
+		FROM zhenghe_article a
+		<include refid="zhengheArticleJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheArticle">
+		SELECT 
+			<include refid="zhengheArticleColumns"/>
+		FROM zhenghe_article a
+		<include refid="zhengheArticleJoins"/>
+		<where>
+			
+			<if test="classifyId != null and classifyId != ''">
+				AND a.classify_id = #{classifyId}
+			</if>
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheArticle">
+		SELECT 
+			<include refid="zhengheArticleColumns"/>
+		FROM zhenghe_article a
+		<include refid="zhengheArticleJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_article(
+			id,
+			classify_id,
+			title,
+			content,
+			collect_num,
+			avatar,
+			rank,
+			create_date,
+			status,
+			standby1,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			publish
+		) VALUES (
+			#{id},
+			#{classifyId},
+			#{title},
+			#{content},
+			#{collectNum},
+			#{avatar},
+			#{rank},
+			#{createDate},
+			#{status},
+			#{standby1},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{publish}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_article SET 	
+			classify_id = #{classifyId},
+			title = #{title},
+			content = #{content},
+			avatar = #{avatar},
+			rank = #{rank},
+			status = #{status},
+			publish = #{publish}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_article
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

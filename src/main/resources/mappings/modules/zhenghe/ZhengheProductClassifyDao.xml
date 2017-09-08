@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheProductClassifyDao">
+    
+	<sql id="zhengheProductClassifyColumns">
+		a.id AS "id",
+		a.classify_name AS "classifyName",
+		a.description AS "description",
+		a.rank AS "rank",
+		a.status AS "status",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.create_date AS "createDate",
+		a.avatar AS "avatar"
+	</sql>
+	
+	<sql id="zhengheProductClassifyJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheProductClassify">
+		SELECT 
+			<include refid="zhengheProductClassifyColumns"/>
+		FROM zhenghe_product_classify a
+		<include refid="zhengheProductClassifyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheProductClassify">
+		SELECT 
+			<include refid="zhengheProductClassifyColumns"/>
+		FROM zhenghe_product_classify a
+		<include refid="zhengheProductClassifyJoins"/>
+		<where>
+			<if test="classifyName != null and classifyName != ''">
+				AND a.classify_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{classifyName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{classifyName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{classifyName},'%')</if>
+			</if>
+			<if test="description != null and description != ''">
+				AND a.description LIKE 
+					<if test="dbName == 'oracle'">'%'||#{description}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{description}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{description},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rank ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheProductClassify">
+		SELECT 
+			<include refid="zhengheProductClassifyColumns"/>
+		FROM zhenghe_product_classify a
+		<include refid="zhengheProductClassifyJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rank ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_product_classify(
+			id,
+			classify_name,
+			description,
+			rank,
+			status,
+			remark,
+			update_date,
+			avatar
+		) VALUES (
+			#{id},
+			#{classifyName},
+			#{description},
+			#{rank},
+			#{status},
+			#{remark},
+			#{updateDate},
+			#{avatar}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_product_classify SET 	
+			classify_name = #{classifyName},
+			description = #{description},
+			rank = #{rank},
+			status = #{status},
+			remark = #{remark},
+			update_date = #{updateDate},
+			avatar = #{avatar}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_product_classify
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

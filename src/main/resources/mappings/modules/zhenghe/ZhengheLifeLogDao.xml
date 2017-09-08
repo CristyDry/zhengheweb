@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheLifeLogDao">
+    
+	<sql id="zhengheLifeLogColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.content AS "content",
+		a.patient_id AS "patientId",
+		a.create_date AS "createDate",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheLifeLogJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheLifeLog">
+		SELECT 
+			<include refid="zhengheLifeLogColumns"/>
+		FROM zhenghe_life_log a
+		<include refid="zhengheLifeLogJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheLifeLog">
+		SELECT 
+			<include refid="zhengheLifeLogColumns"/>
+		FROM zhenghe_life_log a
+		<include refid="zhengheLifeLogJoins"/>
+		<where>
+			
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="content != null and content != ''">
+				AND a.content = #{content}
+			</if>
+			<if test="patientId != null and patientId != ''">
+				AND a.patient_id = #{patientId}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="standby1 != null and standby1 != ''">
+				AND a.standby1 = #{standby1}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheLifeLog">
+		SELECT 
+			<include refid="zhengheLifeLogColumns"/>
+		FROM zhenghe_life_log a
+		<include refid="zhengheLifeLogJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_life_log(
+			id,
+			title,
+			content,
+			patient_id,
+			create_date,
+			standby1,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{title},
+			#{content},
+			#{patientId},
+			#{createDate},
+			#{standby1},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_life_log SET 	
+			title = #{title},
+			content = #{content},
+			patient_id = #{patientId},
+			create_date = #{createDate},
+			standby1 = #{standby1},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_life_log
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

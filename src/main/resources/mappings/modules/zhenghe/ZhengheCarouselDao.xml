@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheCarouselDao">
+
+	<!-- 查询前4张文章轮播图 -->
+	<select id="findCarousel" resultType="ZhengheCarousel">
+		select 
+			<include refid="zhengheCarouselColumns"></include>
+		from zhenghe_carousel a 
+			<where>
+				type='1' 
+			</where>
+		order by rank asc limit 4
+	</select>
+	
+	<!-- 根据商品id查询轮播图 -->
+	<select id="findListByProductId" resultType="ZhengheCarousel">
+		SELECT 
+			<include refid="zhengheCarouselColumns"/>
+		FROM zhenghe_carousel a where a.product_id=#{productId} ORDER BY a.rank
+	</select>
+
+	<!-- 查询指定数量的商品类轮播图 -->
+	<select id="findListByNum" resultType="ZhengheCarousel">
+		SELECT 
+			<include refid="zhengheCarouselColumns"/>
+		FROM zhenghe_carousel a where a.type='2' order by a.rank asc limit 0,#{num}
+	</select>
+    
+	<sql id="zhengheCarouselColumns">
+		a.id AS "id",
+		a.article_id AS "articleId",
+		a.product_id AS "productId",
+		a.avatar AS "avatar",
+		a.type AS "type",
+		a.rank AS "rank",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator",
+		a.create_date AS "createDate",
+		a.title AS "title"
+	</sql>
+	
+	<sql id="zhengheCarouselJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheCarousel">
+		SELECT 
+			<include refid="zhengheCarouselColumns"/>
+		FROM zhenghe_carousel a
+		<include refid="zhengheCarouselJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheCarousel">
+		SELECT 
+			<include refid="zhengheCarouselColumns"/>
+		FROM zhenghe_carousel a
+		<include refid="zhengheCarouselJoins"/>
+		<where>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+		</where>
+		ORDER BY a.rank ASC
+		<!-- <choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose> -->
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheCarousel">
+		SELECT 
+			<include refid="zhengheCarouselColumns"/>
+		FROM zhenghe_carousel a
+		<include refid="zhengheCarouselJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rank ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_carousel(
+			id,
+			article_id,
+			product_id,
+			avatar,
+			type,
+			rank,
+			standby1,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator,
+			create_date,
+			title
+		) VALUES (
+			#{id},
+			#{articleId},
+			#{productId},
+			#{avatar},
+			#{type},
+			#{rank},
+			#{standby1},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator},
+			#{createDate},
+			#{title}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_carousel SET 	
+			title = #{title},
+			article_id = #{articleId},
+			product_id = #{productId},
+			avatar = #{avatar},
+			type = #{type},
+			rank = #{rank},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_carousel
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

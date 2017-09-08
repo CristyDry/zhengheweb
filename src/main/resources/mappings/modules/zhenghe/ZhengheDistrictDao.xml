@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheDistrictDao">
+
+	<select id="findByCityId" resultType="ZhengheDistrict">
+		SELECT 
+			<include refid="zhengheDistrictColumns"/>
+		FROM zhenghe_district a
+		<include refid="zhengheDistrictJoins"/>
+		WHERE a.city_id = #{cityId}
+	</select>
+
+    
+	<sql id="zhengheDistrictColumns">
+		a.id AS "id",
+		a.city_id AS "cityId",
+		a.district_name AS "districtName",
+		a.zip_code AS "zipCode"
+	</sql>
+	
+	<sql id="zhengheDistrictJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheDistrict">
+		SELECT 
+			<include refid="zhengheDistrictColumns"/>
+		FROM zhenghe_district a
+		<include refid="zhengheDistrictJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheDistrict">
+		SELECT 
+			<include refid="zhengheDistrictColumns"/>
+		FROM zhenghe_district a
+		<include refid="zhengheDistrictJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheDistrict">
+		SELECT 
+			<include refid="zhengheDistrictColumns"/>
+		FROM zhenghe_district a
+		<include refid="zhengheDistrictJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_district(
+			id,
+			city_id,
+			district_name,
+			zip_code
+		) VALUES (
+			#{id},
+			#{cityId},
+			#{districtName},
+			#{zipCode}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_district SET 	
+			city_id = #{cityId},
+			district_name = #{districtName},
+			zip_code = #{zipCode}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_district
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

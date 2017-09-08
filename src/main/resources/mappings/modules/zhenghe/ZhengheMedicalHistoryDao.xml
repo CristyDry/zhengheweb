@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheMedicalHistoryDao">
+    
+	<sql id="zhengheMedicalHistoryColumns">
+		a.id AS "id",
+		a.mh_title AS "mhTitle",
+		a.mh_name AS "mhName",
+		a.gender AS "gender",
+		a.birthday AS "birthday",
+		a.departments_name AS "departmentsName",
+		a.patient_id AS "patientId",
+		a.seeadoctor_date AS "seeadoctorDate",
+		a.diagnose AS "diagnose",
+		a.description AS "description",
+		a.create_date AS "createDate",
+		a.standby1 AS "standby1",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheMedicalHistoryJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheMedicalHistory">
+		SELECT 
+			<include refid="zhengheMedicalHistoryColumns"/>
+		FROM zhenghe_medical_history a
+		<include refid="zhengheMedicalHistoryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheMedicalHistory">
+		SELECT 
+			<include refid="zhengheMedicalHistoryColumns"/>
+		FROM zhenghe_medical_history a
+		<include refid="zhengheMedicalHistoryJoins"/>
+		<where>
+			<if test="patientId !=null and patientId !=''">
+				and a.patient_id = #{patientId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheMedicalHistory">
+		SELECT 
+			<include refid="zhengheMedicalHistoryColumns"/>
+		FROM zhenghe_medical_history a
+		<include refid="zhengheMedicalHistoryJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_medical_history(
+			id,
+			mh_title,
+			mh_name,
+			gender,
+			birthday,
+			departments_name,
+			patient_id,
+			seeadoctor_date,
+			diagnose,
+			description,
+			create_date,
+			standby1,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{mhTitle},
+			#{mhName},
+			#{gender},
+			#{birthday},
+			#{departmentsName},
+			#{patientId},
+			#{seeadoctorDate},
+			#{diagnose},
+			#{description},
+			#{createDate},
+			#{standby1},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_medical_history SET 	
+			mh_title = #{mhTitle},
+			mh_name = #{mhName},
+			gender = #{gender},
+			birthday = #{birthday},
+			departments_name = #{departmentsName},
+			patient_id = #{patientId},
+			seeadoctor_date = #{seeadoctorDate},
+			diagnose = #{diagnose},
+			description = #{description},
+			standby1 = #{standby1},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_medical_history
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

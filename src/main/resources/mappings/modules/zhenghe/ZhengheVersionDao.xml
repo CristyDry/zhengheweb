@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheVersionDao">
+        
+	<select id="findNewestByOSType" resultType="ZhengheVersion">
+		SELECT 
+			<include refid="zhengheVersionColumns"/>
+		FROM zhenghe_version a
+		<include refid="zhengheVersionJoins"/>
+		WHERE a.type = #{type} order by version_code+0 desc limit 0,1 
+	</select>
+    
+	<sql id="zhengheVersionColumns">
+		a.id AS "id",
+		a.version_name AS "versionName",
+		a.version_code AS "versionCode",
+		a.url AS "url",
+		a.channel AS "channel",
+		a.description AS "description",
+		a.type AS "type",
+		a.create_date AS "createDate",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheVersionJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheVersion">
+		SELECT 
+			<include refid="zhengheVersionColumns"/>
+		FROM zhenghe_version a
+		<include refid="zhengheVersionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheVersion">
+		SELECT 
+			<include refid="zhengheVersionColumns"/>
+		FROM zhenghe_version a
+		<include refid="zhengheVersionJoins"/>
+		<where>
+			
+			<if test="versionName != null and versionName != ''">
+				AND a.version_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{versionName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{versionName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{versionName},'%')</if>
+			</if>
+			<if test="versionCode != null and versionCode != ''">
+				AND a.version_code = #{versionCode}
+			</if>
+			<if test="channel != null and channel != ''">
+				AND a.channel LIKE 
+					<if test="dbName == 'oracle'">'%'||#{channel}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{channel}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{channel},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheVersion">
+		SELECT 
+			<include refid="zhengheVersionColumns"/>
+		FROM zhenghe_version a
+		<include refid="zhengheVersionJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_version(
+			id,
+			version_name,
+			version_code,
+			url,
+			channel,
+			description,
+			type,
+			create_date,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{versionName},
+			#{versionCode},
+			#{url},
+			#{channel},
+			#{description},
+			#{type},
+			#{createDate},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_version SET 	
+			version_name = #{versionName},
+			version_code = #{versionCode},
+			url = #{url},
+			channel = #{channel},
+			description = #{description},
+			type = #{type},
+			remark = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_version
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

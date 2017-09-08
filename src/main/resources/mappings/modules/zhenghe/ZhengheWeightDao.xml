@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheWeightDao">
+    
+	<sql id="zhengheWeightColumns">
+		a.id AS "id",
+		a.stature AS "stature",
+		a.patient_id AS "patientId",
+		a.weight AS "weight",
+		a.exponent AS "exponent",
+		a.create_date AS "createDate",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheWeightJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhengheWeight">
+		SELECT 
+			<include refid="zhengheWeightColumns"/>
+		FROM zhenghe_weight a
+		<include refid="zhengheWeightJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheWeight">
+		SELECT 
+			<include refid="zhengheWeightColumns"/>
+		FROM zhenghe_weight a
+		<include refid="zhengheWeightJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheWeight">
+		SELECT 
+			<include refid="zhengheWeightColumns"/>
+		FROM zhenghe_weight a
+		<include refid="zhengheWeightJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_weight(
+			id,
+			stature,
+			patient_id,
+			weight,
+			exponent,
+			create_date,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{stature},
+			#{patientId},
+			#{weight},
+			#{exponent},
+			#{createDate},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_weight SET 	
+			stature = #{stature},
+			patient_id = #{patientId},
+			weight = #{weight},
+			exponent = #{exponent},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_weight
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
