@@ -2,6 +2,7 @@ package com.fullteem.modules.zhenghe.api.alipay;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import org.springframework.stereotype.Controller;
@@ -75,6 +77,8 @@ public class AlipayNotifyController extends BaseController {
         //交易状态
         String trade_status = new String(request.getParameter("trade_status").getBytes(encoding), "UTF-8");
         logger.debug("---------->交易状态:" + trade_status);
+        logger.debug("---------->交易信息");
+        logger.debug(JSON.toJSONString(params));
         //获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 
         //if(AlipayNotify.verify(params)){//验证成功
@@ -120,15 +124,15 @@ public class AlipayNotifyController extends BaseController {
                     }
                     //判断total_fee是否确实为该订单的实际金额（即商户订单创建时的金额）
                     String totalAmount = order.getTotalAmount();
-                    double totalFee = Double.valueOf(totalAmount);
-                    double total_fee = Double.valueOf(params.get("total_fee"));
-                    if (total_fee != totalFee) {
+                    BigDecimal totalFee = new BigDecimal(totalAmount);
+                    BigDecimal total_fee = new BigDecimal(params.get("total_amount"));
+                    if (total_fee.compareTo(totalFee) != 0) {
                         out.println("fail");
                         logger.debug("---------->total_fee不是该订单的实际金额");
                         return;
                     }
                     //校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方
-                    if (!params.get("seller_id").equals(AlipayConfig.partner)) {
+                   if (!params.get("seller_id").equals(AlipayConfig.seller_id)) {
                         out.println("fail");
                         logger.debug("---------->seller_id不是out_trade_no这笔单据的对应的操作方");
                         return;

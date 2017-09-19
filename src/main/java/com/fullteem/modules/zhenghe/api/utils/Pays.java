@@ -54,10 +54,14 @@ public class Pays {
      *
      * @return
      */
-    public static Map<String, String> payByWeiXin(String orderNo, BigDecimal totalAmount) {
+    public static Map<String, String> payByWeiXin(String orderNo,String serverPath, BigDecimal totalAmount) {
         Map<String, String> params = Maps.newHashMap();
-        params = weiXinParams();//APP支付
-
+        params.put("appid", WchpayConfig.appid);
+        params.put("mch_id", WchpayConfig.mch_id);
+        params.put("nonce_str", String.valueOf(random.nextInt()));
+        params.put("spbill_create_ip", WchpayConfig.create_ip);
+        params.put("notify_url", serverPath + WchpayConfig.notify_uri);
+        params.put("trade_type", WchpayConfig.trade_type);
         params.put("body", orderNo);
         params.put("out_trade_no", orderNo);
         params.put("total_fee", totalAmount.multiply(new BigDecimal(100)).intValue() + "");
@@ -66,11 +70,10 @@ public class Pays {
             Map<String, String> map = parseXml(Https.post(WchpayConfig.pay_url, toXml(params)));
             //公众号支付返回
             String timeStamp = getTimeStamp();
-            //params.put("timeStamp", timeStamp);//时间戳
             String prepayId = map.get("prepay_id");//获取预支付交易会话标识
             String nonceStr = params.get("nonce_str");//随机数
-            String mchId = map.get("mch_id");//商户号
-            String paySign = getPaySign(nonceStr,WchpayConfig.mch_id,prepayId, timeStamp, WchpayConfig.appid);//公众号支付签名
+
+            String paySign = getPaySign(nonceStr,WchpayConfig.mch_id,prepayId, timeStamp, WchpayConfig.appid);//支付签名
 
             Map<String,String> result = new HashMap<String, String>();
             result.put("appId",WchpayConfig.appid);
@@ -107,18 +110,6 @@ public class Pays {
                 .append("&timestamp=").append(timeStamp)
                 .append("&key=").append(WchpayConfig.key);
         return DigestUtils.md5DigestAsHex(builder.toString().getBytes()).toUpperCase();
-    }
-
-    //app支付
-    private static Map<String, String> weiXinParams() {
-        Map<String, String> params = Maps.newHashMap();
-        params.put("appid", WchpayConfig.appid);
-        params.put("mch_id", WchpayConfig.mch_id);
-        params.put("nonce_str", String.valueOf(random.nextInt()));
-        params.put("spbill_create_ip", WchpayConfig.create_ip);
-        params.put("notify_url", WchpayConfig.notify_uri);
-        params.put("trade_type", WchpayConfig.trade_type);
-        return params;
     }
 
     private static String sign(Map<String, String> params) {
@@ -177,7 +168,7 @@ public class Pays {
      * @param totalAmount
      * @return
      */
-    public static Object appAliPay(String outTradeNo, BigDecimal totalAmount){
+    public static Object appAliPay(String outTradeNo, String serverPath, BigDecimal totalAmount){
         /*StringBuilder stringBuilder =new StringBuilder();
         stringBuilder.append("partner=\"");
         stringBuilder.append(AlipayConfig.partner);
@@ -226,13 +217,13 @@ public class Pays {
         //SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
         model.setBody("若干商品");
-        model.setSubject("暂无详细描述");
+        model.setSubject("若干商品");
         model.setOutTradeNo(outTradeNo);
         model.setTimeoutExpress("30m");
         model.setTotalAmount(totalAmount.toString());
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl(AlipayConfig.uri);
+        request.setNotifyUrl(serverPath + AlipayConfig.uri);
         try {
             //这里和普通的接口调用不同，使用的是sdkExecute
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);

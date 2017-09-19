@@ -288,8 +288,9 @@ public class ZhengheProductApiController extends BaseController{
 	 * 获取路径(http协议+服务器ip[或域名]+端口号)
 	 */
 	private String getBasePath(){
+
 		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
-				.append(request.getServerPort()).toString();
+				.append(request.getServerPort()).append(request.getContextPath()).toString();
 		return basePath;
 	}
 	

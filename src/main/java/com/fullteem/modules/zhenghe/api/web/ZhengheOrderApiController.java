@@ -671,7 +671,7 @@ public class ZhengheOrderApiController extends BaseController{
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}
 		//返回预支付信息
-		Object result = Pays.payByWeiXin(order.getParentOrderNo(),totalAmount);
+		Object result = Pays.payByWeiXin(order.getParentOrderNo(), getBasePath(),totalAmount);
 		return buildSuccessResultInfo(result);
 	}
 
@@ -715,7 +715,7 @@ public class ZhengheOrderApiController extends BaseController{
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}
 		//返回预支付信息
-		Object result = Pays.appAliPay(order.getParentOrderNo(),totalAmount);
+		Object result = Pays.appAliPay(order.getParentOrderNo(), getBasePath(), totalAmount);
 		return buildSuccessResultInfo(result);
 	}
 
@@ -745,6 +745,13 @@ public class ZhengheOrderApiController extends BaseController{
 			orderItemNo = makeOrderItemNo();
 		}
 		return orderItemNo;
+	}
+
+	private String getBasePath(){
+
+		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
+				.append(request.getServerPort()).append(request.getContextPath()).toString();
+		return basePath;
 	}
 	
 		
