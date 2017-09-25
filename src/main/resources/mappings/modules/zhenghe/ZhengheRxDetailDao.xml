@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheRxDetailDao">
+    
+	<sql id="zhengheRxDetailColumns">
+		a.id AS "id",
+		a.rx_id AS "rxId",
+		a.department_id AS "departmentId",
+		a.product_id AS "productId",
+		a.product_name AS "productName",
+		a.price AS "price",
+		a.num AS "num",
+		a.standard AS "standard",
+		a.sig AS "sig",
+		a.create_date AS "createDate",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheRxDetailJoins">
+		LEFT JOIN zhenghe_rx b ON b.id = a.rx_id
+		LEFT JOIN sys_office o3 ON o3.id = a.department_id
+	</sql>
+    
+	<select id="get" resultType="ZhengheRxDetail">
+		SELECT 
+			<include refid="zhengheRxDetailColumns"/>
+		FROM zhenghe_rx_detail a
+		<include refid="zhengheRxDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheRxDetail">
+		SELECT 
+			<include refid="zhengheRxDetailColumns"/>
+		FROM zhenghe_rx_detail a
+		<include refid="zhengheRxDetailJoins"/>
+		<where>
+			
+			<if test="rxId != null and rxId != ''">
+				AND a.rx_id = #{rxId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheRxDetail">
+		SELECT 
+			<include refid="zhengheRxDetailColumns"/>
+		FROM zhenghe_rx_detail a
+		<include refid="zhengheRxDetailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_rx_detail(
+			id,
+			rx_id,
+			department_id,
+			product_id,
+			product_name,
+			price,
+			num,
+			standard,
+			sig,
+			create_date,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{rxId},
+			#{departmentId},
+			#{productId},
+			#{productName},
+			#{price},
+			#{num},
+			#{standard},
+			#{sig},
+			#{createDate},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_rx_detail SET 	
+			rx_id = #{rxId},
+			department_id = #{departmentId},
+			product_id = #{productId},
+			product_name = #{productName},
+			price = #{price},
+			num = #{num},
+			standard = #{standard},
+			sig = #{sig},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_rx_detail
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE rx_id = #{rxId}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>

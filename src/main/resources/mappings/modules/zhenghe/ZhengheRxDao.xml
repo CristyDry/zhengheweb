@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhengheRxDao">
+    
+	<sql id="zhengheRxColumns">
+		a.id AS "id",
+		a.rx_name AS "rxName",
+		a.rx_no AS "rxNo",
+		a.pay_type AS "payType",
+		a.patient_id AS "patientId",
+		a.patient_name AS "patientName",
+		a.patient_gender AS "patientGender",
+		a.patient_age AS "patientAge",
+		a.patient_address AS "patientAddress",
+		a.patient_phone AS "patientPhone",
+		a.case_no AS "caseNo",
+		a.category AS "category",
+		a.clinical_diagnosis AS "clinicalDiagnosis",
+		a.doctor AS "doctor",
+		a.approval_doctor AS "approvalDoctor",
+		a.deploy_doctor AS "deployDoctor",
+		a.check_doctor AS "checkDoctor",
+		a.total_amount AS "totalAmount",
+		a.status AS "status",
+		a.department_id AS "departmentId",
+		a.create_date AS "createDate",
+		a.rx_date AS "rxDate",
+		a.process_date AS "processDate",
+		a.process_user AS "processUser",
+		a.delete_mark AS "deleteMark",
+		a.remark AS "remark",
+		a.update_date AS "updateDate",
+		a.mender AS "mender",
+		a.creator AS "creator"
+	</sql>
+	
+	<sql id="zhengheRxJoins">
+		LEFT JOIN sys_office o20 ON o20.id = a.department_id
+	</sql>
+    
+	<select id="get" resultType="ZhengheRx">
+		SELECT 
+			<include refid="zhengheRxColumns"/>
+		FROM zhenghe_rx a
+		<include refid="zhengheRxJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhengheRx">
+		SELECT 
+			<include refid="zhengheRxColumns"/>
+		FROM zhenghe_rx a
+		<include refid="zhengheRxJoins"/>
+		<where>
+			
+			<if test="rxNo != null and rxNo != ''">
+				AND a.rx_no = #{rxNo}
+			</if>
+			<if test="payType != null and payType != ''">
+				AND a.pay_type = #{payType}
+			</if>
+			<if test="patientName != null and patientName != ''">
+				AND a.patient_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{patientName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{patientName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{patientName},'%')</if>
+			</if>
+			<if test="patientPhone != null and patientPhone != ''">
+				AND a.patient_phone LIKE 
+					<if test="dbName == 'oracle'">'%'||#{patientPhone}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{patientPhone}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{patientPhone},'%')</if>
+			</if>
+			<if test="doctor != null and doctor != ''">
+				AND a.doctor LIKE 
+					<if test="dbName == 'oracle'">'%'||#{doctor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{doctor}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{doctor},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="departmentId != null and departmentId != ''">
+				AND a.department_id = #{departmentId}
+			</if>
+			<if test="rxDate != null and rxDate != ''">
+				AND a.rx_date = #{rxDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhengheRx">
+		SELECT 
+			<include refid="zhengheRxColumns"/>
+		FROM zhenghe_rx a
+		<include refid="zhengheRxJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_rx(
+			id,
+			rx_name,
+			rx_no,
+			pay_type,
+			patient_id,
+			patient_name,
+			patient_gender,
+			patient_age,
+			patient_address,
+			patient_phone,
+			case_no,
+			category,
+			clinical_diagnosis,
+			doctor,
+			approval_doctor,
+			deploy_doctor,
+			check_doctor,
+			total_amount,
+			status,
+			department_id,
+			create_date,
+			rx_date,
+			process_date,
+			process_user,
+			delete_mark,
+			remark,
+			update_date,
+			mender,
+			creator
+		) VALUES (
+			#{id},
+			#{rxName},
+			#{rxNo},
+			#{payType},
+			#{patientId},
+			#{patientName},
+			#{patientGender},
+			#{patientAge},
+			#{patientAddress},
+			#{patientPhone},
+			#{caseNo},
+			#{category},
+			#{clinicalDiagnosis},
+			#{doctor},
+			#{approvalDoctor},
+			#{deployDoctor},
+			#{checkDoctor},
+			#{totalAmount},
+			#{status},
+			#{departmentId},
+			#{createDate},
+			#{rxDate},
+			#{processDate},
+			#{processUser},
+			#{deleteMark},
+			#{remark},
+			#{updateDate},
+			#{mender},
+			#{creator}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_rx SET 	
+			rx_name = #{rxName},
+			rx_no = #{rxNo},
+			pay_type = #{payType},
+			patient_id = #{patientId},
+			patient_name = #{patientName},
+			patient_gender = #{patientGender},
+			patient_age = #{patientAge},
+			patient_address = #{patientAddress},
+			patient_phone = #{patientPhone},
+			case_no = #{caseNo},
+			category = #{category},
+			clinical_diagnosis = #{clinicalDiagnosis},
+			doctor = #{doctor},
+			approval_doctor = #{approvalDoctor},
+			deploy_doctor = #{deployDoctor},
+			check_doctor = #{checkDoctor},
+			total_amount = #{totalAmount},
+			status = #{status},
+			department_id = #{departmentId},
+			rx_date = #{rxDate},
+			process_date = #{processDate},
+			process_user = #{processUser},
+			delete_mark = #{deleteMark},
+			remark = #{remark},
+			update_date = #{updateDate},
+			mender = #{mender},
+			creator = #{creator}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_rx
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
