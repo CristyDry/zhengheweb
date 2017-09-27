@@ -16,6 +16,8 @@ public class RequestSearchProduct {
 	private String priceMax;
 	@ApiModelProperty(value="处方药rx，非处方药otc，默认otc",required=false)
 	private String type;
+	@ApiModelProperty(value="处方药rx，非处方药otc，默认otc",required=false)
+	private Boolean isSimple;
 	@ApiModelProperty(value="'update_date desc(1综合排序，默认)'、'sales_num desc(2销量)'、'price asc(3价格低到高)'、'price desc(4价格高到低)'这4项之一",required=false)
 	private String orderBy = "update_date desc";
 	@ApiModelProperty(value="页码，默认从0起",required=false)
@@ -71,5 +73,12 @@ public class RequestSearchProduct {
 	public void setPageSize(String pageSize) {
 		this.pageSize = pageSize;
 	}
-	
+
+	public Boolean getSimple() {
+		return isSimple;
+	}
+
+	public void setSimple(Boolean simple) {
+		isSimple = simple;
+	}
 }

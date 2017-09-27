@@ -145,10 +145,11 @@ public class ZhengheProductApiController extends BaseController{
 		String priceMin = param.getPriceMin();		//价格最小值
 		String priceMax = param.getPriceMax();		//价格最大值
 		String type = param.getType();				//药品类型:otc非处方药rx处方药
+		Boolean isSimple = param.getSimple();		//不返还说明
 		String orderBy = param.getOrderBy();		//排序条件:1.更新时间(综合)，2.销售量，3.价格低到高，4.价格高到低
 		String pageNo = param.getPageNo();			//页码
 		String pageSize = param.getPageSize();		//每页数量
-		System.out.println("------------------------- keys:"+keys+" ,classifyId:"+classifyId+" ,priceMin:"+priceMin+" ,priceMax:"+priceMax+" ,type:"+type+" ,orderBy:"+orderBy+" ,pageNo:"+pageNo+" ,pageSize:"+pageSize);
+		//System.out.println("------------------------- keys:"+keys+" ,classifyId:"+classifyId+" ,priceMin:"+priceMin+" ,priceMax:"+priceMax+" ,type:"+type+" ,orderBy:"+orderBy+" ,pageNo:"+pageNo+" ,pageSize:"+pageSize);
 		if(StringUtils.isBlank(pageNo) || !StringUtils.isNumeric(pageNo)){
 			pageNo = "0";
 		}
@@ -193,14 +194,15 @@ public class ZhengheProductApiController extends BaseController{
 		}else{
 			orderBy = "a.update_date desc";					//参数为空，默认按时间排序
 		}
-		System.out.println("--------------------------- priceBetween : "+priceBetween);
 		List<ZhengheProduct> pList = productService.searchProduct(keys, classifyId, priceBetween, type, orderBy,Integer.parseInt(pageNo),Integer.parseInt(pageSize));
 		for(ZhengheProduct p : pList){
 			List<ZhengheCarousel> cList = carouselService.findListByProductId(p.getId());
 			p.setProductPic((cList == null || cList.size()<1) ? "" : this.imgPrefix+cList.get(0).getAvatar());
 		}
 		for(ZhengheProduct z : pList){
-			System.out.println("-------------------- productName : "+z.getProductName());
+			if(isSimple != null && isSimple){
+				z.setExplains(null);
+			}
 		}
 		return buildSuccessResultInfo(pList);
 	}

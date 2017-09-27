@@ -1,6 +1,8 @@
 package com.fullteem.modules.zhenghe.api.web;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fullteem.common.utils.IdGen;
 import com.fullteem.common.utils.StringUtils;
 import com.fullteem.common.web.BaseController;
@@ -25,9 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 类名: TestApiController</br>
@@ -69,7 +69,7 @@ public class ZhengheRxApiController extends BaseController {
         if (requestRx.getZhengheRxDetailList() == null || requestRx.getZhengheRxDetailList().isEmpty()) {
             return buildFailedResultInfo(ZhengheConstance.param_fault);
         }
-        if (!StringUtils.isEmpty(requestRx.getDepartmentId())) {
+        if (StringUtils.isEmpty(requestRx.getDepartmentId())) {
             return buildFailedResultInfo(ZhengheConstance.departmentId_not_exist);
         }
         ZhengheRx zhengheRx = new ZhengheRx();
@@ -113,19 +113,19 @@ public class ZhengheRxApiController extends BaseController {
         for (RequestRxDetail detail : requestRx.getZhengheRxDetailList()) {
             //获取商品信息
             ZhengheProduct product = productService.get(detail.getProductId());
-            if(product == null){
+            if (product == null) {
                 return buildFailedResultInfo(ZhengheConstance.productId_is_null);
             }
             ZhengheRxDetail rxDetail = new ZhengheRxDetail();
             rxDetail.setProductId(detail.getProductId());//商品编号
             rxDetail.setProductName(product.getProductName());//名称
             rxDetail.setNum(detail.getNum());//数量
-            rxDetail.setPrice(new BigDecimal(product.getPrice() == null? 0d : product.getPrice()));//价格
+            rxDetail.setPrice(new BigDecimal(product.getPrice() == null ? 0d : product.getPrice()));//价格
             rxDetail.setDepartmentId(zhengheRx.getDepartmentId());//药店
             rxDetail.setCreator(zhengheRx.getCreator());//创建人
             rxDetail.setSig(detail.getSig());//备注
             rxDetail.setStandard(product.getStandard());//规格
-            rxDetail.setId(IdGen.uuid());
+            //rxDetail.setId(IdGen.uuid());
             rxDetail.setCreateDate(new Date());
             totalAmout = totalAmout.add(rxDetail.getPrice().multiply(new BigDecimal(rxDetail.getNum())));//合计
             listDetails.add(rxDetail);
@@ -135,7 +135,7 @@ public class ZhengheRxApiController extends BaseController {
         zhengheRx.setZhengheRxDetailList(listDetails);
         //保存数据
         zhengheRxService.save(zhengheRx);
-
+        zhengheRx.setZhengheRxDetailList(null);
         return buildSuccessResultInfo(zhengheRx);
     }
 
@@ -152,5 +152,45 @@ public class ZhengheRxApiController extends BaseController {
         return rxNo;
     }
 
+
+    @ApiOperation(value = "药店列表", notes = "选中药店", httpMethod = "POST")
+    @ApiResponses({
+            @ApiResponse(code = ZhengheConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class),
+            @ApiResponse(code = ZhengheConstance.BASE_FAIL_CODE, message = "失败", response = String.class)
+    })
+    @RequestMapping(value = "/office", method = RequestMethod.POST)
+    public ResponseEntity<BaseResult> office() {
+        Office office = new Office();
+        office.setParentIds("0,1");
+        List<Office> list = officeService.findList(office);
+        Map<String, JSONObject> root = new HashMap<String, JSONObject>();
+        for (Office f : list) {
+            if ("1".equals(f.getParentId())) {
+                JSONObject json = new JSONObject();
+                json.put("id", f.getId());
+                json.put("name", f.getName());
+                root.put(f.getId(), json);
+            }
+        }
+        for (Office f : list) {
+            if (!"1".equals(f.getParentId())) {
+
+                JSONObject json;
+                if ((json = root.get(f.getParentId())) == null) {
+                    continue;
+                }
+                JSONArray childs;
+                if ((childs =  json.getJSONArray("childs")) == null) {
+                    childs = new JSONArray();
+                    json.put("childs", childs);
+                }
+                JSONObject child = new JSONObject();
+                child.put("id", f.getId());
+                child.put("name", f.getName());
+                childs.add(child);
+            }
+        }
+        return buildSuccessResultInfo(root.values());
+    }
 
 }

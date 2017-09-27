@@ -47,9 +47,7 @@ public class ZhengheRxService extends CrudService<ZhengheRxDao, ZhengheRx> {
 	public void save(ZhengheRx zhengheRx) {
 		super.save(zhengheRx);
 		for (ZhengheRxDetail zhengheRxDetail : zhengheRx.getZhengheRxDetailList()){
-			if (zhengheRxDetail.getId() == null){
-				continue;
-			}
+
 			if (ZhengheRxDetail.DEL_FLAG_NORMAL.equals(zhengheRxDetail.getDelFlag())){
 				if (StringUtils.isBlank(zhengheRxDetail.getId())){
 					zhengheRxDetail.setRxId(zhengheRx);
