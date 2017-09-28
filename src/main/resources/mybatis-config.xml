@@ -42,6 +42,7 @@
 	<!-- 类型别名 -->
 	<typeAliases>
 		<typeAlias alias="Page" type="com.fullteem.common.persistence.Page" /><!--分页  -->
+		<package name="com.fullteem.modules.zhenghe.entity"/>
 	</typeAliases>
 	
 	<!-- 插件配置 -->

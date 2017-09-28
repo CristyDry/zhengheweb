@@ -16,7 +16,7 @@ import com.fullteem.common.persistence.DataEntity;
 /**
  * 处方信息Entity
  * @author LeVis
- * @version 2017-09-25
+ * @version 2017-09-28
  */
 public class ZhengheRx extends DataEntity<ZhengheRx> {
 	
@@ -24,6 +24,7 @@ public class ZhengheRx extends DataEntity<ZhengheRx> {
 	private String rxName;		// 处方名称
 	private String rxNo;		// 处方编号
 	private String payType;		// 付款类型
+	private String payTypeName;		// 付款类型
 	private String patientId;		// 患者编号
 	private String patientName;		// 患者名称
 	private String patientGender;		// 患者性别
@@ -39,10 +40,12 @@ public class ZhengheRx extends DataEntity<ZhengheRx> {
 	private String checkDoctor;		// 核对、发药药师
 	private BigDecimal totalAmount;		// 药品金额
 	private String status;		// 状态
+	private String statusName;		// 状态
 	private String departmentId;		// 所属部门
+	private String departmentName;		// 所属部门
 	private Date rxDate;		// 开具时间
 	private Date processDate;		// 处理时间
-	private Date processUser;		// 处理人
+	private String processUser;		// 处理人
 	private String deleteMark;		// 删除标记
 	private String remark;		// 备注
 	private String mender;		// 修改者
@@ -245,12 +248,11 @@ public class ZhengheRx extends DataEntity<ZhengheRx> {
 		this.processDate = processDate;
 	}
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	public Date getProcessUser() {
+	public String getProcessUser() {
 		return processUser;
 	}
 
-	public void setProcessUser(Date processUser) {
+	public void setProcessUser(String processUser) {
 		this.processUser = processUser;
 	}
 	
@@ -296,5 +298,29 @@ public class ZhengheRx extends DataEntity<ZhengheRx> {
 
 	public void setZhengheRxDetailList(List<ZhengheRxDetail> zhengheRxDetailList) {
 		this.zhengheRxDetailList = zhengheRxDetailList;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	public String getPayTypeName() {
+		return payTypeName;
+	}
+
+	public void setPayTypeName(String payTypeName) {
+		this.payTypeName = payTypeName;
 	}
 }

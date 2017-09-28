@@ -20,7 +20,7 @@ import com.fullteem.modules.zhenghe.dao.ZhengheRxDetailDao;
 /**
  * 处方信息Service
  * @author LeVis
- * @version 2017-09-25
+ * @version 2017-09-28
  */
 @Service
 @Transactional(readOnly = true)
@@ -31,7 +31,9 @@ public class ZhengheRxService extends CrudService<ZhengheRxDao, ZhengheRx> {
 	
 	public ZhengheRx get(String id) {
 		ZhengheRx zhengheRx = super.get(id);
-		zhengheRx.setZhengheRxDetailList(zhengheRxDetailDao.findList(new ZhengheRxDetail(zhengheRx)));
+		ZhengheRxDetail rxDetail = new ZhengheRxDetail();
+		rxDetail.setRxId(id);
+		zhengheRx.setZhengheRxDetailList(zhengheRxDetailDao.findList(rxDetail));
 		return zhengheRx;
 	}
 	
@@ -50,7 +52,7 @@ public class ZhengheRxService extends CrudService<ZhengheRxDao, ZhengheRx> {
 
 			if (ZhengheRxDetail.DEL_FLAG_NORMAL.equals(zhengheRxDetail.getDelFlag())){
 				if (StringUtils.isBlank(zhengheRxDetail.getId())){
-					zhengheRxDetail.setRxId(zhengheRx);
+					zhengheRxDetail.setRxId(zhengheRx.getId());
 					zhengheRxDetail.preInsert();
 					zhengheRxDetailDao.insert(zhengheRxDetail);
 				}else{
@@ -66,7 +68,7 @@ public class ZhengheRxService extends CrudService<ZhengheRxDao, ZhengheRx> {
 	@Transactional(readOnly = false)
 	public void delete(ZhengheRx zhengheRx) {
 		super.delete(zhengheRx);
-		zhengheRxDetailDao.delete(new ZhengheRxDetail(zhengheRx));
+		zhengheRxDetailDao.delete(new ZhengheRxDetail(zhengheRx.getId()));
 	}
 	
 }

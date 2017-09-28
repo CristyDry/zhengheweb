@@ -7,9 +7,10 @@
 		a.rx_name AS "rxName",
 		a.rx_no AS "rxNo",
 		a.pay_type AS "payType",
+		'自费' AS payTypeName,
 		a.patient_id AS "patientId",
 		a.patient_name AS "patientName",
-		a.patient_gender AS "patientGender",
+		if(a.patient_gender='1','男','女') AS "patientGender",
 		a.patient_age AS "patientAge",
 		a.patient_address AS "patientAddress",
 		a.patient_phone AS "patientPhone",
@@ -22,7 +23,9 @@
 		a.check_doctor AS "checkDoctor",
 		a.total_amount AS "totalAmount",
 		a.status AS "status",
+		(SELECT label from sys_dict where value = a.status and type = 'rx_status' limit 1) as statusName,
 		a.department_id AS "departmentId",
+		(SELECT name from sys_office where id = a.department_id limit 1) as departmentName,
 		a.create_date AS "createDate",
 		a.rx_date AS "rxDate",
 		a.process_date AS "processDate",
@@ -54,7 +57,8 @@
 		<where>
 			
 			<if test="rxNo != null and rxNo != ''">
-				AND a.rx_no = #{rxNo}
+				AND a.rx_no LIKE
+				<if test="dbName == 'mysql'">concat('%',#{rxNo})</if>
 			</if>
 			<if test="payType != null and payType != ''">
 				AND a.pay_type = #{payType}
@@ -84,7 +88,8 @@
 				AND a.department_id = #{departmentId}
 			</if>
 			<if test="rxDate != null and rxDate != ''">
-				AND a.rx_date = #{rxDate}
+				AND a.rx_date >= TIMESTAMP(DATE_FORMAT(TIMESTAMP(#{rxDate}),'%Y%m%d'))
+				AND DATE_ADD(TIMESTAMP(DATE_FORMAT(TIMESTAMP(#{rxDate}),'%Y%m%d')),INTERVAL 1 DAY)  >= a.rx_date
 			</if>
 		</where>
 		<choose>

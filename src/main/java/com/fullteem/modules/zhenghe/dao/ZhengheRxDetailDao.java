@@ -10,7 +10,7 @@ import com.fullteem.modules.zhenghe.entity.ZhengheRxDetail;
 /**
  * 处方信息DAO接口
  * @author LeVis
- * @version 2017-09-25
+ * @version 2017-09-28
  */
 @MyBatisDao
 public interface ZhengheRxDetailDao extends CrudDao<ZhengheRxDetail> {

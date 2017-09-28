@@ -25,7 +25,7 @@ import com.fullteem.modules.zhenghe.service.ZhengheRxService;
 /**
  * 处方信息Controller
  * @author LeVis
- * @version 2017-09-25
+ * @version 2017-09-28
  */
 @Controller
 @RequestMapping(value = "${adminPath}/zhenghe/zhengheRx")
@@ -59,6 +59,13 @@ public class ZhengheRxController extends BaseController {
 	public String form(ZhengheRx zhengheRx, Model model) {
 		model.addAttribute("zhengheRx", zhengheRx);
 		return "modules/zhenghe/zhengheRxForm";
+	}
+
+	@RequiresPermissions("zhenghe:zhengheRx:view")
+	@RequestMapping(value = "print")
+	public String print(ZhengheRx zhengheRx, Model model) {
+		model.addAttribute("zhengheRx", zhengheRx);
+		return "modules/zhenghe/zhengheRxPrint";
 	}
 
 	@RequiresPermissions("zhenghe:zhengheRx:edit")
