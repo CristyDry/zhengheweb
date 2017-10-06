@@ -6,6 +6,7 @@ package com.fullteem.modules.zhenghe.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fullteem.modules.zhenghe.api.utils.ZhengheConstance;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -84,6 +85,40 @@ public class ZhengheRxController extends BaseController {
 	public String delete(ZhengheRx zhengheRx, RedirectAttributes redirectAttributes) {
 		zhengheRxService.delete(zhengheRx);
 		addMessage(redirectAttributes, "删除处方成功");
+		return "redirect:"+Global.getAdminPath()+"/zhenghe/zhengheRx/?repage";
+	}
+
+	@RequiresPermissions("zhenghe:zhengheRx:receive")
+	@RequestMapping(value = "receive")
+	public String receive(ZhengheRx zhengheRx, RedirectAttributes redirectAttributes) {
+		ZhengheRx rx = zhengheRxService.get(zhengheRx.getId());
+		if(rx == null){
+			return "redirect:"+Global.getAdminPath()+"/zhenghe/zhengheRx/?repage";
+
+		}
+		if("0".equals(rx.getStatus())){
+			//待接收才能取消
+			rx.setStatus("1");//药店接收
+			zhengheRxService.save(rx);
+		}
+		addMessage(redirectAttributes, "已接收处方");
+		return "redirect:"+Global.getAdminPath()+"/zhenghe/zhengheRx/?repage";
+	}
+
+	@RequiresPermissions("zhenghe:zhengheRx:cancel")
+	@RequestMapping(value = "cancel")
+	public String cancel(ZhengheRx zhengheRx, RedirectAttributes redirectAttributes) {
+		ZhengheRx rx = zhengheRxService.get(zhengheRx.getId());
+		if(rx == null){
+			return "redirect:"+Global.getAdminPath()+"/zhenghe/zhengheRx/?repage";
+
+		}
+		if("0".equals(rx.getStatus())){
+			//待接收才能取消
+			rx.setStatus("2");//药店取消
+			zhengheRxService.save(rx);
+		}
+		addMessage(redirectAttributes, "已取消处方");
 		return "redirect:"+Global.getAdminPath()+"/zhenghe/zhengheRx/?repage";
 	}
 

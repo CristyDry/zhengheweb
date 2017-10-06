@@ -22,6 +22,14 @@
 					}
 				}
 			});
+            $("#btnCancel").click(function () {
+                $("#inputForm").attr("action","${ctx}/zhenghe/zhengheRx/cancel");
+                $("#inputForm").submit();
+            });
+            $("#btnReceive").click(function () {
+                $("#inputForm").attr("action","${ctx}/zhenghe/zhengheRx/receive");
+                $("#inputForm").submit();
+            });
 		});
 		function addRow(list, idx, tpl, row){
 			$(list).append(Mustache.render(tpl, {
@@ -305,16 +313,16 @@
 							<tr>
 								<th class="hide"></th>
 								<%--<th>所属药店</th>--%>
-								<th>商品编号</th>
-								<th>药名</th>
-								<th>价格</th>
-								<th>数量</th>
-								<th>规格</th>
-								<th>使用说明</th>
-								<th>备注</th>
-								<%--<th>删除标记</th>
-								<th>修改者</th>
-								<th>创建者</th>--%>
+									<%--<th>商品编号</th>--%>
+                                    <th>药名</th>
+                                    <th>价格</th>
+                                    <th>数量</th>
+                                    <th>规格</th>
+                                    <th>使用说明</th>
+                                    <th>备注</th>
+                                    <%--<th>删除标记</th>
+                                    <th>修改者</th>
+                                    <th>创建者</th>--%>
 								<shiro:hasPermission name="zhenghe:zhengheRx:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
 							</tr>
 						</thead>
@@ -383,6 +391,8 @@
 			</div>
 		<div class="form-actions">
 			<shiro:hasPermission name="zhenghe:zhengheRx:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="zhenghe:zhengheRx:cancel"><input id="btnCancel" class="btn btn-primary" type="button" value="取 消 处 方"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="zhenghe:zhengheRx:receive"><input id="btnReceive" class="btn btn-primary" type="button" value="接 收 处 方"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

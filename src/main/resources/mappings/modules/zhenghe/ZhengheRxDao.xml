@@ -81,6 +81,9 @@
 					<if test="dbName == 'mssql'">'%'+#{doctor}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{doctor},'%')</if>
 			</if>
+			<if test="creator != null and creator != ''">
+				AND a.creator = #{creator}
+			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
@@ -90,6 +93,9 @@
 			<if test="rxDate != null and rxDate != ''">
 				AND a.rx_date >= TIMESTAMP(DATE_FORMAT(TIMESTAMP(#{rxDate}),'%Y%m%d'))
 				AND DATE_ADD(TIMESTAMP(DATE_FORMAT(TIMESTAMP(#{rxDate}),'%Y%m%d')),INTERVAL 1 DAY)  >= a.rx_date
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date >= #{updateDate}
 			</if>
 		</where>
 		<choose>

@@ -79,16 +79,16 @@
 	    <constructor-arg name="name" value="jeesite.session.id"/>
 	</bean>
 
-	<!-- 自定义Session存储容器 -->
+	<!-- 自定义Session存储容器
  	<bean id="sessionDAO" class="com.fullteem.common.security.shiro.session.JedisSessionDAO">
  		<property name="sessionIdGenerator" ref="idGen" />
  		<property name="sessionKeyPrefix" value="${redis.keyPrefix}:session:" />
- 	</bean>
-	<!--<bean id="sessionDAO" class="com.fullteem.common.security.shiro.session.CacheSessionDAO">
+ 	</bean> -->
+	<bean id="sessionDAO" class="com.fullteem.common.security.shiro.session.CacheSessionDAO">
 		<property name="sessionIdGenerator" ref="idGen" />
 		<property name="activeSessionsCacheName" value="activeSessionsCache" />
 		<property name="cacheManager" ref="shiroCacheManager" />
-	</bean> -->
+	</bean>
 	
 	<!-- 定义授权缓存管理器 -->
 <!-- 	<bean id="shiroCacheManager" class="com.fullteem.common.security.shiro.cache.SessionCacheManager" /> -->

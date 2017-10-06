@@ -3,17 +3,18 @@ package com.fullteem.modules.zhenghe.api.web;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fullteem.common.persistence.Page;
+import com.fullteem.common.utils.DateUtils;
 import com.fullteem.common.utils.IdGen;
 import com.fullteem.common.utils.StringUtils;
 import com.fullteem.common.web.BaseController;
 import com.fullteem.common.web.BaseResult;
 import com.fullteem.modules.sys.entity.Office;
 import com.fullteem.modules.sys.service.OfficeService;
-import com.fullteem.modules.zhenghe.api.entity.request.RequestRx;
-import com.fullteem.modules.zhenghe.api.entity.request.RequestRxDetail;
-import com.fullteem.modules.zhenghe.api.entity.request.RequestTest;
+import com.fullteem.modules.zhenghe.api.entity.request.*;
 import com.fullteem.modules.zhenghe.api.utils.CosmeticUpload;
 import com.fullteem.modules.zhenghe.api.utils.ZhengheConstance;
+import com.fullteem.modules.zhenghe.dao.ZhengheRxDetailDao;
 import com.fullteem.modules.zhenghe.entity.*;
 import com.fullteem.modules.zhenghe.service.*;
 import com.wordnik.swagger.annotations.*;
@@ -45,6 +46,8 @@ public class ZhengheRxApiController extends BaseController {
     @Autowired
     ZhengheRxService zhengheRxService;
     @Autowired
+    ZhengheRxDetailDao zhengheRxDetailDao;
+    @Autowired
     ZhengheDoctorService zhengheDoctorService;
     @Autowired
     OfficeService officeService;
@@ -56,6 +59,8 @@ public class ZhengheRxApiController extends BaseController {
     ZhengheDepartmentsService departmentsService;
     @Autowired
     ZhengheHospitalService hospitalService;
+    @Autowired
+    private HttpServletRequest request;
 
     @ApiOperation(value = "开具处方", notes = "创建处方", httpMethod = "POST")
     @ApiResponses({
@@ -127,10 +132,11 @@ public class ZhengheRxApiController extends BaseController {
             rxDetail.setStandard(product.getStandard());//规格
             //rxDetail.setId(IdGen.uuid());
             rxDetail.setCreateDate(new Date());
-            totalAmout = totalAmout.add(rxDetail.getPrice().multiply(new BigDecimal(rxDetail.getNum())));//合计
+            totalAmout = totalAmout.add(rxDetail.getPrice()
+                    .multiply(new BigDecimal(Integer.parseInt(rxDetail.getNum()))));//合计
             listDetails.add(rxDetail);
         }
-        zhengheRx.setTotalAmount(totalAmout);
+        zhengheRx.setTotalAmount(totalAmout.setScale(2,BigDecimal.ROUND_HALF_UP));
         //明细
         zhengheRx.setZhengheRxDetailList(listDetails);
         //保存数据
@@ -180,7 +186,7 @@ public class ZhengheRxApiController extends BaseController {
                     continue;
                 }
                 JSONArray childs;
-                if ((childs =  json.getJSONArray("childs")) == null) {
+                if ((childs = json.getJSONArray("childs")) == null) {
                     childs = new JSONArray();
                     json.put("childs", childs);
                 }
@@ -193,4 +199,63 @@ public class ZhengheRxApiController extends BaseController {
         return buildSuccessResultInfo(root.values());
     }
 
+    @ApiOperation(value = "处方列表", notes = "查一个月最多100条数据", httpMethod = "POST")
+    @ApiResponses({
+            @ApiResponse(code = ZhengheConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class),
+            @ApiResponse(code = ZhengheConstance.BASE_FAIL_CODE, message = "失败", response = String.class)
+    })
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public ResponseEntity<BaseResult> rxList(@ApiParam(required = true, value = "")
+                                             @RequestBody RequestRxList requestRx) {
+        //查一个月最多100条数据
+        ZhengheRx rx = new ZhengheRx();
+        rx.setCreator(requestRx.getId());
+        rx.setStatus(requestRx.getStatus());
+        rx.setUpdateDate(DateUtils.addMonths(new Date(), -1));
+        List<ZhengheRx> rxList = zhengheRxService.findList(rx);
+        for (ZhengheRx r : rxList) {
+            ZhengheRxDetail detail = new ZhengheRxDetail();
+            detail.setRxId(r.getId());
+            //获取明细
+            r.setZhengheRxDetailList(zhengheRxDetailDao.findList(detail));
+            for (ZhengheRxDetail detail1 : r.getZhengheRxDetailList()) {
+                if (!(detail1.getImgUrl() != null && detail1.getImgUrl().startsWith("http"))) {
+                    detail1.setImgUrl(getBasePath() + detail1.getImgUrl());
+                }
+
+            }
+        }
+        return buildSuccessResultInfo(rxList);
+    }
+
+    @ApiOperation(value = "取消处方", notes = "", httpMethod = "POST")
+    @ApiResponses({
+            @ApiResponse(code = ZhengheConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class),
+            @ApiResponse(code = ZhengheConstance.BASE_FAIL_CODE, message = "失败", response = String.class)
+    })
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    public ResponseEntity<BaseResult> cancel(@ApiParam(required = true, value = "")
+                                             @RequestBody RequestId id) {
+
+        ZhengheRx rx = zhengheRxService.get(id.getId());
+        if(rx == null){
+            return buildFailedResultInfo(ZhengheConstance.orderId_not_exist);
+        }
+        if("0".equals(rx.getStatus())){
+            //待接收才能取消
+            rx.setStatus("3");//医生取消
+            zhengheRxService.save(rx);
+        }
+        return buildSuccessResultInfo(ZhengheConstance.BASE_SUCCESS_CODE);
+    }
+
+    /*
+     * 获取路径(http协议+服务器ip[或域名]+端口号)
+     */
+    private String getBasePath() {
+
+        String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
+                .append(request.getServerPort()).append(request.getContextPath()).toString();
+        return basePath;
+    }
 }

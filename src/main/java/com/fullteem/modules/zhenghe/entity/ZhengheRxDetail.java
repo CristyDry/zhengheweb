@@ -30,6 +30,7 @@ public class ZhengheRxDetail extends DataEntity<ZhengheRxDetail> {
     private String remark;        // 备注
     private String mender;        // 修改者
     private String creator;        // 创建者
+    private String imgUrl;         //图片
 
     public ZhengheRxDetail() {
         super();
@@ -146,4 +147,11 @@ public class ZhengheRxDetail extends DataEntity<ZhengheRxDetail> {
         this.creator = creator;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }
