@@ -6,6 +6,8 @@ package com.fullteem.modules.zhenghe.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fullteem.modules.sys.entity.User;
+import com.fullteem.modules.sys.utils.UserUtils;
 import com.fullteem.modules.zhenghe.api.utils.ZhengheConstance;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,12 @@ public class ZhengheRxController extends BaseController {
 	@RequiresPermissions("zhenghe:zhengheRx:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ZhengheRx zhengheRx, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<ZhengheRx> page = zhengheRxService.findPage(new Page<ZhengheRx>(request, response), zhengheRx); 
+		User user = UserUtils.getUser();
+		if(!(user.getOffice() != null && "1".equals(user.getOffice().getId()))){
+			//总公司可查看所有处方
+			zhengheRx.setDepartmentId(user.getOffice().getId());
+		}
+		Page<ZhengheRx> page = zhengheRxService.findPage(new Page<ZhengheRx>(request, response), zhengheRx);
 		model.addAttribute("page", page);
 		return "modules/zhenghe/zhengheRxList";
 	}
