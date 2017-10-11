@@ -139,4 +139,14 @@
 		</choose>
 	</update>
 	
+	<select id="reportApiDoctor" resultType="DoctorReport">
+		SELECT p.`product_name` as productName,
+		(select c.`classify_name` from `zhenghe_product_classify` c WHERE  c.id = p.`pclassify_id`) as classifyName,
+		 sum(d.`num`) as nums
+		FROM `zhenghe_rx` r
+		LEFT JOIN  `zhenghe_rx_detail` d on r.`id` = d.`rx_id`
+		LEFT JOIN `zhenghe_product` p on d.`product_id` =p.`id`
+		WHERE r.`creator` = #{creator} and r.`rx_date` BETWEEN #{startDate} AND #{endDate}
+		GROUP BY p.id ORDER BY nums desc
+	</select>
 </mapper>

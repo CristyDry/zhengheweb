@@ -5,7 +5,11 @@ package com.fullteem.modules.zhenghe.dao;
 
 import com.fullteem.common.persistence.CrudDao;
 import com.fullteem.common.persistence.annotation.MyBatisDao;
+import com.fullteem.modules.zhenghe.entity.DoctorReport;
 import com.fullteem.modules.zhenghe.entity.ZhengheRxDetail;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处方信息DAO接口
@@ -14,5 +18,6 @@ import com.fullteem.modules.zhenghe.entity.ZhengheRxDetail;
  */
 @MyBatisDao
 public interface ZhengheRxDetailDao extends CrudDao<ZhengheRxDetail> {
-	
+
+   List<DoctorReport> reportApiDoctor(Map<String,Object> map);
 }

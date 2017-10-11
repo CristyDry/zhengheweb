@@ -3,18 +3,14 @@ package com.fullteem.modules.zhenghe.api.web;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fullteem.common.persistence.Page;
 import com.fullteem.common.utils.DateUtils;
-import com.fullteem.common.utils.IdGen;
 import com.fullteem.common.utils.StringUtils;
 import com.fullteem.common.web.BaseController;
 import com.fullteem.common.web.BaseResult;
 import com.fullteem.modules.sys.entity.Office;
 import com.fullteem.modules.sys.service.OfficeService;
 import com.fullteem.modules.zhenghe.api.entity.request.*;
-import com.fullteem.modules.zhenghe.api.utils.CosmeticUpload;
 import com.fullteem.modules.zhenghe.api.utils.ZhengheConstance;
-import com.fullteem.modules.zhenghe.dao.ZhengheRxDetailDao;
 import com.fullteem.modules.zhenghe.entity.*;
 import com.fullteem.modules.zhenghe.service.*;
 import com.wordnik.swagger.annotations.*;
@@ -23,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
@@ -45,8 +39,6 @@ public class ZhengheRxApiController extends BaseController {
 
     @Autowired
     ZhengheRxService zhengheRxService;
-    @Autowired
-    ZhengheRxDetailDao zhengheRxDetailDao;
     @Autowired
     ZhengheDoctorService zhengheDoctorService;
     @Autowired
@@ -217,7 +209,7 @@ public class ZhengheRxApiController extends BaseController {
             ZhengheRxDetail detail = new ZhengheRxDetail();
             detail.setRxId(r.getId());
             //获取明细
-            r.setZhengheRxDetailList(zhengheRxDetailDao.findList(detail));
+            r.setZhengheRxDetailList(zhengheRxService.findDetailList(detail));
             for (ZhengheRxDetail detail1 : r.getZhengheRxDetailList()) {
                 if (!(detail1.getImgUrl() != null && detail1.getImgUrl().startsWith("http"))) {
                     detail1.setImgUrl(getBasePath() + detail1.getImgUrl());
@@ -234,7 +226,7 @@ public class ZhengheRxApiController extends BaseController {
             @ApiResponse(code = ZhengheConstance.BASE_FAIL_CODE, message = "失败", response = String.class)
     })
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
-    public ResponseEntity<BaseResult> cancel(@ApiParam(required = true, value = "")
+    public ResponseEntity<BaseResult> cancel(@ApiParam(required = true, value = "处方id")
                                              @RequestBody RequestId id) {
 
         ZhengheRx rx = zhengheRxService.get(id.getId());
@@ -247,6 +239,40 @@ public class ZhengheRxApiController extends BaseController {
             zhengheRxService.save(rx);
         }
         return buildSuccessResultInfo(ZhengheConstance.BASE_SUCCESS_CODE);
+    }
+
+    @ApiOperation(value = "处方统计", notes = "", httpMethod = "POST")
+    @ApiResponses({
+            @ApiResponse(code = ZhengheConstance.BASE_SUCCESS_CODE, message = "成功", response = String.class),
+            @ApiResponse(code = ZhengheConstance.BASE_FAIL_CODE, message = "失败", response = String.class)
+    })
+    @RequestMapping(value = "/report", method = RequestMethod.POST)
+    public ResponseEntity<BaseResult> report(@ApiParam(required = true, value = "")
+                                             @RequestBody RequestDoctorReport report) {
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("creator", report.getId());
+        map.put("startDate", report.getStartDate());
+        map.put("endDate", report.getEndDate());
+
+        List<DoctorReport> list = zhengheRxService.reportApiDoctor(map);
+
+        Map<String, DoctorReport> header = new HashMap<String, DoctorReport>();
+        //建树
+        for (DoctorReport doctorReport : list){
+            DoctorReport head;
+            if((head = header.get(doctorReport.getClassifyName())) == null){
+                head = new DoctorReport();
+                head.setClassifyName(doctorReport.getClassifyName());
+                head.setNums(0);
+                header.put(doctorReport.getClassifyName(), head);
+            }
+            doctorReport.setClassifyName(null);
+            //汇总
+            head.setNums(doctorReport.getNums() + head.getNums());
+            head.getChild().add(doctorReport);
+        }
+        return buildSuccessResultInfo(header.values());
     }
 
     /*

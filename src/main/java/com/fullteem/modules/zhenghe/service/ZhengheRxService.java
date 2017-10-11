@@ -4,7 +4,9 @@
 package com.fullteem.modules.zhenghe.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.fullteem.modules.zhenghe.entity.DoctorReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,5 +72,14 @@ public class ZhengheRxService extends CrudService<ZhengheRxDao, ZhengheRx> {
 		super.delete(zhengheRx);
 		zhengheRxDetailDao.delete(new ZhengheRxDetail(zhengheRx.getId()));
 	}
-	
+
+	@Transactional(readOnly = true)
+	public List<DoctorReport> reportApiDoctor(Map<String,Object> map) {
+		return zhengheRxDetailDao.reportApiDoctor(map);
+	}
+
+	@Transactional(readOnly = false)
+	public List<ZhengheRxDetail> findDetailList(ZhengheRxDetail detail) {
+		return zhengheRxDetailDao.findList(detail);
+	}
 }
