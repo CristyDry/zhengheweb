@@ -281,7 +281,7 @@ public class ZhengheRxApiController extends BaseController {
     private String getBasePath() {
 
         String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
-                .append(request.getServerPort()).append(request.getContextPath()).toString();
+                .append(request.getServerPort()).toString();
         return basePath;
     }
 }
