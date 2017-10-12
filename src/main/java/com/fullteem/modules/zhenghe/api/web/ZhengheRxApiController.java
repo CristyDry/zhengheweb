@@ -257,7 +257,7 @@ public class ZhengheRxApiController extends BaseController {
 
         List<DoctorReport> list = zhengheRxService.reportApiDoctor(map);
 
-        Map<String, DoctorReport> header = new HashMap<String, DoctorReport>();
+        Map<String, DoctorReport> header = new LinkedHashMap<String, DoctorReport>();
         //建树
         for (DoctorReport doctorReport : list){
             DoctorReport head;
