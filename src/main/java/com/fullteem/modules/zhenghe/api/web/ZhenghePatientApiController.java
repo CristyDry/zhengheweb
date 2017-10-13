@@ -298,10 +298,10 @@ public class ZhenghePatientApiController extends BaseController{
 			return buildFailedResultInfo(ZhengheConstance.upload_fault);
 		}
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
-		p.setAvatar(request.getContextPath()+result);
+		p.setAvatar(result);
 		patientService.save(p);
-		System.out.println("---------------------------- result : "+result);
-		System.out.println("---------------------------- basePath : "+basePath);
+		com.fullteem.common.utils.Log.println("---------------------------- result : "+result);
+		com.fullteem.common.utils.Log.println("---------------------------- basePath : "+basePath);
 		Map<String,String> avatarMap = new HashMap<String,String>();
 		avatarMap.put("avatar", basePath+result);
 		return buildSuccessResultInfo(avatarMap);
@@ -412,7 +412,7 @@ public class ZhenghePatientApiController extends BaseController{
 			return buildFailedResultInfo(ZhengheConstance.ISEXISITMOBILE);
 		}else{
 			String a = patient.getPassword();
-			System.out.println("--- a : "+a);
+			com.fullteem.common.utils.Log.println("--- a : "+a);
 			if(!patient.getPassword().equals(password.toLowerCase())){
 				return buildFailedResultInfo(ZhengheConstance.ISPASSWORDFAIL);
 			}
@@ -487,16 +487,16 @@ public class ZhenghePatientApiController extends BaseController{
 	@RequestBody RequestSmsCode requestSmsCode) {
 		String phone = requestSmsCode.getPhone();
 		String type = requestSmsCode.getType();
-		System.out.println("------------ phone:"+phone+" ,type:"+type);
+		com.fullteem.common.utils.Log.println("------------ phone:"+phone+" ,type:"+type);
 		boolean b = false;
 		String smsStr="";
 		
 		if (Tool.strBlank(phone,type) || (phone.length()!=11)) {
-			System.out.println("-------aaaa");
+			com.fullteem.common.utils.Log.println("-------aaaa");
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}
 		/*if(!type.equals("1") || !type.equals("2")){
-			System.out.println("-------bbbb");
+			com.fullteem.common.utils.Log.println("-------bbbb");
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}*/
 		//已注册过的手机号码，type为1，不发短信，没有注册过的手机号码，如果type为2，不发短信，防恶意刷短信，短信要钱的~~

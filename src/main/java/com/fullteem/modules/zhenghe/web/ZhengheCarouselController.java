@@ -102,9 +102,9 @@ public class ZhengheCarouselController extends BaseController {
 		if (!beanValidator(model, zhengheCarousel)){
 			return form(zhengheCarousel, model);
 		}
-		System.out.println("----------------------------------- avatar : "+zhengheCarousel.getAvatar());
+		com.fullteem.common.utils.Log.println("----------------------------------- avatar : "+zhengheCarousel.getAvatar());
 		if(zhengheCarousel.getAvatar().contains("|")){
-			System.out.println(" ------------------- has | : "+zhengheCarousel.getAvatar().lastIndexOf("|"));
+			com.fullteem.common.utils.Log.println(" ------------------- has | : "+zhengheCarousel.getAvatar().lastIndexOf("|"));
 			zhengheCarousel.setAvatar(zhengheCarousel.getAvatar().substring(zhengheCarousel.getAvatar().lastIndexOf("|")+1));
 		}
 		zhengheCarousel.setUpdateDate(new Date());

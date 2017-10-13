@@ -71,7 +71,7 @@ public class ZhengheProductController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(ZhengheProduct zhengheProduct, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String aa = Global.getUserfilesBaseDir();
-		System.out.println("-------------------------------- path : "+aa);
+		com.fullteem.common.utils.Log.println("-------------------------------- path : "+aa);
 		Page<ZhengheProduct> page = zhengheProductService.findPage(new Page<ZhengheProduct>(request, response), zhengheProduct);
 		ZhengheCommonImage image = imageService.findByRelevanceId(zhengheProduct.getId());
 		/*if(image!=null){

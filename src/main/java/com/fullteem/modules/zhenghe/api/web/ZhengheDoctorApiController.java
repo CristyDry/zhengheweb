@@ -195,7 +195,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		String avatar = param.getAvatar();
 		String patientName = param.getPatientName();
 		
-		System.out.println("------------------- accountNumber:"+accountNumber+",tokenName:"+tokenName+",avatar:"+avatar+",patientName:"+patientName);
+		com.fullteem.common.utils.Log.println("------------------- accountNumber:"+accountNumber+",tokenName:"+tokenName+",avatar:"+avatar+",patientName:"+patientName);
 		
 		if(!StringUtils.hasText(accountNumber)||!StringUtils.hasText(tokenName)){
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
@@ -459,7 +459,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		if(result.equals("3")){
 			return buildFailedResultInfo(ZhengheConstance.upload_fault);
 		}
-		doctor.setAvatar(request.getContextPath()+result);
+		doctor.setAvatar(result);
 		zhengheDoctorService.save(doctor);
 		Map<String,String> avatarMap = new HashMap<String,String>();
 		if(!doctor.getAvatar().startsWith("http")){
@@ -509,7 +509,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		result = ApiHttpClient.getToken(key, secret, userId, patient==null?doctor.getDoctorName():patient.getPatientName(),
 				patient==null?doctor.getAvatar():patient.getAvatar(), FormatType.json);
 		
-		System.out.println("gettoken=" + result);
+		com.fullteem.common.utils.Log.println("gettoken=" + result);
 		
 		net.sf.json.JSONObject tt = net.sf.json.JSONObject.fromObject(result.getResult());
 		

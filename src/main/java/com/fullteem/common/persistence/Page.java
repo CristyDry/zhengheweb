@@ -280,11 +280,11 @@ public class Page<T> {
 	
 //	public static void main(String[] args) {
 //		Page<String> p = new Page<String>(3, 3);
-//		System.out.println(p);
-//		System.out.println("首页："+p.getFirst());
-//		System.out.println("尾页："+p.getLast());
-//		System.out.println("上页："+p.getPrev());
-//		System.out.println("下页："+p.getNext());
+//		com.fullteem.common.utils.Log.println(p);
+//		com.fullteem.common.utils.Log.println("首页："+p.getFirst());
+//		com.fullteem.common.utils.Log.println("尾页："+p.getLast());
+//		com.fullteem.common.utils.Log.println("上页："+p.getPrev());
+//		com.fullteem.common.utils.Log.println("下页："+p.getNext());
 //	}
 
 	/**

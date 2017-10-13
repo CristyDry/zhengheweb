@@ -189,6 +189,6 @@ public class ActUtils {
 	
 	public static void main(String[] args) {
 		 User user = new User();
-		 System.out.println(getMobileEntity(user, "@"));
+		 com.fullteem.common.utils.Log.println(getMobileEntity(user, "@"));
 	}
 }

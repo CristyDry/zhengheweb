@@ -76,7 +76,7 @@ public class ZhengheDepartmentsApiController extends BaseController{
 	})
 	public ResponseEntity<BaseResult> ajaxDepList(HttpServletRequest request) {
 		String id = request.getParameter("id");
-		System.out.println("---------------------------------id : "+id);
+		com.fullteem.common.utils.Log.println("---------------------------------id : "+id);
 		if(StringUtils.isBlank(id) ){
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}

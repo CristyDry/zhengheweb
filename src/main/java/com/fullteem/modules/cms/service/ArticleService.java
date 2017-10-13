@@ -180,7 +180,7 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 		
 		//BooleanQuery queryFilter = dao.getFullTextQuery((BooleanClause[])bcList.toArray(new BooleanClause[bcList.size()]));
 
-//		System.out.println(queryFilter);
+//		com.fullteem.common.utils.Log.println(queryFilter);
 		
 		// 设置排序（默认相识度排序）
 		//FIXME 暂时不提供lucene检索

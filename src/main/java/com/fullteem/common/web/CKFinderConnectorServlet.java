@@ -66,11 +66,11 @@ public class CKFinderConnectorServlet extends ConnectorServlet {
 					+ principal + "/" + type + (currentFolder != null ? currentFolder : "");
 			FileUtils.createDirectory(FileUtils.path(realPath));
 		}
-		System.out.println("--------------------------------- realPath : "+realPath);
+		com.fullteem.common.utils.Log.println("--------------------------------- realPath : "+realPath);
 		
-//		System.out.println("------------------------");
+//		com.fullteem.common.utils.Log.println("------------------------");
 //		for (Object key : request.getParameterMap().keySet()){
-//			System.out.println(key + ": " + request.getParameter(key.toString()));
+//			com.fullteem.common.utils.Log.println(key + ": " + request.getParameter(key.toString()));
 //		}
 	}
 	

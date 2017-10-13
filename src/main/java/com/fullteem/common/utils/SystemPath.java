@@ -39,9 +39,9 @@ public class SystemPath {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getSysPath());
-		System.out.println(System.getProperty("java.io.tmpdir"));
-		System.out.println(getSeparator());
-		System.out.println(getClassPath());
+		com.fullteem.common.utils.Log.println(getSysPath());
+		com.fullteem.common.utils.Log.println(System.getProperty("java.io.tmpdir"));
+		com.fullteem.common.utils.Log.println(getSeparator());
+		com.fullteem.common.utils.Log.println(getClassPath());
 	}
 }

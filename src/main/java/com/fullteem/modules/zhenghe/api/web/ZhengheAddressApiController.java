@@ -359,7 +359,7 @@ public class ZhengheAddressApiController extends BaseController{
 	})
 	public ResponseEntity<BaseResult> ajaxCityList(HttpServletRequest request) {
 		String provinceId = request.getParameter("pid");
-		System.out.println("---------------------------------pid : "+provinceId);
+		com.fullteem.common.utils.Log.println("---------------------------------pid : "+provinceId);
 		if(StringUtils.isBlank(provinceId) || !StringUtils.isNumeric(provinceId)){
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}

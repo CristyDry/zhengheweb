@@ -145,7 +145,7 @@ public class Global {
 		if(!dir.endsWith("/")) {
 			dir += "/";
 		}
-//		System.out.println("userfiles.basedir: " + dir);
+//		com.fullteem.common.utils.Log.println("userfiles.basedir: " + dir);
 		return dir;
 	}
 	

@@ -34,11 +34,11 @@ public class WeixinController extends BaseController {
 	@ResponseBody
 	public String get(String signature, String timestamp, String nonce, String echostr, HttpServletRequest request) {
 		
-		System.out.println("=============================================== get start");
+		com.fullteem.common.utils.Log.println("=============================================== get start");
 		for (Object o : request.getParameterMap().keySet()){
-			System.out.println(o + " = " + request.getParameter((String)o));
+			com.fullteem.common.utils.Log.println(o + " = " + request.getParameter((String)o));
 		}
-		System.out.println("=============================================== get end");
+		com.fullteem.common.utils.Log.println("=============================================== get end");
 		
         // 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败  
         if (WiexinSignUtil.checkSignature(signature, timestamp, nonce)) {  
@@ -51,11 +51,11 @@ public class WeixinController extends BaseController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ResponseBody
 	public String post(String signature, String timestamp, String nonce, String echostr, HttpServletRequest request) {
-		System.out.println("=============================================== post start");
+		com.fullteem.common.utils.Log.println("=============================================== post start");
 		for (Object o : request.getParameterMap().keySet()){
-			System.out.println(o + " = " + request.getParameter((String)o));
+			com.fullteem.common.utils.Log.println(o + " = " + request.getParameter((String)o));
 		}
-		System.out.println("=============================================== post end");
+		com.fullteem.common.utils.Log.println("=============================================== post end");
 		StringBuilder result = new StringBuilder();
 		result.append("<xml>" +
 				"<ToUserName><![CDATA[toUser]]></ToUserName>" +

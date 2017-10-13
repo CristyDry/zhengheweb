@@ -58,7 +58,7 @@ public class TestApiController extends BaseController{
 		
 		String username = test.getUsername();
 		String password = test.getUserpwd();
-		System.out.println("----------------------------- username : "+username+" , password : "+password);
+		com.fullteem.common.utils.Log.println("----------------------------- username : "+username+" , password : "+password);
 		
 		//上传开始================================
 		String str = CosmeticUpload.uploadFile(request, "1", file);
@@ -67,7 +67,7 @@ public class TestApiController extends BaseController{
 		//上传结束================================
 		//数据库保存相对路径，读取的时候，拼接网络地址返回给前端
 		
-		//System.out.println(realPath);
+		//com.fullteem.common.utils.Log.println(realPath);
 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 		return  buildSuccessResultInfo("fileUrl:"+basePath+str);
 	}

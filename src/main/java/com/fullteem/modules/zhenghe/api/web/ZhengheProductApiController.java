@@ -149,7 +149,7 @@ public class ZhengheProductApiController extends BaseController{
 		String orderBy = param.getOrderBy();		//排序条件:1.更新时间(综合)，2.销售量，3.价格低到高，4.价格高到低
 		String pageNo = param.getPageNo();			//页码
 		String pageSize = param.getPageSize();		//每页数量
-		//System.out.println("------------------------- keys:"+keys+" ,classifyId:"+classifyId+" ,priceMin:"+priceMin+" ,priceMax:"+priceMax+" ,type:"+type+" ,orderBy:"+orderBy+" ,pageNo:"+pageNo+" ,pageSize:"+pageSize);
+		//com.fullteem.common.utils.Log.println("------------------------- keys:"+keys+" ,classifyId:"+classifyId+" ,priceMin:"+priceMin+" ,priceMax:"+priceMax+" ,type:"+type+" ,orderBy:"+orderBy+" ,pageNo:"+pageNo+" ,pageSize:"+pageSize);
 		if(StringUtils.isBlank(pageNo) || !StringUtils.isNumeric(pageNo)){
 			pageNo = "0";
 		}

@@ -116,11 +116,11 @@ public class UploadUtils {
 		File uploadDir = new File(savePath);
 		if (contentType == null || !contentType.startsWith("multipart")) {
 			// TODO
-			System.out.println("请求不包含multipart/form-data流");
+			com.fullteem.common.utils.Log.println("请求不包含multipart/form-data流");
 			errorInfo = "请求不包含multipart/form-data流";
 		} else if (maxSize < contentLength) {
 			// TODO
-			System.out.println("上传文件大小超出文件最大大小");
+			com.fullteem.common.utils.Log.println("上传文件大小超出文件最大大小");
 			errorInfo = "上传文件大小超出文件最大大小[" + maxSize + "]";
 		} else if (!ServletFileUpload.isMultipartContent(request)) {
 			// TODO
@@ -270,7 +270,7 @@ public class UploadUtils {
 				 */
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("上传失败了！！！");
+				com.fullteem.common.utils.Log.println("上传失败了！！！");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -88,6 +88,6 @@ public class GetBigFileMD5 {
 	      File fileZIP = new File("D:/TEST/IMAGE2.zip");
 	      String md5=getMD5(fileZIP);
 	      long endTime =System.currentTimeMillis();
-	     System.out.println("MD5:"+md5+"\n time:"+((endTime-beginTime)/1000)+"s");
+	     com.fullteem.common.utils.Log.println("MD5:"+md5+"\n time:"+((endTime-beginTime)/1000)+"s");
 	    }
 }

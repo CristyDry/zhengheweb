@@ -11,7 +11,7 @@ public class PropertiesUtil {
 			pro.load(PropertiesUtil.class.getResourceAsStream(filename));
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Load mybatis-refresh “"+filename+"” file error.");
+			com.fullteem.common.utils.Log.println("Load mybatis-refresh “"+filename+"” file error.");
 		}
 	}
 

@@ -44,7 +44,7 @@ public class CKFinderConfig extends Configuration {
 		alc.setFileRename(isEdit);
 		alc.setFileDelete(isEdit);
 //		for (AccessControlLevel a : this.getAccessConrolLevels()){
-//			System.out.println(a.getRole()+", "+a.getResourceType()+", "+a.getFolder()
+//			com.fullteem.common.utils.Log.println(a.getRole()+", "+a.getResourceType()+", "+a.getFolder()
 //					+", "+a.isFolderView()+", "+a.isFolderCreate()+", "+a.isFolderRename()+", "+a.isFolderDelete()
 //					+", "+a.isFileView()+", "+a.isFileUpload()+", "+a.isFileRename()+", "+a.isFileDelete());
 //		}
@@ -54,8 +54,8 @@ public class CKFinderConfig extends Configuration {
 //			this.baseURL = ServletContextFactory.getServletContext().getContextPath()+"/userfiles/"+principal+"/";
 			this.baseURL = FileUtils.path(Servlets.getRequest().getContextPath() + Global.USERFILES_BASE_URL + principal + "/");
 			this.baseDir = FileUtils.path(Global.getUserfilesBaseDir() + Global.USERFILES_BASE_URL + principal + "/");
-			System.out.println("--------------------- baseURL : "+baseURL);
-			System.out.println("--------------------- baseDir : "+baseDir);
+			com.fullteem.common.utils.Log.println("--------------------- baseURL : "+baseURL);
+			com.fullteem.common.utils.Log.println("--------------------- baseDir : "+baseDir);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

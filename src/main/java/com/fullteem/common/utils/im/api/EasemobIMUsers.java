@@ -260,7 +260,7 @@ public class EasemobIMUsers {
 		if (totalNumber == 0 || perNumber == 0) {
 			return objectNode;
 		}
-		System.out.println("你即将注册" + totalNumber + "个用户，如果大于" + perNumber + "了,会分批注册,每次注册" + perNumber + "个");
+		com.fullteem.common.utils.Log.println("你即将注册" + totalNumber + "个用户，如果大于" + perNumber + "了,会分批注册,每次注册" + perNumber + "个");
 		ArrayNode genericArrayNode = EasemobIMUsers.genericArrayNode(usernamePrefix, totalNumber);
 		if (totalNumber <= perNumber) {
 			objectNode = EasemobIMUsers.createNewIMUserBatch(genericArrayNode);

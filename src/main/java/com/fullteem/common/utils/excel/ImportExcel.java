@@ -360,9 +360,9 @@ public class ImportExcel {
 //			Row row = ei.getRow(i);
 //			for (int j = 0; j < ei.getLastCellNum(); j++) {
 //				Object val = ei.getCellValue(row, j);
-//				System.out.print(val+", ");
+//				com.fullteem.common.utils.Log.print(val+", ");
 //			}
-//			System.out.print("\n");
+//			com.fullteem.common.utils.Log.print("\n");
 //		}
 //		
 //	}

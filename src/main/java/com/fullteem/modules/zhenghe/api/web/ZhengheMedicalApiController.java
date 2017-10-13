@@ -592,7 +592,7 @@ public class ZhengheMedicalApiController extends BaseController{
 			DecimalFormat df = new DecimalFormat(".##");
 			exponent = Double.valueOf(df.format(exponent));
 		}catch(NumberFormatException e){
-			System.out.println("---------------------------- stature : "+stature+" , weight :　"+weight);
+			com.fullteem.common.utils.Log.println("---------------------------- stature : "+stature+" , weight :　"+weight);
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}
 		ZhengheWeight w = new ZhengheWeight();
@@ -928,10 +928,10 @@ public class ZhengheMedicalApiController extends BaseController{
 		String description = param.getDescription();		//基本病情
 		String mhId = param.getMedicalId();					//病历id
 		
-		System.out.println("\n\n\n\n////////////////////////////////////");
-		System.out.println("patientId="+patientId+"\nmhTitle="+mhTitle+"\nmhName="+mhName+"\ngender="+gender+"\nbirthday="+birthday+"\ndepartmentName="+departmentName
+		com.fullteem.common.utils.Log.println("\n\n\n\n////////////////////////////////////");
+		com.fullteem.common.utils.Log.println("patientId="+patientId+"\nmhTitle="+mhTitle+"\nmhName="+mhName+"\ngender="+gender+"\nbirthday="+birthday+"\ndepartmentName="+departmentName
 				+"\nseeadoctorDate="+seeadoctorDate+"\ndiagnose="+diagnose+"\ndescription="+description+"\nmhId="+mhId+"\nfileSize="+file.length);
-		System.out.println("////////////////////////////////////\n\n\n\n");
+		com.fullteem.common.utils.Log.println("////////////////////////////////////\n\n\n\n");
 		
 		/*
 		 * 非空校验
@@ -1148,7 +1148,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	private String getBasePath(){
 
 		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
-				.append(request.getServerPort()).append(request.getContextPath()).toString();
+				.append(request.getServerPort()).toString();
 		return basePath;
 	}
 		

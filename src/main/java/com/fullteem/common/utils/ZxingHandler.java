@@ -67,7 +67,7 @@ public class ZxingHandler {
 		try {
 			image = ImageIO.read(new File(imgPath));
 			if (image == null) {
-				System.out.println("the decode image may be not exit.");
+				com.fullteem.common.utils.Log.println("the decode image may be not exit.");
 			}
 			LuminanceSource source = new BufferedImageLuminanceSource(image);
 			BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -118,7 +118,7 @@ public class ZxingHandler {
 		try {
 			image = ImageIO.read(new File(imgPath));
 			if (image == null) {
-				System.out.println("the decode image may be not exit.");
+				com.fullteem.common.utils.Log.println("the decode image may be not exit.");
 			}
 			LuminanceSource source = new BufferedImageLuminanceSource(image);
 			BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -145,11 +145,11 @@ public class ZxingHandler {
 		int width = 105, height = 50;
 		
 		ZxingHandler.encode(contents, width, height, imgPath);
-		System.out.println("finished zxing EAN-13 encode.");
+		com.fullteem.common.utils.Log.println("finished zxing EAN-13 encode.");
 
 		String decodeContent = ZxingHandler.decode(imgPath);
-		System.out.println("解码内容如下：" + decodeContent);
-		System.out.println("finished zxing EAN-13 decode.");
+		com.fullteem.common.utils.Log.println("解码内容如下：" + decodeContent);
+		com.fullteem.common.utils.Log.println("finished zxing EAN-13 decode.");
 		
 		// 二维码
 		String imgPath2 = "target\\zxing.png";
@@ -159,11 +159,11 @@ public class ZxingHandler {
 		int width2 = 300, height2 = 300;
 
 		ZxingHandler.encode2(contents2, width2, height2, imgPath2);
-		System.out.println("finished zxing encode.");
+		com.fullteem.common.utils.Log.println("finished zxing encode.");
 
 		String decodeContent2 = ZxingHandler.decode2(imgPath2);
-		System.out.println("解码内容如下：" + decodeContent2);
-		System.out.println("finished zxing decode.");
+		com.fullteem.common.utils.Log.println("解码内容如下：" + decodeContent2);
+		com.fullteem.common.utils.Log.println("finished zxing decode.");
 		
 	}
     

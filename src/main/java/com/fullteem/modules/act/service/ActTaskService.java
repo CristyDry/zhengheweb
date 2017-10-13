@@ -116,7 +116,7 @@ public class ActTaskService extends BaseService {
 			e.setTask(task);
 			e.setVars(task.getProcessVariables());
 //			e.setTaskVars(task.getTaskLocalVariables());
-//			System.out.println(task.getId()+"  =  "+task.getProcessVariables() + "  ========== " + task.getTaskLocalVariables());
+//			com.fullteem.common.utils.Log.println(task.getId()+"  =  "+task.getProcessVariables() + "  ========== " + task.getTaskLocalVariables());
 			e.setProcDef(ProcessDefCache.get(task.getProcessDefinitionId()));
 //			e.setProcIns(runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult());
 //			e.setProcExecUrl(ActUtils.getProcExeUrl(task.getProcessDefinitionId()));
@@ -146,7 +146,7 @@ public class ActTaskService extends BaseService {
 			e.setTask(task);
 			e.setVars(task.getProcessVariables());
 //			e.setTaskVars(task.getTaskLocalVariables());
-//			System.out.println(task.getId()+"  =  "+task.getProcessVariables() + "  ========== " + task.getTaskLocalVariables());
+//			com.fullteem.common.utils.Log.println(task.getId()+"  =  "+task.getProcessVariables() + "  ========== " + task.getTaskLocalVariables());
 			e.setProcDef(ProcessDefCache.get(task.getProcessDefinitionId()));
 //			e.setProcIns(runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult());
 //			e.setProcExecUrl(ActUtils.getProcExeUrl(task.getProcessDefinitionId()));
@@ -189,7 +189,7 @@ public class ActTaskService extends BaseService {
 			e.setHistTask(histTask);
 			e.setVars(histTask.getProcessVariables());
 //			e.setTaskVars(histTask.getTaskLocalVariables());
-//			System.out.println(histTask.getId()+"  =  "+histTask.getProcessVariables() + "  ========== " + histTask.getTaskLocalVariables());
+//			com.fullteem.common.utils.Log.println(histTask.getId()+"  =  "+histTask.getProcessVariables() + "  ========== " + histTask.getTaskLocalVariables());
 			e.setProcDef(ProcessDefCache.get(histTask.getProcessDefinitionId()));
 //			e.setProcIns(runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult());
 //			e.setProcExecUrl(ActUtils.getProcExeUrl(task.getProcessDefinitionId()));

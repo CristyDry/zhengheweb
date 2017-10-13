@@ -166,7 +166,7 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 			for(String id : idss){
 				Category e = dao.get(id);
 				if(null != e){
-					//System.out.println("e.id:"+e.getId()+",e.name:"+e.getName());
+					//com.fullteem.common.utils.Log.println("e.id:"+e.getId()+",e.name:"+e.getName());
 					list.add(e);
 				}
 				//list.add(dao.get(id));

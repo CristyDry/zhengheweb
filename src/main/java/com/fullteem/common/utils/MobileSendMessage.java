@@ -34,7 +34,7 @@ public class MobileSendMessage {
 //	        channelClient.setChannelLogHandler(new YunLogHandler() {
 //	            @Override
 //	            public void onHandle(YunLogEvent event) {
-//	                System.out.println(event.getMessage());
+//	                com.fullteem.common.utils.Log.println(event.getMessage());
 //	            }
 //	        });
 //	        // 4. 创建请求类对象
@@ -51,7 +51,7 @@ public class MobileSendMessage {
 //            try {
 //				 channelClient.pushBroadcastMessage(request);
 //			      // 6. 认证推送成功
-////	            System.out.println("push amount : " + response.getSuccessAmount());
+////	            com.fullteem.common.utils.Log.println("push amount : " + response.getSuccessAmount());
 //            } catch (ChannelClientException e) {
 //				e.printStackTrace();
 //			} catch (ChannelServerException e) {
@@ -78,7 +78,7 @@ public class MobileSendMessage {
 //		channelClient.setChannelLogHandler(new YunLogHandler() {
 //			@Override
 //			public void onHandle(YunLogEvent event) {
-//				System.out.println(event.getMessage());
+//				com.fullteem.common.utils.Log.println(event.getMessage());
 //			}
 //		});
 //		// 4. 创建请求类对象
@@ -102,7 +102,7 @@ public class MobileSendMessage {
 //			}
 //			
 //			// 6. 认证推送成功
-////	            System.out.println("push amount : " + response.getSuccessAmount());
+////	            com.fullteem.common.utils.Log.println("push amount : " + response.getSuccessAmount());
 //		} catch (ChannelClientException e) {
 //			e.printStackTrace();
 //		} catch (ChannelServerException e) {
