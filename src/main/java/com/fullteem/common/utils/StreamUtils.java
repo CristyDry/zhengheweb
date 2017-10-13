@@ -196,7 +196,7 @@ public class StreamUtils {
 
 		byte[] bytes = baos.toByteArray();
 
-		System.out.println(new String(bytes));
+		com.fullteem.common.utils.Log.println(new String(bytes));
 
 		return bytes;
 	}
@@ -211,7 +211,7 @@ public class StreamUtils {
 		try {
 			fileInputStream = new FileInputStream(filepath);
 		} catch (FileNotFoundException e) {
-			System.out.print("错误信息:文件不存在");
+			com.fullteem.common.utils.Log.print("错误信息:文件不存在");
 			e.printStackTrace();
 		}
 		return fileInputStream;
@@ -227,7 +227,7 @@ public class StreamUtils {
 		try {
 			fileInputStream = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
-			System.out.print("错误信息:文件不存在");
+			com.fullteem.common.utils.Log.print("错误信息:文件不存在");
 			e.printStackTrace();
 		}
 		return fileInputStream;
@@ -244,7 +244,7 @@ public class StreamUtils {
 		try {
 			fileOutputStream = new FileOutputStream(file,append);
 		} catch (FileNotFoundException e) {
-			System.out.print("错误信息:文件不存在");
+			com.fullteem.common.utils.Log.print("错误信息:文件不存在");
 			e.printStackTrace();
 		}
 		return fileOutputStream;
@@ -261,7 +261,7 @@ public class StreamUtils {
 		try {
 			fileOutputStream = new FileOutputStream(filepath,append);
 		} catch (FileNotFoundException e) {
-			System.out.print("错误信息:文件不存在");
+			com.fullteem.common.utils.Log.print("错误信息:文件不存在");
 			e.printStackTrace();
 		}
 		return fileOutputStream;

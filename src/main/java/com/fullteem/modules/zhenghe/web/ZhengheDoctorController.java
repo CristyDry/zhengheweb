@@ -77,7 +77,7 @@ public class ZhengheDoctorController extends BaseController {
 			d.setHospitalName(hospitalService.get(d.getHospitalId()).getHospitalName());	//所属医院
 			d.setDepartmentName(departmentService.get(d.getDepartmentsId()).getDepartmentsName());//所属科室
 			d.setJobTitleName(professionService.get(d.getJobTitle()).getProfession());		//职称
-			System.out.println("---------------------------------------"+d.toString());
+			com.fullteem.common.utils.Log.println("---------------------------------------"+d.toString());
 		}
 		page.setList(dList);
 		model.addAttribute("page", page);
@@ -101,7 +101,7 @@ public class ZhengheDoctorController extends BaseController {
 			
 			for(ZhengheDepartments d : subDList){
 				subMap.put(d.getId(), d.getDepartmentsName());
-				System.out.println("---------------------------"+d.toString());
+				com.fullteem.common.utils.Log.println("---------------------------"+d.toString());
 			}
 			
 			model.addAttribute("subMap", subMap);
@@ -116,7 +116,7 @@ public class ZhengheDoctorController extends BaseController {
 		}
 		for(ZhengheDepartments d : dList){
 			dMap.put(d.getId(), d.getDepartmentsName());
-			System.out.println("---------------------------"+d.toString());
+			com.fullteem.common.utils.Log.println("---------------------------"+d.toString());
 		}
 		for(ZhengheProfession p : pList){
 			pMap.put(p.getId(), p.getProfession());

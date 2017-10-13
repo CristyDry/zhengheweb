@@ -110,7 +110,7 @@ public class TimeUtils {
      */
     public TimeUtils(String time) {
         this(time, null);
-//    	System.out.println(time);
+//    	com.fullteem.common.utils.Log.println(time);
     }
 
     /**

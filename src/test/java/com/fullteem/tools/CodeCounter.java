@@ -28,13 +28,13 @@ public class CodeCounter {
 		for (File f : al) {
 			if (f.getName().matches(".*\\.java$")){ // 匹配java格式的文件
 				count(f);
-				System.out.println(f);
+				com.fullteem.common.utils.Log.println(f);
 			}
 		}
-		System.out.println("统计文件：" + files);
-		System.out.println("代码行数：" + codeLines);
-		System.out.println("注释行数：" + commentLines);
-		System.out.println("空白行数：" + blankLines);
+		com.fullteem.common.utils.Log.println("统计文件：" + files);
+		com.fullteem.common.utils.Log.println("代码行数：" + codeLines);
+		com.fullteem.common.utils.Log.println("注释行数：" + commentLines);
+		com.fullteem.common.utils.Log.println("空白行数：" + blankLines);
 	}
 	
 	static long files = 0;

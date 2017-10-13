@@ -367,8 +367,8 @@ public class GenUtils {
 	public static void main(String[] args) {
 		try {
 			GenConfig config = getConfig();
-			System.out.println(config);
-			System.out.println(JaxbMapper.toXml(config));
+			com.fullteem.common.utils.Log.println(config);
+			com.fullteem.common.utils.Log.println(JaxbMapper.toXml(config));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

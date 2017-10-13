@@ -572,7 +572,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 				}
 				zouts.closeEntry();
 				fin.close();
-				System.out
+				com.fullteem.common.utils.Log
 						.println("添加文件 " + file.getAbsolutePath() + " 到zip文件中!");
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -401,7 +401,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		sb.append("\r\n======================================================================\r\n");
 		sb.append("\r\n    欢迎使用 "+Global.getConfig("productName")+"  - Powered By http://www.fullteem.com\r\n");
 		sb.append("\r\n======================================================================\r\n");
-		System.out.println(sb.toString());
+		com.fullteem.common.utils.Log.println(sb.toString());
 		return true;
 	}
 	

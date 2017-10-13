@@ -85,7 +85,7 @@ public class ZhenghePatientController extends BaseController {
 		List<ZhengheProvincial> plist = provinceService.findList(null);
 		Map<String,String> pMap = new HashMap<String,String>();
 		for(ZhengheProvincial p : plist){
-			System.out.println("-----------------------------"+p.toString());
+			com.fullteem.common.utils.Log.println("-----------------------------"+p.toString());
 			pMap.put(p.getId(), p.getName());
 		}
 		List<ZhengheCity> clist = cityService.findByProvinceId(zhenghePatient.getProvincialId());

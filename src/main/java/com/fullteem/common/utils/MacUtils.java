@@ -208,16 +208,16 @@ public class MacUtils {
 	 */
 	public static void main(String[] argc) {
 		String os = getOSName();
-		System.out.println("os: " + os);
+		com.fullteem.common.utils.Log.println("os: " + os);
 		if (os.startsWith("windows")) {
 			String mac = getWindowsMACAddress();
-			System.out.println("mac: " + mac);
+			com.fullteem.common.utils.Log.println("mac: " + mac);
 		} else if (os.startsWith("linux")) {
 			String mac = getLinuxMACAddress();
-			System.out.println("mac: " + mac);
+			com.fullteem.common.utils.Log.println("mac: " + mac);
 		} else {
 			String mac = getUnixMACAddress();
-			System.out.println("mac: " + mac);
+			com.fullteem.common.utils.Log.println("mac: " + mac);
 		}
 	}
 

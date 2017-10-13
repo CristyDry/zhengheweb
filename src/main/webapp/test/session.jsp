@@ -25,7 +25,7 @@
 		String name = (String) e.nextElement();
 		String value = session.getAttribute(name).toString();
 		out.println(name + " = " + value + "<br>");
-		System.out.println(name + " = " + value);
+		com.fullteem.common.utils.Log.println(name + " = " + value);
 	}
 	out.print("<br/><b>Form</b><br/>");
 %>

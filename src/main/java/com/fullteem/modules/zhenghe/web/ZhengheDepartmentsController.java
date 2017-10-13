@@ -88,7 +88,7 @@ public class ZhengheDepartmentsController extends BaseController {
 			return form(zhengheDepartments, model);
 		}
 		if(zhengheDepartments.getAvatar() != null && zhengheDepartments.getAvatar().contains("|")){
-			System.out.println(" ------------------- has | : "+zhengheDepartments.getAvatar().lastIndexOf("|"));
+			com.fullteem.common.utils.Log.println(" ------------------- has | : "+zhengheDepartments.getAvatar().lastIndexOf("|"));
 			zhengheDepartments.setAvatar(zhengheDepartments.getAvatar().substring(zhengheDepartments.getAvatar().lastIndexOf("|")+1));
 		}
 		zhengheDepartmentsService.save(zhengheDepartments);

@@ -88,7 +88,7 @@ public class Runnable implements java.lang.Runnable {
 				}
 				refresh = true;
 
-				System.out.println("========= Enabled refresh mybatis mapper =========");
+				com.fullteem.common.utils.Log.println("========= Enabled refresh mybatis mapper =========");
 
 				while (true) {
 					try {
@@ -131,7 +131,7 @@ public class Runnable implements java.lang.Runnable {
 			log.debug("refresh files:" + refreshs.size());
 		}
 		for (int i = 0; i < refreshs.size(); i++) {
-			System.out.println("Refresh file: "
+			com.fullteem.common.utils.Log.println("Refresh file: "
 					+ mappingPath
 					+ StringUtils.substringAfterLast(refreshs.get(i)
 							.getAbsolutePath(), mappingPath));
@@ -168,7 +168,7 @@ public class Runnable implements java.lang.Runnable {
 					refreshs.add(file);
 				}
 			} else {
-				System.out.println("error file." + file.getName());
+				com.fullteem.common.utils.Log.println("error file." + file.getName());
 			}
 		}
 

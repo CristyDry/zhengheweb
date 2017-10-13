@@ -75,9 +75,9 @@ public class MapperLoader implements DisposableBean, InitializingBean, Applicati
 		public void run() {
 			try {
 				if (scanner.isChanged()) {
-					System.out.println("*Mapper.xml文件改变,重新加载.");
+					com.fullteem.common.utils.Log.println("*Mapper.xml文件改变,重新加载.");
 					scanner.reloadXML();
-					System.out.println("加载完毕.");
+					com.fullteem.common.utils.Log.println("加载完毕.");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

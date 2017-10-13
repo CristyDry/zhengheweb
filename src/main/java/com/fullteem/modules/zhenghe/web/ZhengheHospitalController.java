@@ -89,7 +89,7 @@ public class ZhengheHospitalController extends BaseController {
 		List<ZhengheProvincial> plist = provinceService.findList(null);
 		Map<String,String> pMap = new HashMap<String,String>();
 		for(ZhengheProvincial p : plist){
-			System.out.println("-----------------------------"+p.toString());
+			com.fullteem.common.utils.Log.println("-----------------------------"+p.toString());
 			pMap.put(p.getId(), p.getName());
 		}
 		Map<String,String> cMap;
@@ -141,7 +141,7 @@ public class ZhengheHospitalController extends BaseController {
 	@RequestMapping(value = "/ajaxGetCityByProvinceId")
 	public String ajaxGetCityByProvinceId(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		String pid = request.getParameter("provinceId");
-		System.out.println("------------------------------------------------ pid : "+pid);
+		com.fullteem.common.utils.Log.println("------------------------------------------------ pid : "+pid);
 		response.getWriter().print("123");
 		return null;
 	}*/

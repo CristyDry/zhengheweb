@@ -120,13 +120,13 @@ public class SendMailUtil {
 			// 模板内容转换为string
 			String htmlText = FreeMarkerTemplateUtils
 					.processTemplateIntoString(template, map);
-			System.out.println(htmlText);
+			com.fullteem.common.utils.Log.println(htmlText);
 			hemail.setMsg(htmlText);
 			hemail.send();
-			System.out.println("email send true!");
+			com.fullteem.common.utils.Log.println("email send true!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("email send error!");
+			com.fullteem.common.utils.Log.println("email send error!");
 		}
 	}
 
@@ -153,10 +153,10 @@ public class SendMailUtil {
 			hemail.setSubject(subject);
 			hemail.setMsg(message);
 			hemail.send();
-			System.out.println("email send true!");
+			com.fullteem.common.utils.Log.println("email send true!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("email send error!");
+			com.fullteem.common.utils.Log.println("email send error!");
 		}
 
 	}
@@ -176,7 +176,7 @@ public class SendMailUtil {
 			// 模板内容转换为string
 			htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(
 					template, map);
-			System.out.println(htmlText);
+			com.fullteem.common.utils.Log.println(htmlText);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -187,13 +187,13 @@ public class SendMailUtil {
 		String path = getAppPath(SendMailUtil.class);
 		path = path + File.separator + "mailtemplate" + File.separator;
 		path = path.replace("\\", "/");
-		System.out.println(path);
+		com.fullteem.common.utils.Log.println(path);
 		return path;
 	}
 
 	private static String getFileName(String path) {
 		path = path.replace("\\", "/");
-		System.out.println(path);
+		com.fullteem.common.utils.Log.println(path);
 		return path.substring(path.lastIndexOf("/") + 1);
 	}
 
@@ -255,7 +255,7 @@ public class SendMailUtil {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		System.out.println("realPath----->" + realPath);
+		com.fullteem.common.utils.Log.println("realPath----->" + realPath);
 		return realPath;
 	}
 
@@ -277,10 +277,10 @@ public class SendMailUtil {
 		// hemail.setSubject("sendemail test!");
 		// hemail.setMsg("<a href=\"http://www.google.cn\">谷歌</a><br/>");
 		// hemail.send();
-		// System.out.println("email send true!");
+		// com.fullteem.common.utils.Log.println("email send true!");
 		// } catch (Exception e) {
 		// e.printStackTrace();
-		// System.out.println("email send error!");
+		// com.fullteem.common.utils.Log.println("email send error!");
 		// }
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("subject", "测试标题");
@@ -288,7 +288,7 @@ public class SendMailUtil {
 		String templatePath = "mailtemplate/test.ftl";
 		sendFtlMail("test@163.com", "sendemail test!", templatePath, map);
 
-		// System.out.println(getFileName("mailtemplate/test.ftl"));
+		// com.fullteem.common.utils.Log.println(getFileName("mailtemplate/test.ftl"));
 	}
 
 }

@@ -19,12 +19,12 @@ public class WorkDayUtils {
 			Calendar cal_end = Calendar.getInstance();
 			cal_start.setTime(date_start);
 			cal_end.setTime(date_end);
-			System.out.println("开始日：" + cal_start.get(Calendar.YEAR) + "-" + (cal_start.get(Calendar.MONTH) + 1) 
+			com.fullteem.common.utils.Log.println("开始日：" + cal_start.get(Calendar.YEAR) + "-" + (cal_start.get(Calendar.MONTH) + 1)
 					+ "-" + cal_start.get(Calendar.DAY_OF_MONTH) + " " + app.getChineseWeek(cal_start));
-			System.out.println("结束日：" + cal_end.get(Calendar.YEAR) + "-" + (cal_end.get(Calendar.MONTH) + 1)
+			com.fullteem.common.utils.Log.println("结束日：" + cal_end.get(Calendar.YEAR) + "-" + (cal_end.get(Calendar.MONTH) + 1)
 					+ "-" + cal_end.get(Calendar.DAY_OF_MONTH) + " " + app.getChineseWeek(cal_end));
-			System.out.println("工作日：" + app.getWorkingDay(cal_start, cal_end));
-			System.out.println("休息日：" + app.getHolidays(cal_start, cal_end));
+			com.fullteem.common.utils.Log.println("工作日：" + app.getWorkingDay(cal_start, cal_end));
+			com.fullteem.common.utils.Log.println("休息日：" + app.getHolidays(cal_start, cal_end));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,9 +86,9 @@ public class WorkDayUtils {
 		// }
 		result = (getDaysBetween(this.getNextMonday(d1), this.getNextMonday(d2)) / 7)
 				* 5 + charge_start_date - charge_end_date;
-		// System.out.println("charge_start_date>" + charge_start_date);
-		// System.out.println("charge_end_date>" + charge_end_date);
-		// System.out.println("between day is-->" + betweendays);
+		// com.fullteem.common.utils.Log.println("charge_start_date>" + charge_start_date);
+		// com.fullteem.common.utils.Log.println("charge_end_date>" + charge_end_date);
+		// com.fullteem.common.utils.Log.println("between day is-->" + betweendays);
 		return result;
 	}
 
@@ -100,7 +100,7 @@ public class WorkDayUtils {
 	public String getChineseWeek(Calendar date) {
 		final String dayNames[] = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 		int dayOfWeek = date.get(Calendar.DAY_OF_WEEK); 
-		// System.out.println(dayNames[dayOfWeek - 1]);
+		// com.fullteem.common.utils.Log.println(dayNames[dayOfWeek - 1]);
 		return dayNames[dayOfWeek - 1];
 	}
 

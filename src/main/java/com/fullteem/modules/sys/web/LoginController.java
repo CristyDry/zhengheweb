@@ -166,7 +166,7 @@ public class LoginController extends BaseController{
 //		// 登录成功后，获取上次登录的当前站点ID
 //		UserUtils.putCache("siteId", StringUtils.toLong(CookieUtils.getCookie(request, "siteId")));
 
-//		System.out.println("==========================a");
+//		com.fullteem.common.utils.Log.println("==========================a");
 //		try {
 //			byte[] bytes = com.fullteem.common.utils.FileUtils.readFileToByteArray(
 //					com.fullteem.common.utils.FileUtils.getFile("c:\\sxt.dmp"));
@@ -179,7 +179,7 @@ public class LoginController extends BaseController{
 ////			//UserUtils.getSession().setAttribute("a", "a");
 ////			request.getSession().setAttribute("aaa", "aa");
 ////		}
-//		System.out.println("==========================b");
+//		com.fullteem.common.utils.Log.println("==========================b");
 		return "modules/sys/sysIndex";
 	}
 	

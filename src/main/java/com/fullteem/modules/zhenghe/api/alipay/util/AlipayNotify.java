@@ -38,7 +38,7 @@ public class AlipayNotify {
      */
     public static boolean verify(Map<String, String> params) throws UnsupportedEncodingException {
 
-        System.out.println("@验证消息是否是支付宝发出的合法消息.......");
+        com.fullteem.common.utils.Log.println("@验证消息是否是支付宝发出的合法消息.......");
         //判断responsetTxt是否为true，isSign是否为true
         //responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关
         //isSign不是true，与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
@@ -56,7 +56,7 @@ public class AlipayNotify {
         //写日志记录（若要调试，请取消下面两行注释）
         String sWord = "responseTxt=" + responseTxt + "\n isSign=" + isSign + "\n 返回回来的参数：" + AlipayCore.createLinkString(params);
 	    //AlipayCore.logResult(sWord);
-        System.out.println("@验证消息结果:\r\n"+sWord);
+        com.fullteem.common.utils.Log.println("@验证消息结果:\r\n"+sWord);
         
         if (isSign && responseTxt.equals("true")) {
             return true;
@@ -77,7 +77,7 @@ public class AlipayNotify {
     	Map<String, String> sParaNew = AlipayCore.paraFilter(Params);
         //获取待签名字符串
         String preSignStr = new String(AlipayCore.createLinkString(sParaNew).getBytes(AlipayConfig.input_charset),AlipayConfig.input_charset);
-        System.out.println("@获取待签名字符串:"+preSignStr);
+        com.fullteem.common.utils.Log.println("@获取待签名字符串:"+preSignStr);
         //获得签名验证结果
         boolean isSign = false;
         if(AlipayConfig.sign_type.equals("RSA")){

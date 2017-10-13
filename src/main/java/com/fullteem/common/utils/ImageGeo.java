@@ -52,12 +52,12 @@ public class ImageGeo {
 		} catch (Exception ex) {
 			error = true;
 		}
-		System.out.println(filename + ": (" + lat + ", " + lon + ")");
+		com.fullteem.common.utils.Log.println(filename + ": (" + lat + ", " + lon + ")");
 	}
 	
 	public static void main(String[] args) {
 		ImageGeo imageGeo = new ImageGeo(ImageGeo.class.getResource("IMAG0068.jpg").getFile());
-		System.out.println(imageGeo.lon+","+imageGeo.lat);
+		com.fullteem.common.utils.Log.println(imageGeo.lon+","+imageGeo.lat);
 	}
 
 }

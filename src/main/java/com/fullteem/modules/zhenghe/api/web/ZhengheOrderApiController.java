@@ -570,13 +570,13 @@ public class ZhengheOrderApiController extends BaseController{
 		criteria.setPatientId(patientId);
 		List<ZhengheBuyCar> existList = buyCarService.findList(criteria);
 		if(existList != null && existList.size() > 0){
-			System.out.println("-------------------- exist");
+			com.fullteem.common.utils.Log.println("-------------------- exist");
 			ZhengheBuyCar exist = existList.get(0);
 			exist.setCount(count);
 			exist.setSumPrice(Integer.parseInt(count) * p.getPrice());
 			buyCarService.save(exist);
 		}else{
-			System.out.println("--------------------- new ");
+			com.fullteem.common.utils.Log.println("--------------------- new ");
 			ZhengheBuyCar buyCar = new ZhengheBuyCar();
 			buyCar.setProductId(productId);
 			buyCar.setPatientId(patientId);

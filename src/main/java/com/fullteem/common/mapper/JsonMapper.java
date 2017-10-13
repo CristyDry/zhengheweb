@@ -255,7 +255,7 @@ public class JsonMapper extends ObjectMapper {
 		map.put("open", true);
 		list.add(map);
 		String json = JsonMapper.getInstance().toJson(list);
-		System.out.println(json);
+		com.fullteem.common.utils.Log.println(json);
 	}
 	
 }

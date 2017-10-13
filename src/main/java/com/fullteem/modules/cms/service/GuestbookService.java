@@ -81,7 +81,7 @@ public class GuestbookService extends CrudService<GuestbookDao, Guestbook> {
 //		
 //		BooleanQuery queryFilter = dao.getFullTextQuery((BooleanClause[])bcList.toArray(new BooleanClause[bcList.size()]));
 //
-//		System.out.println(queryFilter);
+//		com.fullteem.common.utils.Log.println(queryFilter);
 //		
 //		// 设置排序（默认相识度排序）
 //		Sort sort = null;//new Sort(new SortField("updateDate", SortField.DOC, true));

@@ -61,11 +61,11 @@ public class IdGen implements IdGenerator, SessionIdGenerator {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(IdGen.uuid());
-		System.out.println(IdGen.uuid().length());
-		System.out.println(new IdGen().getNextId());
+		com.fullteem.common.utils.Log.println(IdGen.uuid());
+		com.fullteem.common.utils.Log.println(IdGen.uuid().length());
+		com.fullteem.common.utils.Log.println(new IdGen().getNextId());
 		for (int i=0; i<1000; i++){
-			System.out.println(IdGen.randomLong() + "  " + IdGen.randomBase62(5));
+			com.fullteem.common.utils.Log.println(IdGen.randomLong() + "  " + IdGen.randomBase62(5));
 		}
 	}
 

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -31,7 +32,7 @@ public class CosmeticUpload {
 	 * 创建时间：2015年11月2日</br>
 	 * @param request
 	 * @param type，1为上传用户头像，2为上传商品相关图片，3为上传成分相关图片，4为心得相关图片
-	 * @param imgFile传MultipartFile类型的file
+	 * @param imgFile 传MultipartFile类型的file
 	 * @return 返回1：file空，2：file类型错误，3：上传出错，url
 	 */
 	public static String uploadFile(HttpServletRequest request,String type,MultipartFile imgFile){
@@ -72,10 +73,13 @@ public class CosmeticUpload {
 				targetFile.getParentFile().mkdirs();
 			}
 			if (!targetFile.exists()) {
-				targetFile.mkdirs();
+				targetFile.createNewFile();
 			}
 			// 保存
-			imgFile.transferTo(targetFile);
+			Thumbnails.of(imgFile.getInputStream()).size(320,320).outputQuality(1f).toFile(targetFile);
+
+			// 保存
+			//imgFile.transferTo(targetFile);
 			// 使用文件md5码检查是否有重复文件存在
 			String md5 = GetBigFileMD5.getMD5(targetFile);
 			File findFile = new File(realPath + "/" + md5 + "." + fileExt);

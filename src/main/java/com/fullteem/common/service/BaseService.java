@@ -184,7 +184,7 @@ public abstract class BaseService {
 			}
 		}
 
-//		System.out.println("dataScopeFilter: " + sqlString.toString());
+//		com.fullteem.common.utils.Log.println("dataScopeFilter: " + sqlString.toString());
 
 		// 设置到自定义SQL对象
 		entity.getSqlMap().put(sqlMapKey, sqlString.toString());

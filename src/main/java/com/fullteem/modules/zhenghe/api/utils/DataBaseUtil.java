@@ -68,15 +68,15 @@ public class DataBaseUtil {
 				count = 0;
 			Long testNumber = Long.valueOf(longNumber.toString());
 			if (testMap.containsKey(testNumber)) {
-				System.out.println("有重复数据, 已记录" + testMap.get(testNumber) + "次.");
+				com.fullteem.common.utils.Log.println("有重复数据, 已记录" + testMap.get(testNumber) + "次.");
 				testMap.put(testNumber, testMap.get(testNumber) + 1);
 				findSomeCount ++;
 			} else {
 				testMap.put(testNumber, 1);
 			}
-			System.out.println(("I:" + i + " - ") + Math.abs(Long.valueOf(System.currentTimeMillis())));
+			com.fullteem.common.utils.Log.println(("I:" + i + " - ") + Math.abs(Long.valueOf(System.currentTimeMillis())));
 		}
-		System.out.println("共有：" + findSomeCount + "次重复！");
+		com.fullteem.common.utils.Log.println("共有：" + findSomeCount + "次重复！");
 	}
 
 }

@@ -237,7 +237,7 @@ public class ActTaskController extends BaseController {
 								.getActivities();
 						for (ActivityImpl subActImpl : subAcList) {
 							String subid = subActImpl.getId();
-							System.out.println("subImpl:" + subid);
+							com.fullteem.common.utils.Log.println("subImpl:" + subid);
 							if (activeId.equals(subid)) {// 获得执行到那个节点
 								actImpls.add(subActImpl);
 								break;
@@ -247,7 +247,7 @@ public class ActTaskController extends BaseController {
 				}
 				if (activeId.equals(id)) {// 获得执行到那个节点
 					actImpls.add(activityImpl);
-					System.out.println(id);
+					com.fullteem.common.utils.Log.println(id);
 				}
 			}
 		}
