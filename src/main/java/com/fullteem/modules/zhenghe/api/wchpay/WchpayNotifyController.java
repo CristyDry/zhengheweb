@@ -161,7 +161,7 @@ public class WchpayNotifyController extends BaseController {
     }
 
 
-    @ApiOperation(value = "微信支付", notes = "统一下单接口")
+    /*@ApiOperation(value = "微信支付", notes = "统一下单接口")
     @RequestMapping(value = "/weChatPay", method = RequestMethod.POST)
     @ApiResponses({
             @ApiResponse(code = ZhengheConstance.param_fault, message = "参数格式不正确", response = String.class),
@@ -260,12 +260,12 @@ public class WchpayNotifyController extends BaseController {
     }
 
 
-    /*
+    *//*
      * 获取路径(http协议+服务器ip[或域名]+端口号)
-     */
+     *//*
     private String getBasePath() {
         String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
                 .append(request.getServerPort()).toString();
         return basePath;
-    }
+    }*/
 }

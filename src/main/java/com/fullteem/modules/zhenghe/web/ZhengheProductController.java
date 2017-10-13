@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fullteem.modules.zhenghe.api.utils.ProductPicUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -97,40 +98,12 @@ public class ZhengheProductController extends BaseController {
 		for(ZhengheProductClassify c : cList){
 			cMap.put(c.getId(), c.getClassifyName());
 		}
-		List<String> images = getImage(zhengheProduct.getId());
+		List<String> images = ProductPicUtils.getImage(zhengheProduct.getId());
 		zhengheProduct.setImages(images);
 		
 		model.addAttribute("cList",cMap);
 		model.addAttribute("zhengheProduct", zhengheProduct);
 		return "modules/zhenghe/zhengheProductForm";
-	}
-	
-	private List<String> getImage(String id){
-		
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
-		
-		ZhengheCommonImage image = imageService.findByRelevanceId(id);
-		
-		if(image==null)
-			return null;
-		
-		List<String> images = new ArrayList<String>();
-		Class<? extends ZhengheCommonImage> clazz = image.getClass();
-		try {
-			for(int i=0;i<9;i++){
-				String str = "getImage"+(i+1);
-				Method method = clazz.getDeclaredMethod(str);
-				Object obj = method.invoke(image);
-				if(obj!=null&&!StringUtils.isBlank(obj.toString())){
-					String url = basePath+obj.toString();
-					images.add(url);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return images;
 	}
 
 	@RequiresPermissions("zhenghe:zhengheProduct:edit")

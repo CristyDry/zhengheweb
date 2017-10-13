@@ -178,7 +178,6 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述: </br>
 	 * 开发人员：chenx</br>
 	 * 创建时间：2016年1月4日</br>
-	 * @param requestId
 	 * @return
 	 */
 	@ApiOperation(value="第三方登录",notes="前端传过来的第三方的凭证(openId),channel(注册渠道):1->平台注册;2->第三方||accountNumber即为openId")
@@ -214,34 +213,6 @@ public class ZhengheDoctorApiController extends BaseController {
 		}
 		return buildSuccessResultInfo(patientToResponse(patient));
 	}
-
-	
-	/**
-	 * 
-	 * 方法名: </br>
-	 * 详述: </br>
-	 * 开发人员：chenx</br>
-	 * 创建时间：2016年1月4日</br>
-	 * @return
-	 */
-	@ApiOperation(value="支付宝支付",notes="无需传参,返回签约合作者身份ID(PID)、签约卖家支付宝账号(SID)、服务器异步通知页面路径(URL)")
-	@RequestMapping(value="/alipay",method=RequestMethod.POST)
-	@ApiResponses({
-		@ApiResponse(code=ZhengheConstance.param_fault,message="参数格式不正确",response=String.class),
-	})
-	public ResponseEntity<BaseResult> alipay(){
-		
-		String PID = AlipayConfig.partner;
-		String SID = AlipayConfig.seller_email;
-		String URL = getBasePath()+request.getContextPath()+AlipayConfig.uri;
-		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("PID", PID);
-		jsonObject.put("SID", SID);
-		jsonObject.put("URL", URL);
-		
-		return buildSuccessResultInfo(jsonObject);
-	}
 	
 	
 	/**
@@ -268,7 +239,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		}
 		
 		ZhengheVersion version = zhengheVersionService.findNewestByOSType(type);
-		String url = getBasePath()+version.getUrl().substring(1);
+		String url = getBaseContextPath()+version.getUrl().substring(1);
 		
 		version.setUrl(url);
 		
@@ -412,7 +383,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		
 		for(PatientZhenghe patient:patientList2){
 			if(!patient.getAvatar().startsWith("http")){
-				patient.setAvatar(getBasePath()+patient.getAvatar());
+				patient.setAvatar(getBaseContextPath()+patient.getAvatar());
 			}
 		}
 		
@@ -426,8 +397,6 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述: </br>
 	 * 开发人员：chenx</br>
 	 * 创建时间：2015年12月19日</br>
-	 * @param request
-	 * @param param
 	 * @param file
 	 * @return
 	 */
@@ -463,7 +432,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		zhengheDoctorService.save(doctor);
 		Map<String,String> avatarMap = new HashMap<String,String>();
 		if(!doctor.getAvatar().startsWith("http")){
-			avatarMap.put("avatar", getBasePath()+doctor.getAvatar());
+			avatarMap.put("avatar", getBaseContextPath()+doctor.getAvatar());
 		}else{
 			avatarMap.put("avatar", doctor.getAvatar());
 		}
@@ -587,7 +556,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("id", message.getId());
 			jsonObject.put("title", message.getTitle());
-			//jsonObject.put("url", getBasePath()+message.getContent());
+			//jsonObject.put("url", getBaseContextPath()+message.getContent());
 			jsonObject.put("url", "http://wangwang.taobao.com/");
 			jsonObject.put("date", DateUtils.formatDate(message.getCreateDate(),"yyyy-MM-dd"));
 			if("1".equals(message.getStatus())){
@@ -793,7 +762,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:知识</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月17日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="文章内容",notes="根据文章的id返回文章内容,[如果用户已登录,则要传入用户id和类型,后台判断该用户是否收藏该文章(1->已收藏,0->未收藏)]")
@@ -832,7 +801,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		jsonObject.put("title", article.getTitle());
 		jsonObject.put("createDate", DateUtils.formatDate(article.getCreateDate(),"yyyy-MM-dd"));
 		if(!article.getAvatar().startsWith("http")){
-			jsonObject.put("avatar",getBasePath()+article.getAvatar());
+			jsonObject.put("avatar",getBaseContextPath()+article.getAvatar());
 		}else{
 			jsonObject.put("avatar",article.getAvatar());
 		}
@@ -855,7 +824,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:知识</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月17日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="频道类型",notes="传频道的id,根据所传的频道返回相应的文章列表")
@@ -876,7 +845,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			jsonObject.put("id", article.getId());
 			jsonObject.put("title", article.getTitle());
 			if(!article.getAvatar().startsWith("http")){
-				jsonObject.put("avatar",getBasePath()+article.getAvatar());
+				jsonObject.put("avatar",getBaseContextPath()+article.getAvatar());
 			}else{
 				jsonObject.put("avatar",article.getAvatar());
 			}
@@ -907,7 +876,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("id",carousel.getArticleId());
 			if(!carousel.getAvatar().startsWith("http")){
-				jsonObject.put("avatar", getBasePath()+carousel.getAvatar());
+				jsonObject.put("avatar", getBaseContextPath()+carousel.getAvatar());
 			}else{
 				jsonObject.put("avatar", carousel.getAvatar());
 			}
@@ -924,7 +893,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:知识</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="频道列表",notes="返回所有的频道无需传参")
@@ -983,7 +952,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:问诊</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="申请通知",notes="根据患者id返回通知")
@@ -1003,7 +972,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			ZhengheDoctor doctor = zhengheDoctorService.get(friend.getDoctorId());
 			JSONObject jsonObject = new JSONObject();
 			if(!doctor.getAvatar().startsWith("http")){
-				jsonObject.put("avatar", getBasePath()+doctor.getAvatar());
+				jsonObject.put("avatar", getBaseContextPath()+doctor.getAvatar());
 			}else{
 				jsonObject.put("avatar", doctor.getAvatar());
 			}
@@ -1028,7 +997,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:问诊</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="我的医生",notes="根据患者id返回医生")
@@ -1058,7 +1027,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:扫一扫</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="申请咨询",notes="接收医生id,验证和患者id消息,把验证请求存进数据库(status:1->对方已是您的好友;2->发送申请成功(之前已经发送过一次申请);3->发送申请成功)")
@@ -1117,7 +1086,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:扫一扫</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="扫码找医",notes="根据医生id返回医生详情")
@@ -1153,7 +1122,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:寻医</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="联系电话",notes="返回预约热线与联系客服电话,无需传参(phone为预约热线;service为联系客服)")
@@ -1171,7 +1140,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:寻医</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="专家会诊",notes="无需传参")
@@ -1188,7 +1157,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月12日</br>
 	 * 心情：This is the most disgusting I have written the code -_-
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="搜索医生",notes="根据(医生名,科室,职称,医院)关键字||(一级科室id,二级科室id)||(省,市的id)搜索医生")
@@ -1222,7 +1191,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			
 			for(DoctorZhenghe doctor:doctorList){
 				if(!doctor.getAvatar().startsWith("http")){
-					doctor.setAvatar(getBasePath()+doctor.getAvatar());
+					doctor.setAvatar(getBaseContextPath()+doctor.getAvatar());
 				}
 
 			}
@@ -1253,7 +1222,7 @@ public class ZhengheDoctorApiController extends BaseController {
 				departmentsZhenghe.setAvatar("");
 			}else {
 				if(!department.getAvatar().startsWith("http")){
-					departmentsZhenghe.setAvatar(getBasePath()+department.getAvatar());
+					departmentsZhenghe.setAvatar(getBaseContextPath()+department.getAvatar());
 				}else{
 					departmentsZhenghe.setAvatar(department.getAvatar());
 				}
@@ -1270,7 +1239,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:寻医</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月12日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="一级科室",notes="返回全部一级科室,无需传参")
@@ -1287,7 +1256,7 @@ public class ZhengheDoctorApiController extends BaseController {
 				departmentsZhenghe.setAvatar("");
 			}else{
 				if(!department.getAvatar().startsWith("http")){
-					departmentsZhenghe.setAvatar(getBasePath()+department.getAvatar());
+					departmentsZhenghe.setAvatar(getBaseContextPath()+department.getAvatar());
 				}else{
 					departmentsZhenghe.setAvatar(department.getAvatar());
 				}
@@ -1307,7 +1276,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:我的诊室</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月12日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="我的名片",notes="根据医生id返回医生二维码")
@@ -1333,7 +1302,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			josnObject.put("wmUrl","");
 		}else{
 			if(!zhengheDoctor.getAvatar().startsWith("http")){
-				josnObject.put("wmUrl",getBasePath()+zhengheDoctor.getWmUrl());
+				josnObject.put("wmUrl",getBaseContextPath()+zhengheDoctor.getWmUrl());
 			}else{
 				josnObject.put("wmUrl",zhengheDoctor.getWmUrl());
 			}
@@ -1558,7 +1527,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:我的诊室</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月12日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="管理分组",notes="根据医生id返回患者分组")
@@ -1705,7 +1674,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:我的诊室</br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月12日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value="患者申请",notes="根据医生id返回患者申请")
@@ -1735,7 +1704,7 @@ public class ZhengheDoctorApiController extends BaseController {
 				friendZhenghe.setAvatar("");
 			}else {
 				if(!patient.getAvatar().startsWith("http")){
-					friendZhenghe.setAvatar(getBasePath()+patient.getAvatar());
+					friendZhenghe.setAvatar(getBaseContextPath()+patient.getAvatar());
 				}else{
 					friendZhenghe.setAvatar(patient.getAvatar());
 				}
@@ -1781,7 +1750,7 @@ public class ZhengheDoctorApiController extends BaseController {
 	 * 详述:医生登录 </br>
 	 * 开发人员：陈协</br>
 	 * 创建时间：2015年11月11日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "登录", notes = "用户登录")
@@ -1859,7 +1828,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			if(patient.getAvatar().contains("http")){
 				avatar = patient.getAvatar();
 			}else{
-				avatar = getBasePath()+patient.getAvatar();
+				avatar = getBaseContextPath()+patient.getAvatar();
 			}
 		}
 		rl.setAvatar(avatar);
@@ -1931,7 +1900,7 @@ public class ZhengheDoctorApiController extends BaseController {
 				jsonObject.put("avatar","");
 			}else{
 				if(!patient.getAvatar().startsWith("http")){
-					jsonObject.put("avatar",getBasePath()+patient.getAvatar());
+					jsonObject.put("avatar",getBaseContextPath()+patient.getAvatar());
 				}else{
 					jsonObject.put("avatar",patient.getAvatar());
 				}
@@ -2011,7 +1980,7 @@ public class ZhengheDoctorApiController extends BaseController {
 				jsonObject.put("avatar","");
 			}else{
 				if(!doctor.getAvatar().startsWith("http")){
-					jsonObject.put("avatar",getBasePath()+doctor.getAvatar());
+					jsonObject.put("avatar",getBaseContextPath()+doctor.getAvatar());
 				}else{
 					jsonObject.put("avatar",doctor.getAvatar());
 				}
@@ -2043,15 +2012,5 @@ public class ZhengheDoctorApiController extends BaseController {
 		}
 		return null;
 	}
-	
-	/*
-	 * 获取路径(http协议+服务器ip[或域名]+端口号)
-	 */
-	private String getBasePath(){
 
-		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
-				.append(request.getServerPort()).append(request.getContextPath()).toString();
-		return basePath;
-	}
-	
 }

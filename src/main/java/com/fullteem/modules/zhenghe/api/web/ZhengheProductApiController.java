@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fullteem.modules.zhenghe.api.utils.ProductPicUtils;
 import net.sf.json.JSONObject;
 
 import org.activiti.engine.impl.util.json.JSONArray;
@@ -79,7 +80,6 @@ public class ZhengheProductApiController extends BaseController{
 	 * 详述:获取商城顶部轮播图 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
 	 * @return
 	 */
 	@ApiOperation(value = "获取商城顶部轮播图", notes = "图片数量必填")
@@ -109,7 +109,6 @@ public class ZhengheProductApiController extends BaseController{
 	 * 详述:获取商品分类列表 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
 	 * @return
 	 */
 	@ApiOperation(value = "获取商品分类列表", notes = "不需要参数")
@@ -130,7 +129,6 @@ public class ZhengheProductApiController extends BaseController{
 	 * 详述:搜索商品接口 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
 	 * @return
 	 */
 	@ApiOperation(value = "搜索商品", notes = "全部选填。classifyId是分类id，priceMin和priceMax是商品价格范围，成双提供有效，type必须为otc(非处方药)rx(处方药)之一，否则无效，orderBy是排序条件:1.更新时间(综合)，2.销售量，3.价格低到高，4.价格高到低。pageNo是页码，默认0，pageSize是每页条数，默认4")
@@ -198,7 +196,7 @@ public class ZhengheProductApiController extends BaseController{
 		for(ZhengheProduct p : pList){
 			//List<ZhengheCarousel> cList = carouselService.findListByProductId(p.getId());
 			//p.setProductPic((cList == null || cList.size()<1) ? "" : this.imgPrefix+cList.get(0).getAvatar());
-			p.setProductPic(getPic(p.getId()));
+			p.setProductPic(ProductPicUtils.getPic(p.getId()));
 		}
 		for(ZhengheProduct z : pList){
 			if(isSimple != null && isSimple){
@@ -214,7 +212,6 @@ public class ZhengheProductApiController extends BaseController{
 	 * 详述:根据分类id获取商品列表 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
 	 * @return
 	 */
 	@ApiOperation(value = "根据分类id获取商品列表", notes = "classifyId(分类id)必传，keys不用传，其他选填。priceMin和priceMax是商品价格范围，成双提供有效，type必须为otc(非处方药)rx(处方药)之一，否则无效，orderBy是排序条件:1.更新时间(综合)，2.销售量，3.价格低到高，4.价格高到低")
@@ -283,7 +280,7 @@ public class ZhengheProductApiController extends BaseController{
 			//if(images!=null){
 			//	p.setProductPic(getBasePath()+images.getImage1());
 			//}
-			p.setProductPic(getPic(p.getId()));
+			p.setProductPic(ProductPicUtils.getPic(p.getId()));
 		}
 		return buildSuccessResultInfo(pList);
 	}
@@ -294,7 +291,6 @@ public class ZhengheProductApiController extends BaseController{
 	 * 详述:商品详情 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月16日</br>
-	 * @param jsonValue
 	 * @return
 	 * @throws IOException 
 	 */
@@ -338,7 +334,7 @@ public class ZhengheProductApiController extends BaseController{
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(p!=null){
 			map.put("product", p);
-			List<String> images = getImage(p.getId());
+			List<String> images = ProductPicUtils.getImage(p.getId());
 			if(images!=null){
 				if(images.size()==0){
 					map.put("carousel",new com.alibaba.fastjson.JSONArray());
@@ -361,54 +357,4 @@ public class ZhengheProductApiController extends BaseController{
 		return buildSuccessResultInfo(map);
 	}
 
-	//设置商品图
-	private String getPic(String id){
-		List<String> images = getImage(id);
-		if(images!=null){
-			if(images.size()==0){
-				return "";
-			}else{
-				return images.get(0);
-			}
-		}else{
-			return "";
-		}
-	}
-
-	/**
-	 * 
-	 * 方法名: </br>
-	 * 详述: </br>
-	 * 开发人员：chenx</br>
-	 * 创建时间：2016年1月14日</br>
-	 * @param id
-	 * @return
-	 */
-	private List<String> getImage(String id){
-		
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
-		
-		ZhengheCommonImage image = imageService.findByRelevanceId(id);
-		
-		if(image==null)
-			return null;
-		
-		List<String> images = new ArrayList<String>();
-		Class<? extends ZhengheCommonImage> clazz = image.getClass();
-		try {
-			for(int i=0;i<9;i++){
-				String str = "getImage"+(i+1);
-				Method method = clazz.getDeclaredMethod(str);
-				Object obj = method.invoke(image);
-				if(obj!=null&&!StringUtils.isBlank(obj.toString())){
-					String url = basePath+obj.toString();
-					images.add(url);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return images;
-	}
 }
