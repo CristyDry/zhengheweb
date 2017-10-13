@@ -7,7 +7,7 @@
 		a.rx_id AS "rxId",
 		a.department_id AS "departmentId",
 		a.product_id AS "productId",
-		(select image1 from `zhenghe_common_image` where `relevance_id` = a.id limit 1) imgUrl,
+		(select image1 from `zhenghe_common_image` where `relevance_id` = a.product_id limit 1) imgUrl,
 		a.product_name AS "productName",
 		a.price AS "price",
 		a.num AS "num",

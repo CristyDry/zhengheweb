@@ -196,8 +196,9 @@ public class ZhengheProductApiController extends BaseController{
 		}
 		List<ZhengheProduct> pList = productService.searchProduct(keys, classifyId, priceBetween, type, orderBy,Integer.parseInt(pageNo),Integer.parseInt(pageSize));
 		for(ZhengheProduct p : pList){
-			List<ZhengheCarousel> cList = carouselService.findListByProductId(p.getId());
-			p.setProductPic((cList == null || cList.size()<1) ? "" : this.imgPrefix+cList.get(0).getAvatar());
+			//List<ZhengheCarousel> cList = carouselService.findListByProductId(p.getId());
+			//p.setProductPic((cList == null || cList.size()<1) ? "" : this.imgPrefix+cList.get(0).getAvatar());
+			p.setProductPic(getPic(p.getId()));
 		}
 		for(ZhengheProduct z : pList){
 			if(isSimple != null && isSimple){
@@ -278,25 +279,15 @@ public class ZhengheProductApiController extends BaseController{
 		for(ZhengheProduct p : pList){
 			//List<ZhengheCarousel> cList = carouselService.findListByProductId(p.getId());
 			//p.setProductPic((cList == null || cList.size()<1) ? "" : this.imgPrefix+cList.get(0).getAvatar());
-			ZhengheCommonImage images = imageService.findByRelevanceId(p.getId());
-			if(images!=null){
-				p.setProductPic(getBasePath()+images.getImage1());
-			}
+			//ZhengheCommonImage images = imageService.findByRelevanceId(p.getId());
+			//if(images!=null){
+			//	p.setProductPic(getBasePath()+images.getImage1());
+			//}
+			p.setProductPic(getPic(p.getId()));
 		}
 		return buildSuccessResultInfo(pList);
 	}
-	
-	/*
-	 * 获取路径(http协议+服务器ip[或域名]+端口号)
-	 */
-	private String getBasePath(){
 
-		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
-				.append(request.getServerPort()).append(request.getContextPath()).toString();
-		return basePath;
-	}
-	
-	
 	/**
 	 * 
 	 * 方法名: </br>
@@ -369,7 +360,21 @@ public class ZhengheProductApiController extends BaseController{
 		
 		return buildSuccessResultInfo(map);
 	}
-	
+
+	//设置商品图
+	private String getPic(String id){
+		List<String> images = getImage(id);
+		if(images!=null){
+			if(images.size()==0){
+				return "";
+			}else{
+				return images.get(0);
+			}
+		}else{
+			return "";
+		}
+	}
+
 	/**
 	 * 
 	 * 方法名: </br>
