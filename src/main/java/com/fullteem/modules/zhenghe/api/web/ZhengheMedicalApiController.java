@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fullteem.modules.zhenghe.api.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.cookie.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,6 @@ import com.fullteem.modules.zhenghe.api.entity.request.RequestLifeLog;
 import com.fullteem.modules.zhenghe.api.entity.request.RequestMedicalHistory;
 import com.fullteem.modules.zhenghe.api.entity.request.RequestNumber;
 import com.fullteem.modules.zhenghe.api.entity.request.RequestWeight;
-import com.fullteem.modules.zhenghe.api.utils.CosmeticUpload;
-import com.fullteem.modules.zhenghe.api.utils.Tool;
-import com.fullteem.modules.zhenghe.api.utils.ZhengheConstance;
-import com.fullteem.modules.zhenghe.api.utils.ZhengheUpload;
 import com.fullteem.modules.zhenghe.entity.ZhengheArticle;
 import com.fullteem.modules.zhenghe.entity.ZhengheBloodPressure;
 import com.fullteem.modules.zhenghe.entity.ZhengheCarousel;
@@ -230,7 +227,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:获取收藏列表</br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月19日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "获取收藏列表", notes = "id->用户id，type->1文章2商品，user->1患者2医生，全部必选")
@@ -283,8 +280,7 @@ public class ZhengheMedicalApiController extends BaseController{
 					}
 					if(pList.size() > 0){
 						for(ZhengheProduct product : pList){
-							List<ZhengheCarousel> caList = carouselService.findListByProductId(product.getId());
-							product.setProductPic((caList == null || caList.size()<1) ? "" : caList.get(0).getAvatar());
+							product.setProductPic(ProductPicUtils.getPic(product.getId()));
 						}
 					}
 				return buildSuccessResultInfo(pList);
@@ -317,7 +313,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:添加反馈意见 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "添加反馈意见", notes = "用户id、用户类型、content反馈内容必传，phone手机号码选填")
@@ -374,7 +370,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:删除生活日志 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "删除生活日志", notes = "生活日志id必填")
@@ -399,43 +395,7 @@ public class ZhengheMedicalApiController extends BaseController{
 		return buildSuccessResultInfo(ZhengheConstance.BASE_SUCCESS_CODE);
 		
 	}
-	
-	/**
-	 * 
-	 * 方法名: </br>
-	 * 详述: </br>
-	 * 开发人员：chenx</br>
-	 * 创建时间：2015年12月18日</br>
-	 * @param id
-	 * @return
-	 */
-	private List<String> getImage(String id){
-		
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
-		
-		ZhengheCommonImage image = imageService.findByRelevanceId(id);
-		
-		if(image==null)
-			return null;
-		
-		List<String> images = new ArrayList<String>();
-		Class<? extends ZhengheCommonImage> clazz = image.getClass();
-		try {
-			for(int i=0;i<9;i++){
-				String str = "getImage"+(i+1);
-				Method method = clazz.getDeclaredMethod(str);
-				Object obj = method.invoke(image);
-				if(obj!=null&&!StringUtils.isBlank(obj.toString())){
-					String url = basePath+obj.toString();
-					images.add(url);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return images;
-	}
+
 	
 	/**
 	 * 
@@ -443,7 +403,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:获取病人生活日志 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "获取病人生活日志", notes = "病人id必填")
@@ -467,7 +427,7 @@ public class ZhengheMedicalApiController extends BaseController{
 		List<ZhengheLifeLog> lList = lifeLogService.findList(l);
 		
 		for(ZhengheLifeLog lifeLog:lList){
-			lifeLog.setImage(getImage(lifeLog.getId()));
+			lifeLog.setImage(ProductPicUtils.getImage(lifeLog.getId()));
 		}
 		
 		return buildSuccessResultInfo(lList);
@@ -480,7 +440,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:添加/修改生活日志 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "添加/修改生活日志", notes = "除生活日志id外其它参数全部必传:title标题，content内容(如果不传生活日志id为添加,否则为修改生活日志)")
@@ -534,7 +494,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:获取病人体重记录 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "获取病人体重记录", notes = "病人id必填")
@@ -564,7 +524,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:添加/修改体重记录 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "添加/修改体重记录", notes = "除体重记录id外其它参数全部必传:stature身高，weight体重(如果不传体重记录id为添加,否则为修改体重记录)")
@@ -618,7 +578,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:获取病人心率记录 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "获取病人心率记录", notes = "病人id必填")
@@ -649,7 +609,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:添加/修改心率记录 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "添加/修改心率记录", notes = "除心率记录id外其它参数全部必传:heartRate心率，scene场景(如果不传心率记录id为添加,否则为修改心率记录)")
@@ -691,7 +651,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:获取病人血压记录 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "获取病人血压记录", notes = "参数为病人id，必传")
@@ -722,7 +682,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:添加/修改血压记录 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "添加/修改血压记录", notes = "除血压记录id外其它参数全部必传:sbp收缩压，dbp舒张压(如果不传血压记录id为添加,否则为修改血压记录)")
@@ -765,7 +725,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:获取病历列表 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "获取病历列表", notes = "参数为患者id，必传")
@@ -799,13 +759,13 @@ public class ZhengheMedicalApiController extends BaseController{
 			m.setBirthday2(m.getBirthday()==null?"":DateUtils.formatDate(m.getBirthday(),"yyyy-MM-dd"));
 			m.setSeeadoctorDate2(m.getSeeadoctorDate()==null?"":DateUtils.formatDate(m.getSeeadoctorDate(),"yyyy-MM-dd"));
 			m.setStandby1(patient.getAge());
-			m.setImage(getImage(m.getId()));
+			m.setImage(ProductPicUtils.getImage(m.getId()));
 			m.setUpdateDate2(m.getUpdateDate()==null?"":DateUtils.formatDate(m.getUpdateDate(),"yyyy-MM-dd"));
 			ZhengheCourseDisease d = new ZhengheCourseDisease();
 			d.setMhId(m.getId());
 			List<ZhengheCourseDisease> cdList = diseaseService.findList(d);
 			for(ZhengheCourseDisease cd:cdList){
-				cd.setImage(getImage(cd.getId()));
+				cd.setImage(ProductPicUtils.getImage(cd.getId()));
 				cd.setCdDate2(cd.getCdDate()==null?"":DateUtils.formatDate(cd.getCdDate(),"yyyy-MM-dd"));
 			}
 			m.setCdList(cdList);
@@ -821,7 +781,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:添加/修改病程 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "添加/修改病程", notes = "除病程id外,其他参数全部必填(如果不传病程id为添加,否则为修改病程)"
@@ -887,7 +847,7 @@ public class ZhengheMedicalApiController extends BaseController{
 			}
 		}
 		
-		cd.setImage(getImage(cd.getId()));
+		cd.setImage(ProductPicUtils.getImage(cd.getId()));
 		
 		cd.setCdDate2(df.format(cd.getCdDate()));
 		
@@ -901,7 +861,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:添加/修改病历 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "添加/修改病历", notes = "除病历id和图片外,其他参数全部必填(如果不传病历id为添加,否则为修改病历)"
@@ -997,7 +957,7 @@ public class ZhengheMedicalApiController extends BaseController{
 		
 		md.setBirthday2(birthday);
 		md.setSeeadoctorDate2(seeadoctorDate);
-		md.setImage(getImage(md.getId()));
+		md.setImage(ProductPicUtils.getImage(md.getId()));
 		
 		return buildSuccessResultInfo(md);
 	}
@@ -1065,7 +1025,7 @@ public class ZhengheMedicalApiController extends BaseController{
 	 * 详述:上传 病历/病程 图片 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月20日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	/*@ApiOperation(value = "上传 病历/病程 图片", notes = "图片最多上传9张,多于9张时只取前9张")
@@ -1140,16 +1100,6 @@ public class ZhengheMedicalApiController extends BaseController{
 		imageService.save(image);
 		
 		return buildSuccessResultInfo(ZhengheConstance.BASE_SUCCESS_CODE);
-	}
-	
-	/*
-	 * 获取路径(http协议+服务器ip[或域名]+端口号)
-	 */
-	private String getBasePath(){
-
-		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
-				.append(request.getServerPort()).toString();
-		return basePath;
 	}
 		
 }

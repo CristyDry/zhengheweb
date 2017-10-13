@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fullteem.modules.zhenghe.api.utils.Pays;
+import com.fullteem.modules.zhenghe.api.utils.ProductPicUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -134,7 +135,7 @@ public class ZhengheOrderApiController extends BaseController{
 	 * 详述:已收货 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月17日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "订单支付-付款(订单状态：3已发货->4已收货) ", notes = "订单id，必传")
@@ -172,7 +173,7 @@ public class ZhengheOrderApiController extends BaseController{
 	 * 详述:订单支付 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月17日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "订单支付-付款(订单状态：1未付款->2已付款) ", notes = "订单id，必传")
@@ -207,7 +208,7 @@ public class ZhengheOrderApiController extends BaseController{
 	 * 详述:获取订单列表(我的订单) </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月17日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "获取订单列表(我的订单) ", notes = "病人id必填,订单状态选填(订单状态6为获取已支付(状态2)和已发货(状态3)的订单)")
@@ -262,7 +263,7 @@ public class ZhengheOrderApiController extends BaseController{
 						/*List<ZhengheCarousel> carousel = carouselService.findListByProductId(product.getId());
 						item.setProductPic((carousel == null || carousel.size() < 1) ? "" : basePath+carousel.get(0).getAvatar());*/
 						// 123456
-						List<String> images = getImage(product.getId());
+						List<String> images = ProductPicUtils.getImage(product.getId());
 						item.setProductPic((images == null || images.size() < 1) ? "" : images.get(0));
 					}
 					o.setItems(iList);
@@ -272,38 +273,13 @@ public class ZhengheOrderApiController extends BaseController{
 		return buildSuccessResultInfo(oList);
 	}
 	
-	
-	private List<String> getImage(String id){
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
-		ZhengheCommonImage image = imageService.findByRelevanceId(id);
-		if(image==null)
-			return null;
-		List<String> images = new ArrayList<String>();
-		Class<? extends ZhengheCommonImage> clazz = image.getClass();
-		try {
-			for(int i=0;i<9;i++){
-				String str = "getImage"+(i+1);
-				Method method = clazz.getDeclaredMethod(str);
-				Object obj = method.invoke(image);
-				if(obj!=null&&!StringUtils.isBlank(obj.toString())){
-					String url = basePath+obj.toString();
-					images.add(url);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return images;
-	}
-	
-	
 	/**
 	 * 
 	 * 方法名: </br>
 	 * 详述:购物车->生成订单 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月17日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "购物车->生成订单 ", notes = "病人id,地址id和购物车项id全部必填，多个购物车项用<英文>逗号拼接")
@@ -403,7 +379,7 @@ public class ZhengheOrderApiController extends BaseController{
 	 * 详述:立即购买 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月17日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "立即购买 ", notes = "病人id，地址id,商品id，购买数量必填，医生id选填")
@@ -492,7 +468,7 @@ public class ZhengheOrderApiController extends BaseController{
 	 * 详述:获取购物车列表 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月18日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "获取购物车列表 ", notes = "参数必选，患者id")
@@ -538,7 +514,7 @@ public class ZhengheOrderApiController extends BaseController{
 	 * 详述:将商品添加进去购物车 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年11月17日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "将商品添加进去购物车 ", notes = "商品id，病人id，购买数量 必填，医生id选填")
@@ -598,7 +574,7 @@ public class ZhengheOrderApiController extends BaseController{
 	 * 详述:删除购物车某一项 </br>
 	 * 开发人员：李启华</br>
 	 * 创建时间：2015年12月03日</br>
-	 * @param jsonValue
+	 * @param 
 	 * @return
 	 */
 	@ApiOperation(value = "删除购物车一项或多项", notes = "购物车项id、病人id必填，多个购物车项用<英文>逗号拼接")
@@ -671,7 +647,7 @@ public class ZhengheOrderApiController extends BaseController{
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}
 		//返回预支付信息
-		Object result = Pays.payByWeiXin(order.getParentOrderNo(), getBasePath(),totalAmount);
+		Object result = Pays.payByWeiXin(order.getParentOrderNo(), getBaseContextPath(),totalAmount);
 		return buildSuccessResultInfo(result);
 	}
 
@@ -715,7 +691,7 @@ public class ZhengheOrderApiController extends BaseController{
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}
 		//返回预支付信息
-		Object result = Pays.appAliPay(order.getParentOrderNo(), getBasePath(), totalAmount);
+		Object result = Pays.appAliPay(order.getParentOrderNo(), getBaseContextPath(), totalAmount);
 		return buildSuccessResultInfo(result);
 	}
 
@@ -747,12 +723,6 @@ public class ZhengheOrderApiController extends BaseController{
 		return orderItemNo;
 	}
 
-	private String getBasePath(){
 
-		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
-				.append(request.getServerPort()).append(request.getContextPath()).toString();
-		return basePath;
-	}
-	
 		
 }

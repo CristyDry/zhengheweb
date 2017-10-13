@@ -275,13 +275,5 @@ public class ZhengheRxApiController extends BaseController {
         return buildSuccessResultInfo(header.values());
     }
 
-    /*
-     * 获取路径(http协议+服务器ip[或域名]+端口号)
-     */
-    private String getBasePath() {
 
-        String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
-                .append(request.getServerPort()).toString();
-        return basePath;
-    }
 }

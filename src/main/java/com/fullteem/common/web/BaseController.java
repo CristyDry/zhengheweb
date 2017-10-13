@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -33,6 +34,8 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fullteem.common.beanvalidator.BeanValidators;
@@ -318,5 +321,22 @@ public abstract class BaseController {
 			return buildFailedResultInfo(-1);
 		}
 		return buildFailedResultInfo(0);
+	}
+
+	/*
+	 * 获取路径(http协议+服务器ip[或域名]+端口号)
+	 */
+	protected String getBasePath() {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
+				.append(request.getServerPort()).toString();
+		return basePath;
+	}
+
+	protected String getBaseContextPath(){
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
+				.append(request.getServerPort()).append(request.getContextPath()).toString();
+		return basePath;
 	}
 }
