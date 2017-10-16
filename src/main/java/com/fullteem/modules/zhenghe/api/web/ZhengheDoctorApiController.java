@@ -1980,7 +1980,7 @@ public class ZhengheDoctorApiController extends BaseController {
 				jsonObject.put("avatar","");
 			}else{
 				if(!doctor.getAvatar().startsWith("http")){
-					jsonObject.put("avatar",getBaseContextPath()+doctor.getAvatar());
+					jsonObject.put("avatar",getBasePath()+doctor.getAvatar());
 				}else{
 					jsonObject.put("avatar",doctor.getAvatar());
 				}
