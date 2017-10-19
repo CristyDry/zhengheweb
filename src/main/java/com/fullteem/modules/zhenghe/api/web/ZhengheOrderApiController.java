@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fullteem.modules.zhenghe.api.utils.Pays;
 import com.fullteem.modules.zhenghe.api.utils.ProductPicUtils;
+import com.fullteem.modules.zhenghe.entity.*;
+import com.fullteem.modules.zhenghe.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,25 +36,6 @@ import com.fullteem.modules.zhenghe.api.entity.request.RequestNumber;
 import com.fullteem.modules.zhenghe.api.entity.request.RequestOrderList;
 import com.fullteem.modules.zhenghe.api.utils.Tool;
 import com.fullteem.modules.zhenghe.api.utils.ZhengheConstance;
-import com.fullteem.modules.zhenghe.entity.ZhengheAddress;
-import com.fullteem.modules.zhenghe.entity.ZhengheBuyCar;
-import com.fullteem.modules.zhenghe.entity.ZhengheCarousel;
-import com.fullteem.modules.zhenghe.entity.ZhengheCommonImage;
-import com.fullteem.modules.zhenghe.entity.ZhengheOrder;
-import com.fullteem.modules.zhenghe.entity.ZhengheOrderItem;
-import com.fullteem.modules.zhenghe.entity.ZhengheProduct;
-import com.fullteem.modules.zhenghe.service.ZhengheAddressService;
-import com.fullteem.modules.zhenghe.service.ZhengheBuyCarService;
-import com.fullteem.modules.zhenghe.service.ZhengheCarouselService;
-import com.fullteem.modules.zhenghe.service.ZhengheCityService;
-import com.fullteem.modules.zhenghe.service.ZhengheCommonImageService;
-import com.fullteem.modules.zhenghe.service.ZhengheDistrictService;
-import com.fullteem.modules.zhenghe.service.ZhengheDoctorService;
-import com.fullteem.modules.zhenghe.service.ZhengheOrderItemService;
-import com.fullteem.modules.zhenghe.service.ZhengheOrderService;
-import com.fullteem.modules.zhenghe.service.ZhenghePatientService;
-import com.fullteem.modules.zhenghe.service.ZhengheProductService;
-import com.fullteem.modules.zhenghe.service.ZhengheProvincialService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -98,7 +81,8 @@ public class ZhengheOrderApiController extends BaseController{
 	private HttpServletRequest request;
 	@Resource 
 	ZhengheCommonImageService imageService;
-	
+	@Resource
+	private ZhenghePayService payService;
 	
 	
 	@ApiOperation(value = "取消订单 ", notes = "传入订单id")
@@ -695,7 +679,52 @@ public class ZhengheOrderApiController extends BaseController{
 		return buildSuccessResultInfo(result);
 	}
 
+	/**
+	 *
+	 * 方法名: </br>
+	 * 详述:货到付款 </br>
+	 * 开发人员：LeVis</br>
+	 * 创建时间：2015年12月03日</br>
+	 * @return
+	 */
+	@ApiOperation(value = "货到付款", notes = "货到付款")
+	@RequestMapping(value = "/trade", method = RequestMethod.POST)
+	@ApiResponses({
+			@ApiResponse(code = ZhengheConstance.param_fault, message = "参数格式不正确", response = String.class),
+			@ApiResponse(code = ZhengheConstance.orderId_not_exist, message = "订单id不存在", response = String.class),
+			@ApiResponse(code = ZhengheConstance.order_status_fault, message = "订单已支付", response = String.class),
+			@ApiResponse(code = ZhengheConstance.BASE_SUCCESS_CODE, message = "操作成功", response = String.class)
+	})
+	public ResponseEntity<BaseResult> trade(@ApiParam(required = true,value = "订单id")
+											 @RequestBody RequestId requestId) {
 
+		String id = requestId.getId();
+		if(StringUtils.isBlank(id)){
+			return buildFailedResultInfo(ZhengheConstance.param_fault);
+		}
+		ZhengheOrder order = orderService.get(id);
+		if(order==null){
+			return buildFailedResultInfo(ZhengheConstance.orderId_not_exist);
+		}
+		if(!"1".equals(order.getStatus())){
+			//已付款订单
+			return buildFailedResultInfo(ZhengheConstance.order_status_fault);
+		}
+		//记录订单的微信支付订单号
+		order.setStatus("2");
+		order.setRemark("货到付款");
+		orderService.save(order);
+
+		ZhenghePay zhenghePay = new ZhenghePay();
+		zhenghePay.setPatientId(order.getPatientId());
+		zhenghePay.setType("3");
+		zhenghePay.setPaySum(order.getTotalAmount());
+		zhenghePay.setStatus("1");
+		zhenghePay.setCreateDate(new Date());
+		payService.save(zhenghePay);
+		logger.debug("支付记录保存成功！");
+		return buildSuccessResultInfo("");
+	}
 
 	/*
 	 * 生成订单表中不重复的订单号

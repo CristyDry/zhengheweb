@@ -801,7 +801,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		jsonObject.put("title", article.getTitle());
 		jsonObject.put("createDate", DateUtils.formatDate(article.getCreateDate(),"yyyy-MM-dd"));
 		if(!article.getAvatar().startsWith("http")){
-			jsonObject.put("avatar",getBaseContextPath()+article.getAvatar());
+			jsonObject.put("avatar",getBasePath()+article.getAvatar());
 		}else{
 			jsonObject.put("avatar",article.getAvatar());
 		}
@@ -845,7 +845,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			jsonObject.put("id", article.getId());
 			jsonObject.put("title", article.getTitle());
 			if(!article.getAvatar().startsWith("http")){
-				jsonObject.put("avatar",getBaseContextPath()+article.getAvatar());
+				jsonObject.put("avatar",getBasePath()+article.getAvatar());
 			}else{
 				jsonObject.put("avatar",article.getAvatar());
 			}
@@ -876,7 +876,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("id",carousel.getArticleId());
 			if(!carousel.getAvatar().startsWith("http")){
-				jsonObject.put("avatar", getBaseContextPath()+carousel.getAvatar());
+				jsonObject.put("avatar", getBasePath()+carousel.getAvatar());
 			}else{
 				jsonObject.put("avatar", carousel.getAvatar());
 			}
@@ -1191,7 +1191,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			
 			for(DoctorZhenghe doctor:doctorList){
 				if(!doctor.getAvatar().startsWith("http")){
-					doctor.setAvatar(getBaseContextPath()+doctor.getAvatar());
+					doctor.setAvatar(getBasePath()+doctor.getAvatar());
 				}
 
 			}

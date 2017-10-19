@@ -66,7 +66,8 @@
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
 	    <!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
 	    <property name="driverClassName" value="${jdbc.driver}" />
-	    
+		<property name="connectionInitSqls" value="set names utf8mb4;"/>
+
 		<!-- 基本属性 url、user、password -->
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
