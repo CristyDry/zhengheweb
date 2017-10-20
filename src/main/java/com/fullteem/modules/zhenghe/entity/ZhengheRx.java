@@ -33,6 +33,7 @@ public class ZhengheRx extends DataEntity<ZhengheRx> {
 	private String patientPhone;		// 患者电话
 	private String caseNo;		// 病例号
 	private String category;		// 科别
+	private String employeeNumber;  //工号
 	private String clinicalDiagnosis;		// 临床诊断
 	private String doctor;		// 医师
 	private String approvalDoctor;		// 审核药师
@@ -322,5 +323,13 @@ public class ZhengheRx extends DataEntity<ZhengheRx> {
 
 	public void setPayTypeName(String payTypeName) {
 		this.payTypeName = payTypeName;
+	}
+
+	public String getEmployeeNumber() {
+		return employeeNumber;
+	}
+
+	public void setEmployeeNumber(String employeeNumber) {
+		this.employeeNumber = employeeNumber;
 	}
 }

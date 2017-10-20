@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.rx_name AS "rxName",
 		a.rx_no AS "rxNo",
+		a.employee_number AS "employeeNumber",
 		a.pay_type AS "payType",
 		'自费' AS payTypeName,
 		a.patient_id AS "patientId",
@@ -156,7 +157,8 @@
 			remark,
 			update_date,
 			mender,
-			creator
+			creator,
+			employee_number
 		) VALUES (
 			#{id},
 			#{rxName},
@@ -186,7 +188,8 @@
 			#{remark},
 			#{updateDate},
 			#{mender},
-			#{creator}
+			#{creator},
+			#{employeeNumber}
 		)
 	</insert>
 	
@@ -218,7 +221,8 @@
 			remark = #{remark},
 			update_date = #{updateDate},
 			mender = #{mender},
-			creator = #{creator}
+			creator = #{creator},
+			employee_number = #{employeeNumber}
 		WHERE id = #{id}
 	</update>
 	
