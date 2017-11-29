@@ -61,3 +61,16 @@ INSERT INTO `sys_dict` VALUES ('481f3e56ab1340c9b2e75c5bccd69dc3', '2', '已取�
 INSERT INTO `sys_dict` VALUES ('5e9fcfd40be94492b3fad7c6ddab4c8c', '1', '已接收', 'rx_status', '待接收', 20, '0', '1', '2017-9-25 14:38:08', '1', '2017-9-25 14:38:08', '', '0');
 INSERT INTO `sys_dict` VALUES ('61373fd4ac1f4268bd2c63c72c7f29fb', '0', '待接收', 'rx_status', '待接收', 10, '0', '1', '2017-9-25 14:37:47', '1', '2017-9-25 14:37:47', '', '0');
 INSERT INTO `sys_dict` VALUES ('7e7e98b184624662a4e3a843b36783b3', '3', '隐藏', 'doctor_type', '专家', 30, '0', '1', '2017-9-21 10:07:56', '1', '2017-9-21 10:07:56', '不在APP显示', '0');
+
+DROP TABLE IF EXISTS `zhenghe_pharmacist`;
+CREATE TABLE `zhenghe_pharmacist` (
+	`id` varchar(32) NOT NULL,
+	`name` varchar(32) NULL COMMENT '名称',
+	`tel` varchar(32) NULL COMMENT '电话',
+	`icon` varchar(128) NULL COMMENT '头像',
+	`img` varchar(128) NULL COMMENT '资质',
+	`msg` varchar(128) NULL COMMENT '描述',
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci
+COMMENT='药师表';
