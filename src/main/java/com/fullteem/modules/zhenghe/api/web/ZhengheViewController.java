@@ -13,6 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  * Created by LeWis on 2018/1/17.
  */
@@ -27,7 +31,11 @@ public class ZhengheViewController extends BaseController {
             @ApiResponse(code = ZhengheConstance.BASE_FAIL_CODE, message = "失败", response = String.class)
     })
     @RequestMapping(value = "/view", method = RequestMethod.POST)
-    public ResponseEntity<BaseResult> view(){
-        return buildSuccessResultInfo(ImmutableMap.of("view", "0"));
+    public ResponseEntity<BaseResult> view() throws IOException {
+        Properties prop = new Properties();
+        InputStream ins = this.getClass().getResourceAsStream("/fullteem.properties");
+        prop.load(ins);
+        String view = prop.getProperty("zhenghe.view", "0");
+        return buildSuccessResultInfo(ImmutableMap.of("view", view));
     }
 }
