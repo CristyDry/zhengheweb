@@ -68,6 +68,9 @@ public abstract class BaseController {
 	@Value("${frontPath}")
 	protected String frontPath;
 
+	@Value("${zhenghe.img.server}")
+	protected String imageServer;
+
 	/**
 	 * 前端URL后缀
 	 */
@@ -327,16 +330,19 @@ public abstract class BaseController {
 	 * 获取路径(http协议+服务器ip[或域名]+端口号)
 	 */
 	protected String getBasePath() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		/*	HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
 				.append(request.getServerPort()).toString();
-		return basePath;
+		return basePath;*/
+		return imageServer;
 	}
 
 	protected String getBaseContextPath(){
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		return imageServer + request.getContextPath();
+		/*HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String basePath = new StringBuilder(request.getScheme()).append("://").append(request.getServerName()).append(":")
 				.append(request.getServerPort()).append(request.getContextPath()).toString();
-		return basePath;
+		return basePath;*/
 	}
 }
