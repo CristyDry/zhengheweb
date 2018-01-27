@@ -106,6 +106,7 @@ public class ZhengheRxController extends BaseController {
 		if("0".equals(rx.getStatus())){
 			//待接收才能取消
 			rx.setStatus("1");//药店接收
+			rx.setEmployeeNumber(zhengheRx.getEmployeeNumber());
 			zhengheRxService.save(rx);
 		}
 		addMessage(redirectAttributes, "已接收处方");

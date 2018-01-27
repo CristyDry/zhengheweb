@@ -146,7 +146,7 @@
 		FROM `zhenghe_rx` r
 		LEFT JOIN  `zhenghe_rx_detail` d on r.`id` = d.`rx_id`
 		LEFT JOIN `zhenghe_product` p on d.`product_id` =p.`id`
-		WHERE r.`creator` = #{creator} and r.`rx_date` BETWEEN #{startDate} AND #{endDate}
+		WHERE r.`creator` = #{creator} and r.`rx_date` BETWEEN #{startDate} AND #{endDate} and r.status = '1'
 		GROUP BY p.id ORDER BY nums desc
 	</select>
 </mapper>

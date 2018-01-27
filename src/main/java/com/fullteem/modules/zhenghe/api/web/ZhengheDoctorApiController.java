@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.impl.cookie.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,8 +148,16 @@ public class ZhengheDoctorApiController extends BaseController {
 	private HttpServletRequest request;
 	@Autowired
 	private ZhengheVersionService zhengheVersionService;
-	
-	
+
+	@Value("${rong.app.key}")
+	private String RONG_APP_KEY;
+	@Value("${rong.app.secret}")
+	private String RONG_APP_SECRET;
+
+	@Value("${rong.test.app.key}")
+	private String RONG_TEST_APP_KEY;
+	@Value("${rong.test.app.secret}")
+	private String RONG_TEST_APP_SECRET;
 	
 	/**
 	 * 
@@ -469,15 +478,17 @@ public class ZhengheDoctorApiController extends BaseController {
 		if(patient==null&&doctor==null){
 			return buildFailedResultInfo(ZhengheConstance.userId_is_null);
 		}
-
-		String key = "c9kqb3rdku4cj";
-		String secret = "ZHLHwSx1rbJ";
 		
 		SdkHttpResult result = null;
 		
-		result = ApiHttpClient.getToken(key, secret, userId, patient==null?doctor.getDoctorName():patient.getPatientName(),
-				patient==null?doctor.getAvatar():patient.getAvatar(), FormatType.json);
-		
+
+		if(StringUtils.isEmpty(requestUser.getRongType())){
+			result = ApiHttpClient.getToken(RONG_TEST_APP_KEY, RONG_TEST_APP_SECRET, userId, patient==null?doctor.getDoctorName():patient.getPatientName(),
+					patient==null?doctor.getAvatar():patient.getAvatar(), FormatType.json);
+		}else{
+			result = ApiHttpClient.getToken(RONG_APP_KEY, RONG_APP_SECRET, userId, patient==null?doctor.getDoctorName():patient.getPatientName(),
+					patient==null?doctor.getAvatar():patient.getAvatar(), FormatType.json);
+		}
 		com.fullteem.common.utils.Log.println("gettoken=" + result);
 		
 		net.sf.json.JSONObject tt = net.sf.json.JSONObject.fromObject(result.getResult());
@@ -801,7 +812,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		jsonObject.put("title", article.getTitle());
 		jsonObject.put("createDate", DateUtils.formatDate(article.getCreateDate(),"yyyy-MM-dd"));
 		if(!article.getAvatar().startsWith("http")){
-			jsonObject.put("avatar",getBaseContextPath()+article.getAvatar());
+			jsonObject.put("avatar",getBasePath()+article.getAvatar());
 		}else{
 			jsonObject.put("avatar",article.getAvatar());
 		}
@@ -845,7 +856,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			jsonObject.put("id", article.getId());
 			jsonObject.put("title", article.getTitle());
 			if(!article.getAvatar().startsWith("http")){
-				jsonObject.put("avatar",getBaseContextPath()+article.getAvatar());
+				jsonObject.put("avatar",getBasePath()+article.getAvatar());
 			}else{
 				jsonObject.put("avatar",article.getAvatar());
 			}
@@ -876,7 +887,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("id",carousel.getArticleId());
 			if(!carousel.getAvatar().startsWith("http")){
-				jsonObject.put("avatar", getBaseContextPath()+carousel.getAvatar());
+				jsonObject.put("avatar", getBasePath()+carousel.getAvatar());
 			}else{
 				jsonObject.put("avatar", carousel.getAvatar());
 			}
@@ -1191,7 +1202,7 @@ public class ZhengheDoctorApiController extends BaseController {
 			
 			for(DoctorZhenghe doctor:doctorList){
 				if(!doctor.getAvatar().startsWith("http")){
-					doctor.setAvatar(getBaseContextPath()+doctor.getAvatar());
+					doctor.setAvatar(getBasePath()+doctor.getAvatar());
 				}
 
 			}
@@ -1980,7 +1991,7 @@ public class ZhengheDoctorApiController extends BaseController {
 				jsonObject.put("avatar","");
 			}else{
 				if(!doctor.getAvatar().startsWith("http")){
-					jsonObject.put("avatar",getBaseContextPath()+doctor.getAvatar());
+					jsonObject.put("avatar",getBasePath()+doctor.getAvatar());
 				}else{
 					jsonObject.put("avatar",doctor.getAvatar());
 				}

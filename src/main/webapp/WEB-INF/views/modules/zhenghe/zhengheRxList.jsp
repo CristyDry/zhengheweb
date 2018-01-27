@@ -83,6 +83,7 @@
 				<th>药品金额</th>
 				<th>状态</th>
 				<th>所属药店</th>
+				<th>接收工号</th>
 				<th>开具时间</th>
 				<th>处理时间</th>
 				<th>处理人</th>
@@ -152,6 +153,9 @@
 				</td>
 				<td>
 					${zhengheRx.departmentName}
+				</td>
+				<td>
+						${zhengheRx.employeeNumber}
 				</td>
 				<td>
 					<fmt:formatDate value="${zhengheRx.rxDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

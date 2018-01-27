@@ -63,6 +63,7 @@
 				<th>订单号</th>
 				<th>订单金额</th>
 				<th>状态</th>
+				<th>备注</th>
 				<th>快递公司名称</th>
 				<th>递快单号</th>
 				<th>送货地址</th>
@@ -87,6 +88,9 @@
 				</td>
 				<td>
 					${fns:getDictLabel(zhengheOrder.status, 'order_status', '')}
+				</td>
+				<td>
+						${zhengheOrder.remark}
 				</td>
 				<td>
 					${zhengheOrder.expressName}

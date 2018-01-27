@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullteem.modules.zhenghe.dao.ZhenghePharmacistDao">
+    
+	<sql id="zhenghePharmacistColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.tel AS "tel",
+		a.icon AS "icon",
+		a.img AS "img",
+		a.msg AS "msg"
+	</sql>
+	
+	<sql id="zhenghePharmacistJoins">
+	</sql>
+    
+	<select id="get" resultType="ZhenghePharmacist">
+		SELECT 
+			<include refid="zhenghePharmacistColumns"/>
+		FROM zhenghe_pharmacist a
+		<include refid="zhenghePharmacistJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZhenghePharmacist">
+		SELECT 
+			<include refid="zhenghePharmacistColumns"/>
+		FROM zhenghe_pharmacist a
+		<include refid="zhenghePharmacistJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="tel != null and tel != ''">
+				AND a.tel = #{tel}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZhenghePharmacist">
+		SELECT 
+			<include refid="zhenghePharmacistColumns"/>
+		FROM zhenghe_pharmacist a
+		<include refid="zhenghePharmacistJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zhenghe_pharmacist(
+			id,
+			name,
+			tel,
+			icon,
+			img,
+			msg
+		) VALUES (
+			#{id},
+			#{name},
+			#{tel},
+			#{icon},
+			#{img},
+			#{msg}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zhenghe_pharmacist SET 	
+			name = #{name},
+			tel = #{tel},
+			icon = #{icon},
+			img = #{img},
+			msg = #{msg}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM zhenghe_pharmacist
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

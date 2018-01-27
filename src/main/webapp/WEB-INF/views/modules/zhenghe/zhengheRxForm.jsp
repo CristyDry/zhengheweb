@@ -27,6 +27,11 @@
                 $("#inputForm").submit();
             });
             $("#btnReceive").click(function () {
+				if($("#employeeNumber").val() == ''){
+					alert("请输入工号");
+					return;
+				}
+
                 $("#inputForm").attr("action","${ctx}/zhenghe/zhengheRx/receive");
                 $("#inputForm").submit();
             });
@@ -141,170 +146,6 @@
 			</ul>
 		</div>
 
-		<%--<div class="control-group">
-			<label class="control-label">处方名称：</label>
-			<div class="controls">
-				<form:input path="rxName" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">处方编号：</label>
-			<div class="controls">
-				<form:input path="rxNo" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">付款类型：</label>
-			<div class="controls">
-				<form:input path="payType" htmlEscape="false" maxlength="2" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">患者编号：</label>
-			<div class="controls">
-				<form:input path="patientId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">患者名称：</label>
-			<div class="controls">
-				<form:input path="patientName" htmlEscape="false" maxlength="2" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">患者性别：</label>
-			<div class="controls">
-				<form:input path="patientGender" htmlEscape="false" maxlength="1" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">患者年龄：</label>
-			<div class="controls">
-				<form:input path="patientAge" htmlEscape="false" maxlength="11" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">患者地址：</label>
-			<div class="controls">
-				<form:input path="patientAddress" htmlEscape="false" maxlength="120" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">患者电话：</label>
-			<div class="controls">
-				<form:input path="patientPhone" htmlEscape="false" maxlength="21" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">病例号：</label>
-			<div class="controls">
-				<form:input path="caseNo" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">科别：</label>
-			<div class="controls">
-				<form:input path="category" htmlEscape="false" maxlength="32" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">临床诊断：</label>
-			<div class="controls">
-				<form:input path="clinicalDiagnosis" htmlEscape="false" maxlength="255" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">医师：</label>
-			<div class="controls">
-				<form:input path="doctor" htmlEscape="false" maxlength="10" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">审核药师：</label>
-			<div class="controls">
-				<form:input path="approvalDoctor" htmlEscape="false" maxlength="10" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">调配药师/士：</label>
-			<div class="controls">
-				<form:input path="deployDoctor" htmlEscape="false" maxlength="10" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">核对、发药药师：</label>
-			<div class="controls">
-				<form:input path="checkDoctor" htmlEscape="false" maxlength="10" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">药品金额：</label>
-			<div class="controls">
-				<form:input path="totalAmount" htmlEscape="false" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">状态：</label>
-			<div class="controls">
-				<form:input path="status" htmlEscape="false" maxlength="2" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">所属药店：</label>
-			<div class="controls">
-				<sys:treeselect id="departmentId" name="departmentId" value="${zhengheRx.departmentId}" labelName="" labelValue=""
-					title="部门" url="/sys/office/treeData?type=2" cssClass="" allowClear="true" notAllowSelectParent="true"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">开具时间：</label>
-			<div class="controls">
-				<input name="rxDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${zhengheRx.rxDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">处理时间：</label>
-			<div class="controls">
-				<input name="processDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${zhengheRx.processDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">处理人：</label>
-			<div class="controls">
-				<input name="processUser" type="text" maxlength="20" class="input-xlarge"
-					value="${zhengheRx.processUser}" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注：</label>
-			<div class="controls">
-				<form:input path="remark" htmlEscape="false" maxlength="255" class="input-xlarge "/>
-			</div>
-		</div>
-		--%>
-		<%--<div class="control-group">
-			<label class="control-label">删除标记：</label>
-			<div class="controls">
-				<form:input path="deleteMark" htmlEscape="false" maxlength="32" class="input-xlarge "/>
-			</div>
-		</div>--%>
-
-		<%--<div class="control-group">
-			<label class="control-label">修改者：</label>
-			<div class="controls">
-				<form:input path="mender" htmlEscape="false" maxlength="32" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">创建者：</label>
-			<div class="controls">
-				<form:input path="creator" htmlEscape="false" maxlength="32" class="input-xlarge "/>
-			</div>
-		</div>--%>
 			<div class="control-group">
 				<label class="control-label">Rp：</label>
 				<div class="controls">
@@ -392,7 +233,7 @@
 		<div class="form-actions">
 			<shiro:hasPermission name="zhenghe:zhengheRx:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<shiro:hasPermission name="zhenghe:zhengheRx:cancel"><input id="btnCancel" class="btn btn-primary" type="button" value="取 消 处 方"/>&nbsp;</shiro:hasPermission>
-			<shiro:hasPermission name="zhenghe:zhengheRx:receive"><input id="btnReceive" class="btn btn-primary" type="button" value="接 收 处 方"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="zhenghe:zhengheRx:receive">工号：<input id="employeeNumber" name="employeeNumber" class="text-field" type="text" value=""/><input id="btnReceive" class="btn btn-primary" type="button" value="接 收 处 方"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
