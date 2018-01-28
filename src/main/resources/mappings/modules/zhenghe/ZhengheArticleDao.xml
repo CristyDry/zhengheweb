@@ -38,7 +38,7 @@
 		FROM zhenghe_article a
 		<include refid="zhengheArticleJoins"/>
 		<where>
-			
+			a.status = '1'
 			<if test="classifyId != null and classifyId != ''">
 				AND a.classify_id = #{classifyId}
 			</if>
@@ -65,7 +65,7 @@
 		FROM zhenghe_article a
 		<include refid="zhengheArticleJoins"/>
 		<where>
-			
+			a.status = '1'
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

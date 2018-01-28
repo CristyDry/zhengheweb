@@ -1,5 +1,6 @@
 package com.fullteem.modules.zhenghe.api.web;
 
+import com.alibaba.fastjson.JSON;
 import com.fullteem.common.web.BaseController;
 import com.fullteem.common.web.BaseResult;
 import com.fullteem.modules.zhenghe.api.utils.ZhengheConstance;
@@ -36,6 +37,6 @@ public class ZhengheViewController extends BaseController {
         InputStream ins = this.getClass().getResourceAsStream("/fullteem.properties");
         prop.load(ins);
         String view = prop.getProperty("zhenghe.view", "0");
-        return buildSuccessResultInfo(ImmutableMap.of("view", view));
+        return buildSuccessResultInfo(JSON.parseObject(view));
     }
 }

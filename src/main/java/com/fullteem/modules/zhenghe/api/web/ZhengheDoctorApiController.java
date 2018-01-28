@@ -568,7 +568,14 @@ public class ZhengheDoctorApiController extends BaseController {
 			jsonObject.put("id", message.getId());
 			jsonObject.put("title", message.getTitle());
 			//jsonObject.put("url", getBaseContextPath()+message.getContent());
-			jsonObject.put("url", "http://wangwang.taobao.com/");
+			Properties prop = new Properties();
+			InputStream ins = this.getClass().getResourceAsStream("/fullteem.properties");
+			try {
+				prop.load(ins);
+			} catch (IOException e) {
+			}
+			String url = prop.getProperty("zhenghe.message.url", "");
+			jsonObject.put("url", url);
 			jsonObject.put("date", DateUtils.formatDate(message.getCreateDate(),"yyyy-MM-dd"));
 			if("1".equals(message.getStatus())){
 				jsonObject.put("status","已读");

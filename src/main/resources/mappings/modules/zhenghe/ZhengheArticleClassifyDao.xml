@@ -33,7 +33,7 @@
 		FROM zhenghe_article_classify a
 		<include refid="zhengheArticleClassifyJoins"/>
 		<where>
-			
+			a.status = '1'
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -51,7 +51,7 @@
 		FROM zhenghe_article_classify a
 		<include refid="zhengheArticleClassifyJoins"/>
 		<where>
-			
+			a.status = '1'
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
