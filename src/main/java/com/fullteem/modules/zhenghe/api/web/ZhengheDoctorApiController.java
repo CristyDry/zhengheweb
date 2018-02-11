@@ -1453,7 +1453,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		
 		
 
-	@ApiOperation(value="删除分组",notes="根据分组id删除分组,要删除的分组必须为空.为不为空后端会做判断,不为空时返回操作失败(我的患者是默认分组，不允许删除)")
+	@ApiOperation(value="删除分组",notes="根据分组id删除分组,要删除的分组必须为空.为不为空后端会做判断,不为空时返回操作失败(默认分组是默认分组，不允许删除)")
 	@RequestMapping( value="/deleteGroup",method = RequestMethod.POST)
 	@ApiResponses({
 		@ApiResponse(code=ZhengheConstance.BASE_SUCCESS_CODE,message="success",response=String.class),
@@ -1669,7 +1669,7 @@ public class ZhengheDoctorApiController extends BaseController {
 		List<ZhengheGroup> groupList = zhengheGroupService.findGroupByDoctorId(friend.getDoctorId());
 		
 		for(ZhengheGroup group:groupList){
-			if("我的患者".equals(group.getGroupName().trim())){
+			if("默认分组".equals(group.getGroupName().trim())){
 				
 				int count = Integer.parseInt(group.getCount());
 				count++;

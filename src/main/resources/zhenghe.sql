@@ -12634,25 +12634,25 @@ CREATE TABLE `zhenghe_group` (
 -- Records of zhenghe_group
 -- ----------------------------
 INSERT INTO `zhenghe_group` VALUES ('015f35314e5d49b783075cc4a4e6ab16', null, '少年派', '7449ad39f0944a4390e3e003582f11bc', '0', null, null, null, '2016-01-18 12:10:39', null, null, '2016-01-18 12:10:39');
-INSERT INTO `zhenghe_group` VALUES ('07005065d6264afe9a7c8664cfbefcf4', null, '我的患者', '66d78f1ccbfe47ffb70a280db963cf07', '0', null, null, null, '2016-01-16 17:39:26', null, null, '2016-01-16 17:39:26');
-INSERT INTO `zhenghe_group` VALUES ('1', null, '我的患者', '1', '2', null, null, null, '2016-01-16 10:48:24', null, null, null);
-INSERT INTO `zhenghe_group` VALUES ('2', null, '我的患者', '028ce76e6aab4c0291aa66e7940f5ac8', '0', null, null, null, '2016-01-08 10:58:16', null, null, null);
+INSERT INTO `zhenghe_group` VALUES ('07005065d6264afe9a7c8664cfbefcf4', null, '默认分组', '66d78f1ccbfe47ffb70a280db963cf07', '0', null, null, null, '2016-01-16 17:39:26', null, null, '2016-01-16 17:39:26');
+INSERT INTO `zhenghe_group` VALUES ('1', null, '默认分组', '1', '2', null, null, null, '2016-01-16 10:48:24', null, null, null);
+INSERT INTO `zhenghe_group` VALUES ('2', null, '默认分组', '028ce76e6aab4c0291aa66e7940f5ac8', '0', null, null, null, '2016-01-08 10:58:16', null, null, null);
 INSERT INTO `zhenghe_group` VALUES ('28215baf7f9c45e1999ebcd531681435', null, '没名字', '223cb33530384f8bb510ff0700791a5d', '0', null, null, null, '2016-01-14 20:10:45', null, null, '2016-01-14 20:10:45');
-INSERT INTO `zhenghe_group` VALUES ('3', null, '我的患者', '1119c0b8da43453c9a71f95d9200b966', '9', null, null, null, '2016-01-14 11:19:20', null, null, null);
-INSERT INTO `zhenghe_group` VALUES ('34fdf63a406444008bdbda032830db0e', null, '我的患者', 'b57a4b85a5b24328bbe16ad2fb118cec', '0', null, null, null, '2016-01-15 19:39:14', null, null, '2016-01-15 19:39:14');
+INSERT INTO `zhenghe_group` VALUES ('3', null, '默认分组', '1119c0b8da43453c9a71f95d9200b966', '9', null, null, null, '2016-01-14 11:19:20', null, null, null);
+INSERT INTO `zhenghe_group` VALUES ('34fdf63a406444008bdbda032830db0e', null, '默认分组', 'b57a4b85a5b24328bbe16ad2fb118cec', '0', null, null, null, '2016-01-15 19:39:14', null, null, '2016-01-15 19:39:14');
 INSERT INTO `zhenghe_group` VALUES ('37851ed282344462a05bc7139bdf1d1c', null, '啪啪啪', '1119c0b8da43453c9a71f95d9200b966', '0', null, null, null, '2016-01-12 20:56:23', null, null, '2016-01-12 20:51:51');
-INSERT INTO `zhenghe_group` VALUES ('4', null, '我的患者', '6d17479dad7145bc8b3bf550798b1a24', '0', null, null, null, null, null, null, null);
+INSERT INTO `zhenghe_group` VALUES ('4', null, '默认分组', '6d17479dad7145bc8b3bf550798b1a24', '0', null, null, null, null, null, null, null);
 INSERT INTO `zhenghe_group` VALUES ('4bf1bed89cc34fa5a87de91131548cb7', null, '高富帅分组', '1', '1', null, null, null, '2016-01-14 14:49:03', null, null, '2016-01-13 15:42:17');
-INSERT INTO `zhenghe_group` VALUES ('5', null, '我的患者', '7449ad39f0944a4390e3e003582f11bc', '2', null, null, null, '2016-01-27 14:47:54', null, null, null);
-INSERT INTO `zhenghe_group` VALUES ('6', null, '我的患者', '95e1df161e9c4339beaf3fd66b3ecf38', '0', null, null, null, '2016-01-07 18:19:59', null, null, null);
+INSERT INTO `zhenghe_group` VALUES ('5', null, '默认分组', '7449ad39f0944a4390e3e003582f11bc', '2', null, null, null, '2016-01-27 14:47:54', null, null, null);
+INSERT INTO `zhenghe_group` VALUES ('6', null, '默认分组', '95e1df161e9c4339beaf3fd66b3ecf38', '0', null, null, null, '2016-01-07 18:19:59', null, null, null);
 INSERT INTO `zhenghe_group` VALUES ('660b2e8ae3d64e3cbe1eb3ed1657761e', null, '你好', '223cb33530384f8bb510ff0700791a5d', '0', null, null, null, '2016-01-14 20:13:17', null, null, '2016-01-14 20:13:17');
 INSERT INTO `zhenghe_group` VALUES ('68823b5e398c4815be224d350811b3d6', null, 'aewgg', '1', '0', null, null, null, '2016-01-14 11:34:33', null, null, '2016-01-14 11:34:33');
-INSERT INTO `zhenghe_group` VALUES ('7', null, '我的患者', 'aa211765e51244de92a2c4835912b97b', '2', null, null, null, '2016-01-15 11:01:16', null, null, null);
+INSERT INTO `zhenghe_group` VALUES ('7', null, '默认分组', 'aa211765e51244de92a2c4835912b97b', '2', null, null, null, '2016-01-15 11:01:16', null, null, null);
 INSERT INTO `zhenghe_group` VALUES ('9898e503351e4bff86570ce364bd2493', null, '网上患者', '1', '0', null, null, null, '2016-01-14 11:18:49', null, null, '2016-01-13 15:08:58');
 INSERT INTO `zhenghe_group` VALUES ('b57b54d618d44ac7924c438887e64470', null, '哈哈哈', '1119c0b8da43453c9a71f95d9200b966', '0', null, null, null, '2016-01-12 20:52:01', null, null, '2016-01-12 20:33:26');
 INSERT INTO `zhenghe_group` VALUES ('bfda8fcfc78841ca98d2219d6fe753b3', null, '网上患者', '7449ad39f0944a4390e3e003582f11bc', '0', null, null, null, '2016-01-27 14:47:54', null, null, '2016-01-18 12:10:18');
-INSERT INTO `zhenghe_group` VALUES ('f01f9429e7174e31a08084dbb19e00b3', null, '我的患者', '223cb33530384f8bb510ff0700791a5d', '0', null, null, null, '2016-01-15 16:16:53', null, null, '2016-01-15 16:16:53');
-INSERT INTO `zhenghe_group` VALUES ('f3adb9b1e7484f179f51efc83ed26dff', null, '我的患者', 'f52106abd5884dd188dec78e218df3dd', '0', null, null, null, '2016-01-16 14:19:45', null, null, '2016-01-16 14:19:45');
+INSERT INTO `zhenghe_group` VALUES ('f01f9429e7174e31a08084dbb19e00b3', null, '默认分组', '223cb33530384f8bb510ff0700791a5d', '0', null, null, null, '2016-01-15 16:16:53', null, null, '2016-01-15 16:16:53');
+INSERT INTO `zhenghe_group` VALUES ('f3adb9b1e7484f179f51efc83ed26dff', null, '默认分组', 'f52106abd5884dd188dec78e218df3dd', '0', null, null, null, '2016-01-16 14:19:45', null, null, '2016-01-16 14:19:45');
 
 -- ----------------------------
 -- Table structure for `zhenghe_heart_rate`

@@ -63,15 +63,6 @@ public class ZhengheProductApiController extends BaseController{
 	ZhengheCommonImageService imageService;
 	@Autowired
 	private HttpServletRequest request;
-	
-	private static String imgPrefix;
-	public ZhengheProductApiController() throws IOException {
-		Properties prop = new Properties();
-		InputStream ins = this.getClass().getResourceAsStream("/fullteem.properties");
-		prop.load(ins);
-		this.imgPrefix = prop.getProperty("zhenghe.basepath");
-		ins.close();
-	}
 
 
 	/**
@@ -94,10 +85,9 @@ public class ZhengheProductApiController extends BaseController{
 			return buildFailedResultInfo(ZhengheConstance.param_fault);
 		}
 		
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
 		List<ZhengheCarousel> cList = carouselService.findListByNum(Integer.parseInt(num));
 		for(ZhengheCarousel c : cList){
-			c.setAvatar(basePath+c.getAvatar());
+			c.setAvatar(imageServer+c.getAvatar());
 		}
 		return buildSuccessResultInfo(cList);
 	}
@@ -114,10 +104,9 @@ public class ZhengheProductApiController extends BaseController{
 	@ApiOperation(value = "获取商品分类列表", notes = "不需要参数")
 	@RequestMapping(value = "/getProductClassifyList", method = RequestMethod.POST)
 	public ResponseEntity<BaseResult> getProductClassifyList(HttpServletRequest request) {
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort();
 		List<ZhengheProductClassify> cList = classifyService.findList(null);
 		for(ZhengheProductClassify c : cList){
-			c.setAvatar(basePath+c.getAvatar());
+			c.setAvatar(imageServer+c.getAvatar());
 		}
 		return buildSuccessResultInfo(cList);
 	}

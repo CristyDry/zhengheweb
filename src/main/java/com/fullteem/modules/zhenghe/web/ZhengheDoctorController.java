@@ -166,7 +166,7 @@ public class ZhengheDoctorController extends BaseController {
 			 * 给医生创建一个默认分组
 			 */
 			ZhengheGroup group = new ZhengheGroup();
-			group.setGroupName("我的患者");
+			group.setGroupName("默认分组");
 			group.setDoctorId(zhengheDoctor.getId());
 			group.setCount("0");
 			zhengheGroupService.save(group);
